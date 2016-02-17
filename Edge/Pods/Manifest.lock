@@ -1,0 +1,20 @@
+PODS:
+  - Alamofire (3.2.0)
+  - plaid-ios-link (0.2):
+    - plaid-ios-sdk
+  - plaid-ios-sdk (0.3.6)
+
+DEPENDENCIES:
+  - Alamofire (~> 3.0)
+  - plaid-ios-link (from `../plaid-ios-link`)
+
+EXTERNAL SOURCES:
+  plaid-ios-link:
+    :path: ../plaid-ios-link
+
+SPEC CHECKSUMS:
+  Alamofire: 4da478599fccddff361205c8929333d7fe18dceb
+  plaid-ios-link: 1fa1bfb02a155c95c1ded48c1e98513ae68fb831
+  plaid-ios-sdk: e9865b0fe6a79b3d30d886171d7a26f7e1408935
+
+COCOAPODS: 0.39.0

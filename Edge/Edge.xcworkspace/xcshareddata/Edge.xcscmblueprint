@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "69041B7AD3D571C128DCAC84A2E2D5D89D716E81",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "69041B7AD3D571C128DCAC84A2E2D5D89D716E81" : 0,
+    "6550239AE76C5A2AA23678E02243B8450BF29E07" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "77BE0870-36A4-47D8-B824-3F0AABA50181",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "69041B7AD3D571C128DCAC84A2E2D5D89D716E81" : "Repositories\/",
+    "6550239AE76C5A2AA23678E02243B8450BF29E07" : "Repositories\/Edge\/plaid-ios-link\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Edge",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Edge\/Edge\/Edge.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/IsaiahJTurner\/plaid-ios-link",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6550239AE76C5A2AA23678E02243B8450BF29E07"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:IsaiahJTurner\/Heroku-Proxy.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "69041B7AD3D571C128DCAC84A2E2D5D89D716E81"
+    }
+  ]
+}
