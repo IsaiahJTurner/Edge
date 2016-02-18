@@ -130,7 +130,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Link Bank Account" id="oga-Oy-9j3">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="Bb3-jj-Sv6">
+                        <barButtonItem key="leftBarButtonItem" title="Sign Out" id="Bb3-jj-Sv6">
                             <connections>
                                 <action selector="logout:" destination="fj5-cw-Fuf" id="LeO-7U-ABz"/>
                             </connections>
