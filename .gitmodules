@@ -1,0 +1,3 @@
+[submodule "plaid-ios-link"]
+    path = plaid-ios-link
+    url = git://github.com/IsaiahJTurner/plaid-ios-link.git
