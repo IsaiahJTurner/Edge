@@ -1,21 +1,28 @@
 {
-  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "69041B7AD3D571C128DCAC84A2E2D5D89D716E81",
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "5A3EC63237793FD6809B1EBBEBCFF7BCC0DC4BFA",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
 
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
     "69041B7AD3D571C128DCAC84A2E2D5D89D716E81" : 0,
-    "6550239AE76C5A2AA23678E02243B8450BF29E07" : 0
+    "6550239AE76C5A2AA23678E02243B8450BF29E07" : 0,
+    "5A3EC63237793FD6809B1EBBEBCFF7BCC0DC4BFA" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "77BE0870-36A4-47D8-B824-3F0AABA50181",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "69041B7AD3D571C128DCAC84A2E2D5D89D716E81" : "Repositories\/",
-    "6550239AE76C5A2AA23678E02243B8450BF29E07" : "Repositories\/Edge\/plaid-ios-link\/"
+    "69041B7AD3D571C128DCAC84A2E2D5D89D716E81" : "",
+    "6550239AE76C5A2AA23678E02243B8450BF29E07" : "Edge\/plaid-ios-link\/",
+    "5A3EC63237793FD6809B1EBBEBCFF7BCC0DC4BFA" : "Edge\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Edge",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
-  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Edge\/Edge\/Edge.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Edge\/Edge.xcworkspace",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/git.heroku.com\/padding-tips.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5A3EC63237793FD6809B1EBBEBCFF7BCC0DC4BFA"
+    },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/IsaiahJTurner\/plaid-ios-link",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",

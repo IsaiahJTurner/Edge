@@ -1,25 +1,26 @@
 //
-//  User.swift
+//  Account.swift
 //  Edge
 //
-//  Created by Isaiah Turner on 2/8/16.
+//  Created by Isaiah Turner on 2/17/16.
 //  Copyright © 2016 Isaiah Turner. All rights reserved.
 //
 
 import Alamofire
 
 
-class User {
+import Alamofire
+
+
+class Account {
     
     private var endpoint = Constants.endpoint;
     private var common = Common()
     
     var id:String?
-    var type = "users"
-    var name:String?
-    var email:String?
-    var phone:String?
-    var password:String?
+    var type = "accounts"
+    var owner:User?
+    var publicToken:String?
     var createdAt:NSDate?
     var updatedAt:NSDate?
     
@@ -27,46 +28,43 @@ class User {
     
     init(data: Dictionary<String, AnyObject>) {
         self.id = data["id"] as? String
-        self.isIdentifier = true
+        self.isIdentifier = true;
         if let attributes = data["attributes"] {
-            self.isIdentifier = false
-            self.name = attributes["name"] as? String
-            self.email = attributes["email"] as? String
-            self.phone = attributes["phone"] as? String
-            self.password = attributes["password"] as? String
+            self.isIdentifier = false;
+            self.publicToken = attributes["publicToken"] as? String
             self.createdAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["createdAt"] as! Int))
             self.updatedAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["updatedAt"] as! Int))
-        }        
+        }
+        if let relationships = data["relationships"] {
+            self.isIdentifier = false;
+            self.owner = User(data: relationships["owner"] as! Dictionary<String, AnyObject>)
+        }
     }
     
     init(id: String) {
         self.isIdentifier = true
         self.id = id
     }
-    init(name: String, email: String, phone: String, password: String) {
+    init(publicToken: String, owner: User?) {
         self.isIdentifier = false
-        self.name = name
-        self.email = email
-        self.phone = phone
-        self.password = password
+        self.publicToken = publicToken
+        if ((owner) != nil) {
+            self.owner = owner
+        }
     }
     func toJSON() -> Dictionary<String, AnyObject> {
         var attributes = [String : AnyObject]()
-        if ((self.name) != nil) {
-            attributes["name"] = self.name
+        if ((self.publicToken) != nil) {
+            attributes["publicToken"] = self.publicToken
         }
-        if ((self.email) != nil) {
-            attributes["email"] = self.email
-        }
-        if ((self.password) != nil) {
-            attributes["password"] = self.password
-        }
-        if ((self.phone) != nil) {
-            attributes["phone"] = self.phone
+        var relationships = [String : AnyObject]()
+        if ((self.owner) != nil) {
+            relationships["owner"] = owner?.toJSON()
         }
         var resource : [String : AnyObject] = [
             "type": self.type,
-            "attributes": attributes
+            "attributes": attributes,
+            "relationships": relationships
         ]
         if ((self.id) != nil) {
             resource["id"] = self.id
@@ -77,8 +75,8 @@ class User {
         
         return data
     }
-    func get(callback: (response: Response<AnyObject, NSError>, data: AnyObject?, user: User?, error: String?) -> ()) {
-        Alamofire.request(.GET, "\(endpoint)/users/\(self.id)")
+    func get(callback: (response: Response<AnyObject, NSError>, data: AnyObject?, account: Account?, error: String?) -> ()) {
+        Alamofire.request(.GET, "\(endpoint)/accounts/\(self.id)")
             .responseJSON { response in
                 switch response.result {
                 case .Success: // returned json
@@ -86,23 +84,23 @@ class User {
                     let errors = data.objectForKey("errors")
                     if ((errors) != nil) { // but the json had an errors property
                         let error = self.common.jsonAPIErrorsToString(errors!)
-                        callback(response: response, data: data, user: nil, error: error)
+                        callback(response: response, data: data, account: nil, error: error)
                     } else { // and the json was without errors
-                        let user = User(data: data.objectForKey("data") as! Dictionary<String, AnyObject>)
+                        let account = Account(data: data.objectForKey("data") as! Dictionary<String, AnyObject>)
                         
-                        callback(response: response, data: data, user: user, error: nil)
+                        callback(response: response, data: data, account: account, error: nil)
                     }
                     
                 case .Failure(let error):
                     print(error)
-                    callback(response: response, data: nil, user: nil, error: error.localizedDescription)
+                    callback(response: response, data: nil, account: nil, error: error.localizedDescription)
                 }
         }
     }
     
-    func save(callback: (response: Response<AnyObject, NSError>?, data: AnyObject?, user: User?, error: String?) -> ()) {
+    func save(callback: (response: Response<AnyObject, NSError>?, data: AnyObject?, account: Account?, error: String?) -> ()) {
         if (self.isIdentifier) {
-            return callback(response: nil, data: nil, user: nil, error: "Identifiers can't be saved")
+            return callback(response: nil, data: nil, account: nil, error: "Identifiers can't be saved")
         }
         let method:Alamofire.Method
         let path:String
@@ -114,7 +112,7 @@ class User {
             path = ""
         }
         
-        Alamofire.request(method, "\(endpoint)/users\(path)", parameters: self.toJSON(), encoding: .JSON)
+        Alamofire.request(method, "\(endpoint)/accounts\(path)", parameters: self.toJSON(), encoding: .JSON)
             .responseJSON { response in
                 switch response.result {
                 case .Success: // returned json
@@ -122,15 +120,15 @@ class User {
                     let errors = data.objectForKey("errors")
                     if ((errors) != nil) { // but the json had an errors property
                         let error = self.common.jsonAPIErrorsToString(errors!)
-                        callback(response: response, data: data, user: nil, error: error)
+                        callback(response: response, data: data, account: nil, error: error)
                     } else { // and the json was without errors
-                        let user = User(data: data.objectForKey("data") as! Dictionary<String, AnyObject>);
-                        callback(response: response, data: data, user: user, error: nil)
+                        let account = Account(data: data.objectForKey("data") as! Dictionary<String, AnyObject>);
+                        callback(response: response, data: data, account: account, error: nil)
                     }
                     
                 case .Failure(let error):
                     print(error)
-                    callback(response: response, data: nil, user: nil, error: error.localizedDescription)
+                    callback(response: response, data: nil, account: nil, error: error.localizedDescription)
                 }
         }
     }

@@ -1,23 +1,17 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var plaid = require('plaid');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+
+var config = require('./config');
 
 
 var Transaction = require('./models/Transaction');
 var User = require('./models/User');
+var Account = require('./models/Account');
 
-var mongoURL =
-  "mongodb://edge:4bOw3B2XffjE0gZ79uPzTCc0YhtQbvyY8bvAufu61evJuTwoCZ@ds059185.mongolab.com:59185/edge";
-mongoose.connect(mongoURL);
-
-
-// public key: db0c7fe8afdfac06b1997b0d4a1b96
-var plaidClient = new plaid.Client("56b96681db2afcb6184d2b85",
-  "1940fb678863766d4068499b725774", plaid.environments.tartan);
-
+mongoose.connect(config.mongoURL);
 
 var app = express();
 
@@ -38,24 +32,31 @@ app.use(session({
 
 var controllers = {
   index: require('./controllers/'),
-  users: require('./controllers/users')
-}
+  users: require('./controllers/users'),
+  accounts: require('./controllers/accounts')
+};
+var middleware = {
+  auth: require('./middleware/auth')
+};
 app.use(function(req, res, next) {
-  console.log(req.method + " " + req.path + req.session.id, req.session);
+  console.log(req.method + " " + req.path);
   next();
-})
+});
 app.get("/", function(req, res) {
   res.json({
     "jsonapi": {
       "version": "1.0"
     }
-  })
+  });
 });
-app.post("/login", controllers.index.login);
+app.post("/signin", controllers.index.signin);
+app.post("/signout", controllers.index.signout);
 
 app.post("/users", controllers.users.post);
 app.get("/users/:userId", controllers.users.getOne);
 
+app.post("/accounts", middleware.auth.requiresUser, controllers.accounts.post);
+
 app.listen(app.get('port'), function() {
-  console.log('Started!')
+  console.log('Started on port ' + app.get("port") + '!');
 });

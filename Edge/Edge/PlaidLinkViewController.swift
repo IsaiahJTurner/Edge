@@ -30,8 +30,15 @@ class PlaidLinkViewController: UIViewController, PLDLinkNavigationControllerDele
         self.presentViewController(plaidLink, animated: true, completion: nil)
     }
     @IBAction func logout(sender: UIBarButtonItem) {
-        client.logout() { (response, data, error) in
-            
+        client.signOut() { (response, data, error) in
+            if ((error) != nil) {
+                let alertController = UIAlertController(title: "Error", message:
+                    error, preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                self.presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
         }
     }
     @IBAction func retry(sender: UIBarButtonItem) {
@@ -42,13 +49,27 @@ class PlaidLinkViewController: UIViewController, PLDLinkNavigationControllerDele
         // Dispose of any resources that can be recreated.
     }
     
-    func linkNavigationContoller(navigationController: PLDLinkNavigationViewController!, didFinishWithAccessToken accessToken: String!) {
-        print("success \(accessToken)")
-        statusTextView.text = "Verifying your credentials..."
+    func linkNavigationContoller(navigationController: PLDLinkNavigationViewController!, didFinishWithAccessToken publicToken: String!) {
         navigationController.dismissViewControllerAnimated(true, completion: nil)
+        statusTextView.text = "Verifying your credentials..."
+        let account = Account(publicToken: publicToken, owner: nil)
+        account.save { (response, data, account, error) -> () in
+            if ((error) != nil) {
+                let alertController = UIAlertController(title: "Error", message:
+                    error, preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                self.presentViewController(alertController, animated: true, completion: nil)
+                self.statusTextView.text = error
+            } else {
+                self.performSegueWithIdentifier("showHome", sender: self);
+            }
+        }
+        
     }
     func linkNavigationControllerDidFinishWithBankNotListed(navigationController: PLDLinkNavigationViewController!) {
-        print("Manually enter bank info?")
+        navigationController.dismissViewControllerAnimated(true, completion: nil)
+        statusTextView.text = "We may not support your bank. Try again?"
+        
     }
     func linkNavigationControllerDidCancel(navigationController: PLDLinkNavigationViewController!) {
         navigationController.dismissViewControllerAnimated(true, completion: nil)

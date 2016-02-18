@@ -18,6 +18,9 @@
 		8B408D721C69814D00CA0B79 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B408D701C69814D00CA0B79 /* LaunchScreen.storyboard */; };
 		8B408D7A1C69886300CA0B79 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B408D791C69886300CA0B79 /* SignInViewController.swift */; };
 		8B408D7C1C69888000CA0B79 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B408D7B1C69888000CA0B79 /* SignUpViewController.swift */; };
+		8B40CA661C7570E000E0F746 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B40CA651C7570E000E0F746 /* Account.swift */; };
+		8B40CA681C75710F00E0F746 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B40CA671C75710F00E0F746 /* Constants.swift */; };
+		8B40CA6A1C757C0C00E0F746 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B40CA691C757C0C00E0F746 /* Common.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +39,9 @@
 		8B408D731C69814D00CA0B79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B408D791C69886300CA0B79 /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		8B408D7B1C69888000CA0B79 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		8B40CA651C7570E000E0F746 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Account.swift; path = EdgeAPIClient/Account.swift; sourceTree = "<group>"; };
+		8B40CA671C75710F00E0F746 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = EdgeAPIClient/Constants.swift; sourceTree = "<group>"; };
+		8B40CA691C757C0C00E0F746 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = EdgeAPIClient/Common.swift; sourceTree = "<group>"; };
 		F46253A684C26C6CBFB3AF3C /* Pods-Edge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Edge.release.xcconfig"; path = "Pods/Target Support Files/Pods-Edge/Pods-Edge.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -64,6 +70,9 @@
 			children = (
 				8B4042931C698B3000CD3584 /* EdgeAPIClient.swift */,
 				8B0489E21C6C497F00F9728D /* User.swift */,
+				8B40CA651C7570E000E0F746 /* Account.swift */,
+				8B40CA671C75710F00E0F746 /* Constants.swift */,
+				8B40CA691C757C0C00E0F746 /* Common.swift */,
 			);
 			name = EdgeAPIClient;
 			sourceTree = "<group>";
@@ -240,8 +249,11 @@
 				8B0489E31C6C497F00F9728D /* User.swift in Sources */,
 				8B408D681C69814D00CA0B79 /* AppDelegate.swift in Sources */,
 				8B408D7C1C69888000CA0B79 /* SignUpViewController.swift in Sources */,
+				8B40CA661C7570E000E0F746 /* Account.swift in Sources */,
 				8B408D7A1C69886300CA0B79 /* SignInViewController.swift in Sources */,
 				8B1AD4D61C741DB6000EF367 /* PlaidLinkViewController.swift in Sources */,
+				8B40CA6A1C757C0C00E0F746 /* Common.swift in Sources */,
+				8B40CA681C75710F00E0F746 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,11 +7,17 @@ exports.get = function(req, res) {
   User.find(function(err, users) {
     res.json({
       data: users
-    })
+    });
   });
-}
+};
 
-exports.login = function(req, res) {
+exports.signout = function(req, res) {
+  delete req.session.user;
+  res.json({
+    success: true
+  });
+};
+exports.signin = function(req, res) {
   var email = req.body.email;
   if (!_.isString(email)) {
     var error = "Please enter your email address.";
@@ -35,6 +41,7 @@ exports.login = function(req, res) {
   }, function(err, user) {
     if (err) {
       var error = "Failed to lookup your account. Try again?";
+      console.log(error, err);
       return res.json({
         errors: [{
           title: error
@@ -52,6 +59,7 @@ exports.login = function(req, res) {
     bcrypt.compare(password, user.password, function(err, isMatch) {
       if (err) {
         var error = "Unable to compare your password.";
+        console.log(error, err);
         return res.json({
           errors: [{
             title: error
@@ -72,4 +80,4 @@ exports.login = function(req, res) {
       });
     });
   });
-}
+};

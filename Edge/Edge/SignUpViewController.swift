@@ -22,7 +22,8 @@ class SignUpViewController: UIViewController {
     @IBAction func signUp(sender: AnyObject) {
         let email = emailTextField.text!
         let password = passwordTextField.text!
-        client.signUp(email, password: password) { (response, data, user, error) -> () in
+        let user = User(name: "", email: email, phone: "", password: password)
+        user.save { (response, data, user, error) -> () in
             if ((error) != nil) {
                 let alertController = UIAlertController(title: "Error", message:
                     error, preferredStyle: UIAlertControllerStyle.Alert)
@@ -31,7 +32,7 @@ class SignUpViewController: UIViewController {
             } else {
                 self.performSegueWithIdentifier("linkBankAccount", sender: self);
             }
-        };
+        }
     }
     
     override func didReceiveMemoryWarning() {

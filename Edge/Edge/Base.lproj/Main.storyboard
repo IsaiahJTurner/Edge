@@ -132,7 +132,7 @@
                     <navigationItem key="navigationItem" title="Link Bank Account" id="oga-Oy-9j3">
                         <barButtonItem key="leftBarButtonItem" title="Logout" id="Bb3-jj-Sv6">
                             <connections>
-                                <action selector="signOut:" destination="fj5-cw-Fuf" id="lw7-aB-iq1"/>
+                                <action selector="logout:" destination="fj5-cw-Fuf" id="LeO-7U-ABz"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Retry" id="Eej-uF-rQ9">
@@ -160,7 +160,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="0b3-c5-lYd">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="transaction" id="0b3-c5-lYd">
                                 <rect key="frame" x="0.0" y="92" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0b3-c5-lYd" id="N3U-df-tO3">
@@ -246,7 +246,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Sign In" id="xU8-IJ-GMn"/>
+                    <navigationItem key="navigationItem" title="Sign In" id="xU8-IJ-GMn">
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="eEi-Ye-BIY">
+                            <connections>
+                                <action selector="signIn:" destination="9Pv-V0-u04" id="7e4-an-G0c"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="emailTextField" destination="VAi-TF-Uzi" id="AUG-1z-gTR"/>

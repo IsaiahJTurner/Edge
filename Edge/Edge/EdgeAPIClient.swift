@@ -8,45 +8,15 @@
 
 import Alamofire
 
-
 class EdgeAPIClient {
-    private var endpoint = "http://localhost:3002";
+    
+    private var endpoint = Constants.endpoint;
+    private var common = Common()
     
     private var me:User? = nil;
-    
-    private func jsonAPIErrorsToString(errors: AnyObject) -> String {
-        var errorString = ""
-        if let errorsArray = errors as? Array<Dictionary<String, AnyObject>> {
-            for error in errorsArray {
-                if let title = error["title"] as? String {
-                    errorString += title
-                }
-            }
-        }
-        return errorString
-    }
 
     private func getCurrentUser(callback: (Response<AnyObject, NSError>, AnyObject?, User?, String?) -> ()) {
-        Alamofire.request(.GET, "\(endpoint)/users/me")
-            .responseJSON { response in
-                switch response.result {
-                case .Success: // returned json
-                    let data = response.result.value!
-                    let errors = data.objectForKey("errors")
-                    if ((errors) != nil) { // but the json had an errors property
-                        let error = self.jsonAPIErrorsToString(errors!)
-                        callback(response, data, nil, error)
-                    } else { // and the json was without errors
-                        let user = User(data: data.objectForKey("data") as! Dictionary<String, AnyObject>);
-                        self.me = user;
-                        callback(response, data, user, nil)
-                    }
-                    
-                case .Failure(let error):
-                    print(error)
-                    callback(response, nil, nil, "Unable to fetch your account details.")
-                }
-        }
+        //User(id: "me").then(
     }
     
     func currentUser(callback: (User?) -> ()) {
@@ -59,42 +29,31 @@ class EdgeAPIClient {
         }
     }
     
-    func logout(callback: (Response<AnyObject, NSError>, AnyObject?, String?) -> ()) {
-        
-    }
-    func signUp(email: String, password: String, callback: (Response<AnyObject, NSError>, AnyObject?, User?, String?) -> ()) {
-        Alamofire.request(.POST, "\(endpoint)/users", parameters: [
-            "data": [
-                "type": "users",
-                "attributes": [
-                    "email": email,
-                    "password": password
-                ]
-            ]
-        ], encoding: .JSON)
-        .responseJSON { response in
-            switch response.result {
+    func signOut(callback: (Response<AnyObject, NSError>, AnyObject?, String?) -> ()) {
+        Alamofire.request(.POST, "\(endpoint)/signout")
+            .responseJSON { response in
+                switch response.result {
                 case .Success: // returned json
                     let data = response.result.value!
                     let errors = data.objectForKey("errors")
                     if ((errors) != nil) { // but the json had an errors property
-                        let error = self.jsonAPIErrorsToString(errors!)
-                        callback(response, data, nil, error)
+                        let error = self.common.jsonAPIErrorsToString(errors!)
+                        callback(response, data, error)
                     } else { // and the json was without errors
                         let user = User(data: data.objectForKey("data") as! Dictionary<String, AnyObject>);
                         self.me = user;
-                        callback(response, data, user, nil)
+                        callback(response, data, nil)
                     }
-                
+                    
                 case .Failure(let error):
                     print(error)
-                    callback(response, nil, nil, "An error occured while trying to create your account.")
-            }
+                    callback(response, nil, error.localizedDescription)
+                }
         }
     }
     
     func signIn(email: String, password: String, callback: (Response<AnyObject, NSError>, AnyObject?, User?, String?) -> ()) {
-        Alamofire.request(.POST, "\(endpoint)/login", parameters: [
+        Alamofire.request(.POST, "\(endpoint)/signin", parameters: [
                 "email": email,
                 "password": password
             ], encoding: .JSON)
@@ -104,7 +63,7 @@ class EdgeAPIClient {
                     let data = response.result.value!
                     let errors = data.objectForKey("errors")
                     if ((errors) != nil) { // but the json had an errors property
-                        let error = self.jsonAPIErrorsToString(errors!)
+                        let error = self.common.jsonAPIErrorsToString(errors!)
                         callback(response, data, nil, error)
                     } else { // and the json was without errors
                         let user = User(data: data.objectForKey("data") as! Dictionary<String, AnyObject>);
@@ -114,7 +73,7 @@ class EdgeAPIClient {
                     
                 case .Failure(let error):
                     print(error)
-                    callback(response, nil, nil, "An error occured while trying to sign in.")
+                    callback(response, nil, nil, error.localizedDescription)
                 }
         }
     }

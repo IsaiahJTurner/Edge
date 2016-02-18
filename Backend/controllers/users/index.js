@@ -20,7 +20,8 @@ exports.post = function(req, res) {
     });
   }
   var email = req.body.data.attributes.email;
-  if (!_.isString(email) || email.length < 6 || email.indexOf("@") < 0 || email.indexOf(".") < 0) {
+  if (!_.isString(email) || email.length < 6 || email.indexOf("@") < 0 ||
+    email.indexOf(".") < 0) {
     var error = "Please enter a valid email address.";
     return res.json({
       errors: [{
@@ -44,7 +45,13 @@ exports.post = function(req, res) {
   })
   user.save(function(err, user) {
     if (err) {
-      var error = "Could not create your account.";
+      var error;
+      if (err.code === 11000) {
+        error = "A user with this email already exists";
+      } else {
+        error = "Could not create your account.";
+        console.log(error, err);
+      }
       return res.json({
         errors: [{
           title: error
@@ -90,6 +97,7 @@ exports.getOne = function(req, res) {
   }, function(err, user) {
     if (err) {
       var error = "An error occured trying to look up your information.";
+      console.log(error, err);
       return res.json({
         errors: [{
           title: error
