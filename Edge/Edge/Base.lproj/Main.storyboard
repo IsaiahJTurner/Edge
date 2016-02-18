@@ -151,7 +151,7 @@
             </objects>
             <point key="canvasLocation" x="1829" y="364"/>
         </scene>
-        <!--Root View Controller-->
+        <!--Recent Transactions-->
         <scene sceneID="f4b-x3-FQ0">
             <objects>
                 <tableViewController id="lO2-PO-Zgn" sceneMemberID="viewController">
@@ -174,7 +174,7 @@
                             <outlet property="delegate" destination="lO2-PO-Zgn" id="e3I-Zr-kLW"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="eNu-gV-L9F"/>
+                    <navigationItem key="navigationItem" title="Recent Transactions" id="eNu-gV-L9F"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iyT-RS-A5Q" userLabel="First Responder" sceneMemberID="firstResponder"/>

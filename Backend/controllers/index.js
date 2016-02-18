@@ -4,10 +4,10 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
 exports.get = function(req, res) {
-  User.find(function(err, users) {
-    res.json({
-      data: users
-    });
+  res.json({
+    "jsonapi": {
+      "version": "1.0"
+    }
   });
 };
 

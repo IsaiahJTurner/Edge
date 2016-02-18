@@ -15,6 +15,8 @@ mongoose.connect(config.mongoURL);
 
 var app = express();
 
+var api = express.Router();
+
 app.set('port', (process.env.PORT || 3002));
 
 app.use(bodyParser.json({
@@ -30,6 +32,8 @@ app.use(session({
   })
 }));
 
+app.use("/api/1.0", api);
+
 var controllers = {
   index: require('./controllers/'),
   users: require('./controllers/users'),
@@ -42,21 +46,19 @@ app.use(function(req, res, next) {
   console.log(req.method + " " + req.path);
   next();
 });
+
+api.get("/", controllers.index.get);
+api.post("/signin", controllers.index.signin);
+api.post("/signout", controllers.index.signout);
+
+api.post("/users", controllers.users.post);
+api.get("/users/:userId", controllers.users.getOne);
+
+api.post("/accounts", middleware.auth.requiresUser, controllers.accounts.post);
+
 app.get("/", function(req, res) {
-  res.json({
-    "jsonapi": {
-      "version": "1.0"
-    }
-  });
-});
-app.post("/signin", controllers.index.signin);
-app.post("/signout", controllers.index.signout);
-
-app.post("/users", controllers.users.post);
-app.get("/users/:userId", controllers.users.getOne);
-
-app.post("/accounts", middleware.auth.requiresUser, controllers.accounts.post);
-
+  res.send("Welcome to Edge!");
+})
 app.listen(app.get('port'), function() {
   console.log('Started on port ' + app.get("port") + '!');
 });

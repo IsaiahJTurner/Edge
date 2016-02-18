@@ -8,5 +8,5 @@
 
 
 struct Constants {
-    static let endpoint = "http://localhost:3002"
+    static let endpoint = "http://localhost:3002/api/1.0"
 }
