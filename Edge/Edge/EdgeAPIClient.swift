@@ -40,8 +40,7 @@ class EdgeAPIClient {
                         let error = self.common.jsonAPIErrorsToString(errors!)
                         callback(response, data, error)
                     } else { // and the json was without errors
-                        let user = User(data: data.objectForKey("data") as! Dictionary<String, AnyObject>);
-                        self.me = user;
+                        self.me = nil;
                         callback(response, data, nil)
                     }
                     

@@ -15,6 +15,8 @@ class PlaidLinkViewController: UIViewController, PLDLinkNavigationControllerDele
     @IBOutlet var statusTextView: UITextView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.startLinking()
+
         // Do any additional setup after loading the view, typically from a nib.
     }
     override func viewDidAppear(animated: Bool) {

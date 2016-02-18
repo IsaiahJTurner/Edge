@@ -69,10 +69,10 @@
 			isa = PBXGroup;
 			children = (
 				8B4042931C698B3000CD3584 /* EdgeAPIClient.swift */,
-				8B0489E21C6C497F00F9728D /* User.swift */,
-				8B40CA651C7570E000E0F746 /* Account.swift */,
 				8B40CA671C75710F00E0F746 /* Constants.swift */,
 				8B40CA691C757C0C00E0F746 /* Common.swift */,
+				8B0489E21C6C497F00F9728D /* User.swift */,
+				8B40CA651C7570E000E0F746 /* Account.swift */,
 			);
 			name = EdgeAPIClient;
 			sourceTree = "<group>";
