@@ -126,13 +126,20 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LJN-wn-IA9">
+                                <rect key="frame" x="127" y="366" width="67" height="30"/>
+                                <state key="normal" title="Skip"/>
+                                <connections>
+                                    <action selector="skip:" destination="fj5-cw-Fuf" eventType="touchUpInside" id="FPK-b2-woP"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Link Bank Account" id="oga-Oy-9j3">
                         <barButtonItem key="leftBarButtonItem" title="Sign Out" id="Bb3-jj-Sv6">
                             <connections>
-                                <action selector="logout:" destination="fj5-cw-Fuf" id="LeO-7U-ABz"/>
+                                <action selector="signOut:" destination="fj5-cw-Fuf" id="hDX-zL-b2a"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Retry" id="Eej-uF-rQ9">
@@ -149,7 +156,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kbr-5S-SeY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1829" y="364"/>
+            <point key="canvasLocation" x="1835" y="371"/>
         </scene>
         <!--Recent Transactions-->
         <scene sceneID="f4b-x3-FQ0">

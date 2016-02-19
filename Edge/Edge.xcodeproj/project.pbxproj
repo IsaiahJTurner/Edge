@@ -10,6 +10,10 @@
 		6A8ED879327FBA04D9944FE5 /* Pods_Edge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D33C01CCEDBFA2EC4705D5C /* Pods_Edge.framework */; };
 		8B0489E31C6C497F00F9728D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0489E21C6C497F00F9728D /* User.swift */; };
 		8B1AD4D61C741DB6000EF367 /* PlaidLinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AD4D51C741DB6000EF367 /* PlaidLinkViewController.swift */; };
+		8B39E9021C769CD500BD37B9 /* Accounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B39E9011C769CD500BD37B9 /* Accounts.swift */; };
+		8B39E9041C76A69E00BD37B9 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B39E9031C76A69E00BD37B9 /* Transaction.swift */; };
+		8B39E9061C76C9A400BD37B9 /* Transactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B39E9051C76C9A400BD37B9 /* Transactions.swift */; };
+		8B39E9081C76CA1500BD37B9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B39E9071C76CA1500BD37B9 /* HomeViewController.swift */; };
 		8B4042941C698B3000CD3584 /* EdgeAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4042931C698B3000CD3584 /* EdgeAPIClient.swift */; };
 		8B408D681C69814D00CA0B79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B408D671C69814D00CA0B79 /* AppDelegate.swift */; };
 		8B408D6A1C69814D00CA0B79 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B408D691C69814D00CA0B79 /* LaunchViewController.swift */; };
@@ -29,6 +33,10 @@
 		8B0489E21C6C497F00F9728D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		8B1AD4D31C741D45000EF367 /* Edge-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Edge-Bridging-Header.h"; sourceTree = "<group>"; };
 		8B1AD4D51C741DB6000EF367 /* PlaidLinkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaidLinkViewController.swift; sourceTree = "<group>"; };
+		8B39E9011C769CD500BD37B9 /* Accounts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Accounts.swift; sourceTree = "<group>"; };
+		8B39E9031C76A69E00BD37B9 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		8B39E9051C76C9A400BD37B9 /* Transactions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transactions.swift; sourceTree = "<group>"; };
+		8B39E9071C76CA1500BD37B9 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		8B4042931C698B3000CD3584 /* EdgeAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeAPIClient.swift; sourceTree = "<group>"; };
 		8B408D641C69814D00CA0B79 /* Edge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Edge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B408D671C69814D00CA0B79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -73,6 +81,9 @@
 				8B40CA691C757C0C00E0F746 /* Common.swift */,
 				8B0489E21C6C497F00F9728D /* User.swift */,
 				8B40CA651C7570E000E0F746 /* Account.swift */,
+				8B39E9011C769CD500BD37B9 /* Accounts.swift */,
+				8B39E9031C76A69E00BD37B9 /* Transaction.swift */,
+				8B39E9051C76C9A400BD37B9 /* Transactions.swift */,
 			);
 			name = EdgeAPIClient;
 			sourceTree = "<group>";
@@ -109,6 +120,7 @@
 				8B408D7B1C69888000CA0B79 /* SignUpViewController.swift */,
 				8B408D791C69886300CA0B79 /* SignInViewController.swift */,
 				8B1AD4D51C741DB6000EF367 /* PlaidLinkViewController.swift */,
+				8B39E9071C76CA1500BD37B9 /* HomeViewController.swift */,
 			);
 			path = Edge;
 			sourceTree = "<group>";
@@ -245,7 +257,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B408D6A1C69814D00CA0B79 /* LaunchViewController.swift in Sources */,
+				8B39E9061C76C9A400BD37B9 /* Transactions.swift in Sources */,
 				8B4042941C698B3000CD3584 /* EdgeAPIClient.swift in Sources */,
+				8B39E9041C76A69E00BD37B9 /* Transaction.swift in Sources */,
+				8B39E9021C769CD500BD37B9 /* Accounts.swift in Sources */,
+				8B39E9081C76CA1500BD37B9 /* HomeViewController.swift in Sources */,
 				8B0489E31C6C497F00F9728D /* User.swift in Sources */,
 				8B408D681C69814D00CA0B79 /* AppDelegate.swift in Sources */,
 				8B408D7C1C69888000CA0B79 /* SignUpViewController.swift in Sources */,

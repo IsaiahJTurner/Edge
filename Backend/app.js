@@ -32,12 +32,16 @@ app.use(session({
   })
 }));
 
-app.use("/api/1.0", api);
+app.use("/api/v1.0", api);
 
 var controllers = {
   index: require('./controllers/'),
   users: require('./controllers/users'),
-  accounts: require('./controllers/accounts')
+  accounts: require('./controllers/accounts'),
+  transactions: {
+    index: require('./controllers/transactions'),
+    transactionId:  require('./controllers/transactions/transaction'),
+  }
 };
 var middleware = {
   auth: require('./middleware/auth')
@@ -55,6 +59,13 @@ api.post("/users", controllers.users.post);
 api.get("/users/:userId", controllers.users.getOne);
 
 api.post("/accounts", middleware.auth.requiresUser, controllers.accounts.post);
+api.get("/accounts", middleware.auth.requiresUser, controllers.accounts.get);
+
+api.post("/transactions", middleware.auth.requiresUser, controllers.transactions.index.post);
+api.get("/transactions", middleware.auth.requiresUser, controllers.transactions.index.get);
+api.get("/transactions/:transactionId", middleware.auth.requiresUser, controllers.transactions.transactionId.get);
+
+
 
 app.get("/", function(req, res) {
   res.send("Welcome to Edge!");

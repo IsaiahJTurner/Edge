@@ -52,6 +52,7 @@ AccountSchema.method('toJSON', function() {
     relationships: {
       owner: {
         data: {
+          type: "users",
           id: self.owner
         }
       }

@@ -31,7 +31,10 @@ class PlaidLinkViewController: UIViewController, PLDLinkNavigationControllerDele
         
         self.presentViewController(plaidLink, animated: true, completion: nil)
     }
-    @IBAction func logout(sender: UIBarButtonItem) {
+    @IBAction func skip(sender: UIButton) {
+        self.performSegueWithIdentifier("showHome", sender: self)
+    }
+    @IBAction func signOut(sender: UIBarButtonItem) {
         client.signOut() { (response, data, error) in
             if ((error) != nil) {
                 let alertController = UIAlertController(title: "Error", message:
@@ -63,7 +66,7 @@ class PlaidLinkViewController: UIViewController, PLDLinkNavigationControllerDele
                 self.presentViewController(alertController, animated: true, completion: nil)
                 self.statusTextView.text = error
             } else {
-                self.performSegueWithIdentifier("showHome", sender: self);
+                self.performSegueWithIdentifier("showHome", sender: self)
             }
         }
         

@@ -17,6 +17,10 @@
 "error_1005_reason" = "Please provide a username and password.";
 "error_1005_recovery" = "Retry login";
 
+"error_1104_title" = "Unauthorized product";
+"error_1104_reason" = "The client_id associated with this account does not have access to this product. Contact Plaid to purchase this product.";
+"error_1104_recovery" = "Exit";
+
 "error_1109_title" = "Sandbox Error";
 "error_1109_reason" = "In sandbox mode only sandbox credentials will be processed - i.e. plaid_test, plaid_good, plaid_locked, plaid_selections, etc.";
 "error_1109_recovery" = "Retry login";

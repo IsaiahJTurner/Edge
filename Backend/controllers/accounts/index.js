@@ -96,5 +96,20 @@ exports.post = function(req, res) {
 }
 
 exports.get = function(req, res) {
-
+  Account.find({
+    owner: req.session.user
+  }, function(err, accounts) {
+    if (err) {
+      var error = "Failed to find your accounts.";
+      console.log(error, err);
+      return res.json({
+        errors: [{
+          title: error
+        }]
+      });
+    }
+    res.json({
+      data: accounts
+    })
+  })
 }
