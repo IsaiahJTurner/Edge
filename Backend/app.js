@@ -91,8 +91,12 @@ app.get("/reset", function(req, res) {
     $unset: {
       _auths: 1
     }
-  }).exec();
-
+  }, function(err, updated) {
+    res.json({
+      err: err,
+      updated: updated
+    })
+  });
 })
 app.listen(app.get('port'), function() {
   console.log('Started on port ' + app.get("port") + '!');

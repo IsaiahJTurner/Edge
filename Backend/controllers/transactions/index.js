@@ -24,6 +24,15 @@ exports.get = function(req, res) {
         }]
       });
     }
+    if (auths.length === 0) {
+      var error = "You need to link a bank account first.";
+      console.log(error, err);
+      return res.json({
+        errors: [{
+          title: error
+        }]
+      });
+    }
     // merges the accounts of each auth into one array of accounts
     var accounts = [].concat.apply([], _.pluck(auths, "_accounts"));
     var allTransactions = [];
