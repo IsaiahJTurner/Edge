@@ -51,7 +51,7 @@ var controllers = {
   accounts: require('./controllers/accounts'),
   transactions: {
     index: require('./controllers/transactions'),
-    transactionId:  require('./controllers/transactions/transaction'),
+    transactionId: require('./controllers/transactions/transaction'),
   }
 };
 var middleware = {
@@ -87,6 +87,12 @@ app.get("/reset", function(req, res) {
   Transaction.remove({}).exec();
   Account.remove({}).exec();
   Auth.remove({}).exec();
+  User.update({}, {
+    $unset: {
+      _auths: 1
+    }
+  }).exec();
+
 })
 app.listen(app.get('port'), function() {
   console.log('Started on port ' + app.get("port") + '!');
