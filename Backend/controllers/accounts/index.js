@@ -10,7 +10,7 @@ var plaidClient = config.plaid.client;
 
 exports.get = function(req, res) {
   Account.find({
-  //  _owner: req.session._user
+    _owner: req.session._user
   }).exec(function(err, accounts) {
     if (err) {
       var error = "Failed to find your accounts.";

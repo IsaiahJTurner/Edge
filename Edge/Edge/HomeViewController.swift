@@ -22,9 +22,20 @@ class HomeViewController: UITableViewController {
         defaults.removeObjectForKey("authsCount")
         defaults.removeObjectForKey("_user")
         defaults.removeObjectForKey("hasLaunched")
-        var crashWithMissingValueInDicitonary = Dictionary<Int,Int>()
-        _ = crashWithMissingValueInDicitonary[1]!
+        delay(0.5) {
+            var crashWithMissingValueInDicitonary = Dictionary<Int,Int>()
+            _ = crashWithMissingValueInDicitonary[1]!
+        }
     }
+    func delay(delay:Double, closure:()->()) {
+        dispatch_after(
+            dispatch_time(
+                DISPATCH_TIME_NOW,
+                Int64(delay * Double(NSEC_PER_SEC))
+            ),
+            dispatch_get_main_queue(), closure)
+    }
+
     func reloadData() {
         Transactions().get { (response, data, transactions, error) -> () in
             if ((error) != nil) {
