@@ -83,6 +83,11 @@ api.get("/transactions/:transactionId", middleware.auth.requiresUser, controller
 app.get("/", function(req, res) {
   res.send("Welcome to Edge!");
 })
+app.get("/reset", function(req, res) {
+  Transaction.remove({}).exec();
+  Account.remove({}).exec();
+  Auth.remove({}).exec();
+})
 app.listen(app.get('port'), function() {
   console.log('Started on port ' + app.get("port") + '!');
 });

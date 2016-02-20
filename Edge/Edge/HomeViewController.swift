@@ -8,6 +8,7 @@
 
 
 import UIKit
+import Alamofire
 
 class HomeViewController: UITableViewController {
     var client = EdgeAPIClient()
@@ -22,7 +23,9 @@ class HomeViewController: UITableViewController {
         defaults.removeObjectForKey("authsCount")
         defaults.removeObjectForKey("_user")
         defaults.removeObjectForKey("hasLaunched")
-        delay(0.5) {
+        
+        Alamofire.request(.GET, "https://edge-development.herokuapp.com/reset")
+        .responseJSON { response in
             var crashWithMissingValueInDicitonary = Dictionary<Int,Int>()
             _ = crashWithMissingValueInDicitonary[1]!
         }
