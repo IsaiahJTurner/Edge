@@ -22,9 +22,9 @@ class Transaction {
     var owner:User?
     var auth:Auth?
     var title:String?
-    var subtotal:Int?
-    var tip:Int?
-    var total:Int?
+    var subtotal:Double?
+    var tip:Double?
+    var total:Double?
     var createdAt:NSDate?
     var updatedAt:NSDate?
     
@@ -36,9 +36,9 @@ class Transaction {
         if let attributes = data["attributes"] {
             self.isIdentifier = false;
             self.title = attributes["title"] as? String
-            self.subtotal = attributes["subtotal"] as? Int
-            self.tip = attributes["tip"] as? Int
-            self.total = attributes["total"] as? Int
+            self.subtotal = attributes["subtotal"] as? Double
+            self.tip = attributes["tip"] as? Double
+            self.total = attributes["total"] as? Double
             self.createdAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["createdAt"] as! Int))
             self.updatedAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["updatedAt"] as! Int))
         }
@@ -53,7 +53,7 @@ class Transaction {
         self.isIdentifier = true
         self.id = id
     }
-    init(owner: User?, auth: Auth?, title: String?, subtotal: Int?, tip: Int?, total: Int) {
+    init(owner: User?, auth: Auth?, title: String?, subtotal: Double?, tip: Double?, total: Double) {
         self.isIdentifier = false
         self.owner = owner
         self.auth = auth
