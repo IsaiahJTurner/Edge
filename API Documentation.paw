@@ -68,7 +68,7 @@
         <relationship name="variablesvalues" type="0/0" destination="LMENVIRONMENTVARIABLEVALUE" idrefs="z103"></relationship>
     </object>
     <object type="LMENVIRONMENTVARIABLEVALUE" id="z103">
-        <attribute name="value" type="string">http://localhost:3002/api/1.0</attribute>
+        <attribute name="value" type="string">http://localhost:3002/api/v1.0</attribute>
         <relationship name="environment" type="1/1" destination="LMENVIRONMENT" idrefs="z102"></relationship>
         <relationship name="variable" type="1/1" destination="LMENVIRONMENTVARIABLE" idrefs="z107"></relationship>
     </object>

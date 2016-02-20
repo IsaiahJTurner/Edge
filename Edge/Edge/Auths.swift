@@ -1,5 +1,5 @@
 //
-//  Accounts.swift
+//  Auths.swift
 //  Edge
 //
 //  Created by Isaiah Turner on 2/18/16.
@@ -12,40 +12,40 @@ import Alamofire
 import Alamofire
 
 
-class Accounts {
+class Auths {
     
     private var endpoint = Constants.endpoint;
     private var common = Common()
     
-    var array:Array<Account>?
+    var array:Array<Auth>?
     
     init() {
         
     }
     
     init(data: Array<AnyObject>) {
-        var accounts = [Account]()
+        var auths = [Auth]()
         for resource in data {
-            let account = Account(data: resource as! Dictionary<String, AnyObject>)
-            accounts.append(account)
+            let auth = Auth(data: resource as! Dictionary<String, AnyObject>)
+            auths.append(auth)
         }
-        self.array = accounts
+        self.array = auths
     }
 
     func toJSON() -> Array<Dictionary<String, AnyObject>> {
-        if let accounts = self.array {
-            let accountsJSON = accounts.map { (account: Account) -> Dictionary<String, AnyObject> in
-                return account.toJSON()
+        if let auths = self.array {
+            let authsJSON = auths.map { (auth: Auth) -> Dictionary<String, AnyObject> in
+                return auth.toJSON()
             }
-            return accountsJSON
+            return authsJSON
 
         } else {
             return []
         }
     }
     
-    func get(callback: (response: Response<AnyObject, NSError>, data: AnyObject?, accounts: Accounts?, error: String?) -> ()) {
-        Alamofire.request(.GET, "\(endpoint)/accounts")
+    func get(callback: (response: Response<AnyObject, NSError>, data: AnyObject?, auths: Auths?, error: String?) -> ()) {
+        Alamofire.request(.GET, "\(endpoint)/auths")
             .responseJSON { response in
                 switch response.result {
                 case .Success: // returned json
@@ -53,16 +53,16 @@ class Accounts {
                     let errors = data.objectForKey("errors")
                     if ((errors) != nil) { // but the json had an errors property
                         let error = self.common.jsonAPIErrorsToString(errors!)
-                        callback(response: response, data: data, accounts: nil, error: error)
+                        callback(response: response, data: data, auths: nil, error: error)
                     } else { // and the json was without errors
-                        let accounts = Accounts(data: data.objectForKey("data") as! Array)
+                        let auths = Auths(data: data.objectForKey("data") as! Array)
                         
-                        callback(response: response, data: data, accounts: accounts, error: nil)
+                        callback(response: response, data: data, auths: auths, error: nil)
                     }
                     
                 case .Failure(let error):
                     print(error)
-                    callback(response: response, data: nil,accounts: nil, error: error.localizedDescription)
+                    callback(response: response, data: nil,auths: nil, error: error.localizedDescription)
                 }
         }
     }

@@ -6,10 +6,11 @@ var MongoStore = require('connect-mongo')(session);
 
 var config = require('./config');
 
-
 var Transaction = require('./models/Transaction');
 var User = require('./models/User');
+var Auth = require('./models/Auth');
 var Account = require('./models/Account');
+
 
 mongoose.connect(config.mongoURL);
 
@@ -37,6 +38,7 @@ app.use("/api/v1.0", api);
 var controllers = {
   index: require('./controllers/'),
   users: require('./controllers/users'),
+  auths: require('./controllers/auths'),
   accounts: require('./controllers/accounts'),
   transactions: {
     index: require('./controllers/transactions'),
@@ -46,7 +48,7 @@ var controllers = {
 var middleware = {
   auth: require('./middleware/auth')
 };
-app.use(function(req, res, next) {
+api.use(function(req, res, next) {
   console.log(req.method + " " + req.path);
   next();
 });
@@ -58,7 +60,9 @@ api.post("/signout", controllers.index.signout);
 api.post("/users", controllers.users.post);
 api.get("/users/:userId", controllers.users.getOne);
 
-api.post("/accounts", middleware.auth.requiresUser, controllers.accounts.post);
+api.post("/auths", middleware.auth.requiresUser, controllers.auths.post);
+api.get("/auths", middleware.auth.requiresUser, controllers.auths.get);
+
 api.get("/accounts", middleware.auth.requiresUser, controllers.accounts.get);
 
 api.post("/transactions", middleware.auth.requiresUser, controllers.transactions.index.post);

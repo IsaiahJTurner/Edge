@@ -12,7 +12,7 @@ exports.get = function(req, res) {
 };
 
 exports.signout = function(req, res) {
-  delete req.session.user;
+  delete req.session._user;
   res.json({
     success: true
   });
@@ -74,7 +74,7 @@ exports.signin = function(req, res) {
           }]
         });
       }
-      req.session.user = user._id.toString();
+      req.session._user = user._id.toString();
       res.json({
         data: user.toJSON()
       });

@@ -1,5 +1,5 @@
 //
-//  Account.swift
+//  Auth.swift
 //  Edge
 //
 //  Created by Isaiah Turner on 2/17/16.
@@ -12,13 +12,13 @@ import Alamofire
 import Alamofire
 
 
-class Account {
+class Auth {
     
     private var endpoint = Constants.endpoint;
     private var common = Common()
     
     var id:String?
-    var type = "accounts"
+    var type = "auths"
     var owner:User?
     var publicToken:String?
     var createdAt:NSDate?
@@ -75,8 +75,8 @@ class Account {
         
         return data
     }
-    func get(callback: (response: Response<AnyObject, NSError>, data: AnyObject?, account: Account?, error: String?) -> ()) {
-        Alamofire.request(.GET, "\(endpoint)/accounts/\(self.id)")
+    func get(callback: (response: Response<AnyObject, NSError>, data: AnyObject?, auth: Auth?, error: String?) -> ()) {
+        Alamofire.request(.GET, "\(endpoint)/auths/\(self.id)")
             .responseJSON { response in
                 switch response.result {
                 case .Success: // returned json
@@ -84,23 +84,23 @@ class Account {
                     let errors = data.objectForKey("errors")
                     if ((errors) != nil) { // but the json had an errors property
                         let error = self.common.jsonAPIErrorsToString(errors!)
-                        callback(response: response, data: data, account: nil, error: error)
+                        callback(response: response, data: data, auth: nil, error: error)
                     } else { // and the json was without errors
-                        let account = Account(data: data.objectForKey("data") as! Dictionary<String, AnyObject>)
+                        let auth = Auth(data: data.objectForKey("data") as! Dictionary<String, AnyObject>)
                         
-                        callback(response: response, data: data, account: account, error: nil)
+                        callback(response: response, data: data, auth: auth, error: nil)
                     }
                     
                 case .Failure(let error):
                     print(error)
-                    callback(response: response, data: nil, account: nil, error: error.localizedDescription)
+                    callback(response: response, data: nil, auth: nil, error: error.localizedDescription)
                 }
         }
     }
     
-    func save(callback: (response: Response<AnyObject, NSError>?, data: AnyObject?, account: Account?, error: String?) -> ()) {
+    func save(callback: (response: Response<AnyObject, NSError>?, data: AnyObject?, auth: Auth?, error: String?) -> ()) {
         if (self.isIdentifier) {
-            return callback(response: nil, data: nil, account: nil, error: "Identifiers can't be saved")
+            return callback(response: nil, data: nil, auth: nil, error: "Identifiers can't be saved")
         }
         let method:Alamofire.Method
         let path:String
@@ -112,7 +112,7 @@ class Account {
             path = ""
         }
         
-        Alamofire.request(method, "\(endpoint)/accounts\(path)", parameters: self.toJSON(), encoding: .JSON)
+        Alamofire.request(method, "\(endpoint)/auths\(path)", parameters: self.toJSON(), encoding: .JSON)
             .responseJSON { response in
                 switch response.result {
                 case .Success: // returned json
@@ -120,15 +120,15 @@ class Account {
                     let errors = data.objectForKey("errors")
                     if ((errors) != nil) { // but the json had an errors property
                         let error = self.common.jsonAPIErrorsToString(errors!)
-                        callback(response: response, data: data, account: nil, error: error)
+                        callback(response: response, data: data, auth: nil, error: error)
                     } else { // and the json was without errors
-                        let account = Account(data: data.objectForKey("data") as! Dictionary<String, AnyObject>);
-                        callback(response: response, data: data, account: account, error: nil)
+                        let auth = Auth(data: data.objectForKey("data") as! Dictionary<String, AnyObject>);
+                        callback(response: response, data: data, auth: auth, error: nil)
                     }
                     
                 case .Failure(let error):
                     print(error)
-                    callback(response: response, data: nil, account: nil, error: error.localizedDescription)
+                    callback(response: response, data: nil, auth: nil, error: error.localizedDescription)
                 }
         }
     }

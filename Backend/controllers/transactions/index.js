@@ -3,19 +3,20 @@ var mongoose = require('mongoose');
 var plaid = require('plaid');
 var async = require('async');
 var User = mongoose.model('User');
-var Account = mongoose.model('Account');
+var Auth = mongoose.model('Auth');
 var Transaction = mongoose.model('Transaction');
+var sync = require("../../sync");
 
 var config = require("../../config");
 
 var plaidClient = config.plaid.client;
 
 exports.get = function(req, res) {
-  Account.find({
-    owner: req.session.user
-  }, function(err, accounts) {
+  Auth.find({
+    _owner: req.session._user
+  }).populate("_accounts").exec(function(err, auths) {
     if (err) {
-      var error = "Failed to find your accounts.";
+      var error = "Failed to find your auths.";
       console.log(error, err);
       return res.json({
         errors: [{
@@ -23,10 +24,13 @@ exports.get = function(req, res) {
         }]
       });
     }
-    var transactions = [];
-    async.each(accounts, function(account, callback) {
-      plaidClient.getConnectUser(account.accessToken, {
-        gte: '30 days ago',
+    // merges the accounts of each auth into one array of accounts
+    var accounts = [].concat.apply([], _.pluck(auths, "_accounts"));
+    var allTransactions = [];
+    async.each(auths, function(auth, callback) {
+      plaidClient.getConnectUser(auth.accessToken, {
+        //gte: '30 days ago',
+        pending: true
       }, function(err, response) {
         if (err) {
           var error = "Failed to retrieve your transactions.";
@@ -38,21 +42,44 @@ exports.get = function(req, res) {
             }]
           });
         }
-        response.transactions.map(function(transaction) {
-          var transaction = Transaction({
-
-          })
-        });
+        allTransactions = allTransactions.concat(response.transactions);
         callback(null);
-        console.log(err, response);
-        console.log('You have ' + response.transactions.length +
-          ' transactions from the last thirty days.');
       });
     }, function(err) {
       if (err) {
         return;
       }
-      res.send("worked")
+      sync.transactions(allTransactions, {
+        _owner: req.session._user,
+        accounts: accounts
+      }, function(err, transactions) {
+        if (err){
+          var error = "Failed to sync your transactions.";
+          console.log(error, err);
+          return res.json({
+            errors: [{
+              title: error
+            }]
+          });
+        }
+        Transaction.find({
+          _owner: req.session.user
+        }, function(err, transactions) {
+          if (err) {
+            var error = "Could not find your transactions.";
+            console.log(error, err);
+            return res.json({
+              errors: [{
+                title: error
+              }]
+            });
+          }
+          console.log(transactions)
+          res.json({
+            data: transactions
+          });
+        });
+      });
     });
   })
 }

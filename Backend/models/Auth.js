@@ -3,28 +3,27 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 var _ = require('underscore');
 
-var AccountSchema = new Schema({
+var AuthSchema = new Schema({
   _owner: {
     type: Schema.ObjectId,
     ref: 'User'
   },
-  _auth: {
+  _accounts: [{
     type: Schema.ObjectId,
-    ref: 'Auth'
-  },
-  plaid_id: {
+    ref: 'Account'
+  }],
+  publicToken: {
     type: String,
+    required: true,
     unique: true
   },
-  plaid_item: {
-    type: String
+  accessToken: {
+    type: String,
+    required: true,
+    unique: true
   },
   plaid_user: {
     type: String
-  },
-  plaidInstitution_type: {
-    type: String,
-    required: true
   },
   createdAt: {
     type: Date
@@ -34,7 +33,7 @@ var AccountSchema = new Schema({
   }
 });
 
-AccountSchema.pre('save', function(next) {
+AuthSchema.pre('save', function(next) {
   now = new Date();
   this.updatedAt = now;
   if (!this.createdAt) {
@@ -44,13 +43,16 @@ AccountSchema.pre('save', function(next) {
 });
 
 
-AccountSchema.method('toJSON', function() {
+AuthSchema.method('toJSON', function() {
   var self = this.toObject();
   var obj = _.clone(self);
   delete obj._id;
   delete obj.__v;
   delete obj._owner;
-  delete obj._auth;
+  delete obj._accounts;
+  delete obj.accessToken;
+  delete obj.plaid_user;
+  
   obj.createdAt = Number(obj.createdAt);
   obj.updatedAt = Number(obj.updatedAt);
   var data = {
@@ -63,16 +65,20 @@ AccountSchema.method('toJSON', function() {
           type: "users",
           id: self._owner
         }
-      },
-      auth: {
-        data: {
-          type: "auths",
-          id: self._auth
-        }
       }
     }
   };
+  if (self._accounts) {
+    data.relationships.accounts = {
+      data: self._accounts.map(function(account) {
+        return {
+          type: "accounts",
+          id: account
+        }
+      })
+    }
+  }
   return data;
 });
 
-module.exports = mongoose.model('Account', AccountSchema);
+module.exports = mongoose.model('Auth', AuthSchema);

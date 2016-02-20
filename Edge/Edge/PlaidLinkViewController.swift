@@ -57,7 +57,7 @@ class PlaidLinkViewController: UIViewController, PLDLinkNavigationControllerDele
     func linkNavigationContoller(navigationController: PLDLinkNavigationViewController!, didFinishWithAccessToken publicToken: String!) {
         navigationController.dismissViewControllerAnimated(true, completion: nil)
         statusTextView.text = "Verifying your credentials..."
-        let account = Account(publicToken: publicToken, owner: nil)
+        let account = Auth(publicToken: publicToken, owner: nil)
         account.save { (response, data, account, error) -> () in
             if ((error) != nil) {
                 let alertController = UIAlertController(title: "Error", message:

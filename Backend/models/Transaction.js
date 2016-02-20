@@ -1,13 +1,14 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
+var _ = require('underscore');
 
 var TransactionSchema = new Schema({
-  owner: {
+  _owner: {
     type: Schema.ObjectId,
     ref: 'User'
   },
-  account: {
+  _account: {
     type: Schema.ObjectId,
     ref: 'Account'
   },
@@ -36,20 +37,23 @@ var TransactionSchema = new Schema({
   plaidDate: [{
     type: Date
   }],
-  plaidMeta: [{
-    type: Object
+  plaidName: [{
+    type: String
   }],
+  plaidMeta: {
+    type: Array
+  },
   plaidPending: {
     type: Boolean
   },
-  plaidScore: [{
-    type: Object
-  }],
+  plaidScore: {
+    type : Array
+  },
   plaidType: [{
-    type: Object
+    primary: String
   }],
   plaidCategory_id: [{
-    type: Object
+    type: String
   }],
   createdAt: {
     type: Date
@@ -74,32 +78,32 @@ TransactionSchema.method('toJSON', function() {
   var obj = _.clone(self);
   delete obj._id;
   delete obj.__v;
-  delete obj.owner;
-  delete obj.account;
+  delete obj._owner;
+  delete obj._account;
   for (var key in obj) {
     if (key.indexOf("plaid") === 0) {
-      delete obj[key];
+      // delete obj[key];
     }
   }
   obj.createdAt = Number(obj.createdAt);
   obj.updatedAt = Number(obj.updatedAt);
   var data = {
-    type: "accounts",
+    type: "transactions",
     id: self._id,
     attributes: obj,
     relationships: {
       owner: {
         data: {
-          id: self.owner
+          id: self._owner
         }
       }
     }
   };
-  if (self.account) {
+  if (self._account) {
     data.relationships.account = {
       data: {
-        type: "accounts",
-        id: self.account
+        type: "transactions",
+        id: self._account
       }
     }
   }

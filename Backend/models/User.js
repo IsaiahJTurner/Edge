@@ -25,6 +25,10 @@ var UserSchema = new Schema({
     type: String,
     required: true
   },
+  _auths: [{
+    type: Schema.ObjectId,
+    ref: 'Auth'
+  }],
   createdAt: {
     type: Date
   },
@@ -72,12 +76,24 @@ UserSchema.method('toJSON', function() {
   delete obj._id;
   delete obj.__v;
   delete obj.queryEmail;
+  delete obj._auths;
   obj.createdAt = Number(obj.createdAt);
   obj.updatedAt = Number(obj.updatedAt);
   var data = {
     type: "users",
     id: self._id,
-    attributes: obj
+    attributes: obj,
+    relationships: {}
+  }
+  if (self._auths) {
+    data.relationships.auths = {
+      data: self._auths.map(function(auth) {
+        return {
+          type: "auths",
+          id: auth
+        }
+      })
+    }
   }
   return data;
 });

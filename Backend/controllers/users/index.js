@@ -58,7 +58,7 @@ exports.post = function(req, res) {
         }]
       });
     }
-    req.session.user = user._id.toString();
+    req.session._user = user._id.toString();
     res.json({
       data: user.toJSON()
     });
@@ -75,7 +75,7 @@ exports.getOne = function(req, res) {
       }]
     });
   }
-  if (userId != "me" && userId != req.session.user) {
+  if (userId != "me" && userId != req.session._user) {
     var error = "You are not authorized to get that user.";
     return res.json({
       errors: [{
@@ -83,7 +83,7 @@ exports.getOne = function(req, res) {
       }]
     });
   }
-  if (!req.session.user) {
+  if (!req.session._user) {
     var error = "You are not signed in.";
     return res.json({
       errors: [{
@@ -93,7 +93,7 @@ exports.getOne = function(req, res) {
   }
 
   User.findOne({
-    _id: req.session.user
+    _id: req.session._user
   }, function(err, user) {
     if (err) {
       var error = "An error occured trying to look up your information.";

@@ -20,7 +20,7 @@ class Transaction {
     var id:String?
     var type = "transactions"
     var owner:User?
-    var account:Account?
+    var auth:Auth?
     var title:String?
     var subtotal:Int?
     var tip:Int?
@@ -45,7 +45,7 @@ class Transaction {
         if let relationships = data["relationships"] {
             self.isIdentifier = false;
             self.owner = User(data: relationships["owner"] as! Dictionary<String, AnyObject>)
-            self.account = Account(data: relationships["account"] as! Dictionary<String, AnyObject>)
+            self.auth = Auth(data: relationships["auth"] as! Dictionary<String, AnyObject>)
         }
     }
     
@@ -53,10 +53,10 @@ class Transaction {
         self.isIdentifier = true
         self.id = id
     }
-    init(owner: User?, account: Account?, title: String?, subtotal: Int?, tip: Int?, total: Int) {
+    init(owner: User?, auth: Auth?, title: String?, subtotal: Int?, tip: Int?, total: Int) {
         self.isIdentifier = false
         self.owner = owner
-        self.account = account
+        self.auth = auth
         self.title = title
         self.subtotal = subtotal
         self.tip = tip
@@ -80,8 +80,8 @@ class Transaction {
         if ((self.owner) != nil) {
             relationships["owner"] = owner?.toJSON()
         }
-        if ((self.account) != nil) {
-            relationships["account"] = account?.toJSON()
+        if ((self.auth) != nil) {
+            relationships["auth"] = auth?.toJSON()
         }
         var resource : [String : AnyObject] = [
             "type": self.type,
