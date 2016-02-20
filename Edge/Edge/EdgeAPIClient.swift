@@ -13,18 +13,21 @@ class EdgeAPIClient {
     private var endpoint = Constants.endpoint;
     private var common = Common()
     
-    private var me:User? = nil;
+    var me:User?;
 
     private func getCurrentUser(callback: (Response<AnyObject, NSError>, AnyObject?, User?, String?) -> ()) {
-        //User(id: "me").then(
+        User(id: "me").get { (response, data, user, error) -> () in
+            self.me = user
+            self.common.updateDefaults(self.me)
+            callback(response, data, user, error)
+        }
     }
-    
+
     func currentUser(callback: (User?) -> ()) {
         if ((self.me) != nil) {
             return callback(self.me)
         }
         self.getCurrentUser() { (response, data, user, error) -> () in
-            print(error)
             callback(user);
         }
     }
@@ -41,6 +44,7 @@ class EdgeAPIClient {
                         callback(response, data, error)
                     } else { // and the json was without errors
                         self.me = nil;
+                        self.common.updateDefaults(self.me)
                         callback(response, data, nil)
                     }
                     
@@ -67,6 +71,7 @@ class EdgeAPIClient {
                     } else { // and the json was without errors
                         let user = User(data: data.objectForKey("data") as! Dictionary<String, AnyObject>);
                         self.me = user;
+                   self.common.updateDefaults(self.me)
                         callback(response, data, user, nil)
                     }
                     

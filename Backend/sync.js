@@ -10,14 +10,20 @@ var Account = mongoose.model('Account');
 exports.transactions = function(transactionsData, options, callback) {
   // callback(err, transactions)
   var accounts = {};
+  var auths = {};
   for (var i = 0; i < options.accounts.length; i++) {
     var account = options.accounts[i];
     accounts[account.plaid_id] = account._id;
+    auths[account.plaid_id] = account._auth;
   }
+
   var transactions = transactionsData.map(function(transaction) {
     return {
       _owner: options._owner,
       _account: accounts[transaction._account],
+      _auth: auths[transaction._account],
+      total: transaction.amount,
+      title: transaction.name,
       plaid_id: transaction._id,
       plaid_account: transaction._account,
       plaidAmount: [transaction.amount],
@@ -27,9 +33,12 @@ exports.transactions = function(transactionsData, options, callback) {
       plaidPending: [transaction.pending],
       plaidType: [transaction.type],
       plaidCategory_id: [transaction.category_id],
-      plaidScore: [transaction.score]
+      plaidScore: [transaction.score],
+      createdAt: Date.now(),
+      updatedAt: Date.now()
     };
   });
+
   Transaction.collection.insert(transactions, {
     continueOnError: true
   }, function(err, transactions) {
@@ -43,6 +52,7 @@ exports.transactions = function(transactionsData, options, callback) {
         });
       }
     }
+
     callback(null, transactions);
   });
 };

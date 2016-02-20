@@ -103,12 +103,17 @@ exports.post = function(req, res) {
             }]
           });
         }
-        sync.accounts(response.accounts, {
-          _owner: req.session._user,
-          auth: auth
-        }, function(err, accounts) {
+        User.update({
+          _id: req.session._user
+        }, {
+          $push: {
+            _auths: auth._id
+          }
+        }, {
+
+        }, function(err, updated) {
           if (err) {
-            var error = err.title;
+            var error = "Could not assign the authentication to your account.";
             console.log(error, err);
             return res.json({
               errors: [{
@@ -116,8 +121,22 @@ exports.post = function(req, res) {
               }]
             });
           }
-          res.status(500).json({
-            data: auth
+          sync.accounts(response.accounts, {
+            _owner: req.session._user,
+            auth: auth
+          }, function(err, accounts) {
+            if (err) {
+              var error = err.title;
+              console.log(error, err);
+              return res.json({
+                errors: [{
+                  title: error
+                }]
+              });
+            }
+            res.status(500).json({
+              data: auth
+            });
           });
         });
       });

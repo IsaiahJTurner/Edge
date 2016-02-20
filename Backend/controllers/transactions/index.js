@@ -62,8 +62,9 @@ exports.get = function(req, res) {
             }]
           });
         }
+
         Transaction.find({
-          _owner: req.session.user
+          _owner: req.session._user
         }, function(err, transactions) {
           if (err) {
             var error = "Could not find your transactions.";
@@ -74,7 +75,6 @@ exports.get = function(req, res) {
               }]
             });
           }
-          console.log(transactions)
           res.json({
             data: transactions
           });

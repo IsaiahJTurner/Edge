@@ -11,6 +11,8 @@ import UIKit
 class SignUpViewController: UIViewController {
     var client = EdgeAPIClient();
     
+    @IBOutlet var buttonSubmit: UIButton!
+    @IBOutlet var barSubmit: UIBarButtonItem!
     @IBOutlet var emailTextField: UITextField!
     @IBOutlet var passwordTextField: UITextField!
     
@@ -22,8 +24,10 @@ class SignUpViewController: UIViewController {
     @IBAction func signUp(sender: AnyObject) {
         let email = emailTextField.text!
         let password = passwordTextField.text!
+        self.setButtons(false)
         let user = User(name: "", email: email, phone: "", password: password)
         user.save { (response, data, user, error) -> () in
+            self.setButtons(true)
             if ((error) != nil) {
                 let alertController = UIAlertController(title: "Error", message:
                     error, preferredStyle: UIAlertControllerStyle.Alert)
@@ -31,6 +35,17 @@ class SignUpViewController: UIViewController {
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
                 self.performSegueWithIdentifier("linkBankAccount", sender: self);
+            }
+        }
+    }
+    func setButtons(enabled: Bool) {
+        barSubmit.enabled = enabled
+        buttonSubmit.enabled = enabled
+    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let nav = segue.destinationViewController as? UINavigationController {
+            if let vc = nav.topViewController as? PlaidLinkViewController {
+                vc.client = self.client
             }
         }
     }

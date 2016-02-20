@@ -15,12 +15,7 @@ class PlaidLinkViewController: UIViewController, PLDLinkNavigationControllerDele
     @IBOutlet var statusTextView: UITextView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.startLinking()
-
         // Do any additional setup after loading the view, typically from a nib.
-    }
-    override func viewDidAppear(animated: Bool) {
-        self.startLinking()
     }
     func startLinking() {
         let plaidLink = PLDLinkNavigationViewController(environment: .Tartan, product: .Connect)
@@ -31,9 +26,6 @@ class PlaidLinkViewController: UIViewController, PLDLinkNavigationControllerDele
         
         self.presentViewController(plaidLink, animated: true, completion: nil)
     }
-    @IBAction func skip(sender: UIButton) {
-        self.performSegueWithIdentifier("showHome", sender: self)
-    }
     @IBAction func signOut(sender: UIBarButtonItem) {
         client.signOut() { (response, data, error) in
             if ((error) != nil) {
@@ -42,7 +34,8 @@ class PlaidLinkViewController: UIViewController, PLDLinkNavigationControllerDele
                 alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
-                self.dismissViewControllerAnimated(true, completion: nil)
+                let vc = self.storyboard?.instantiateViewControllerWithIdentifier("auth")
+                self.presentViewController(vc!, animated: true, completion: nil)
             }
         }
     }

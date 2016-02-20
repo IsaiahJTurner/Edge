@@ -9,13 +9,23 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
-    
-    var client = EdgeAPIClient();
-    
+class HomeViewController: UITableViewController {
+    var client = EdgeAPIClient()
+    var transactions:Transactions?
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        reloadData()
+    }
+    @IBAction func reset(sender: UIBarButtonItem) {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.removeObjectForKey("authsCount")
+        defaults.removeObjectForKey("_user")
+        defaults.removeObjectForKey("hasLaunched")
+        var crashWithMissingValueInDicitonary = Dictionary<Int,Int>()
+        _ = crashWithMissingValueInDicitonary[1]!
+    }
+    func reloadData() {
         Transactions().get { (response, data, transactions, error) -> () in
             if ((error) != nil) {
                 let alertController = UIAlertController(title: "Error", message:
@@ -23,11 +33,47 @@ class HomeViewController: UIViewController {
                 alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
-                print(transactions!.toJSON())
+                self.transactions = transactions
+                self.tableView.reloadData()
             }
         }
     }
     
+    @IBAction func reloadTransactions(sender: UIBarButtonItem) {
+        reloadData()
+    }
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCellWithIdentifier("transaction") as? TransactionTableViewCell
+        
+        if cell == nil {
+            cell = TransactionTableViewCell()
+        }
+        let transaction = transactions!.array![indexPath.row]
+        let formatter = NSNumberFormatter()
+        formatter.numberStyle = .CurrencyStyle
+        let total = formatter.stringFromNumber(transaction.total!)
+        
+        cell?.amountLabel.text = total
+        cell?.titleLabel.text = transaction.title!
+        
+        return cell!
+    }
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1;
+    }
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print(transactions?.array)
+        if let transactions = transactions {
+            if let array = transactions.array {
+                return array.count
+            }
+        }
+        return 0
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

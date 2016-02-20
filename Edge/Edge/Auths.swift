@@ -61,8 +61,7 @@ class Auths {
                     }
                     
                 case .Failure(let error):
-                    print(error)
-                    callback(response: response, data: nil,auths: nil, error: error.localizedDescription)
+                    callback(response: response, data: nil, auths: nil, error: error.localizedDescription)
                 }
         }
     }

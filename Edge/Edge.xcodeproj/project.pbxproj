@@ -10,6 +10,9 @@
 		6A8ED879327FBA04D9944FE5 /* Pods_Edge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D33C01CCEDBFA2EC4705D5C /* Pods_Edge.framework */; };
 		8B0489E31C6C497F00F9728D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0489E21C6C497F00F9728D /* User.swift */; };
 		8B1AD4D61C741DB6000EF367 /* PlaidLinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AD4D51C741DB6000EF367 /* PlaidLinkViewController.swift */; };
+		8B21329E1C78C51000B8D90A /* ConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B21329D1C78C51000B8D90A /* ConnectViewController.swift */; };
+		8B2132A01C78D24900B8D90A /* ModalNoAnimationSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B21329F1C78D24900B8D90A /* ModalNoAnimationSegue.swift */; };
+		8B2132A41C78EBD000B8D90A /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2132A31C78EBD000B8D90A /* TransactionTableViewCell.swift */; };
 		8B39E9021C769CD500BD37B9 /* Auths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B39E9011C769CD500BD37B9 /* Auths.swift */; };
 		8B39E9041C76A69E00BD37B9 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B39E9031C76A69E00BD37B9 /* Transaction.swift */; };
 		8B39E9061C76C9A400BD37B9 /* Transactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B39E9051C76C9A400BD37B9 /* Transactions.swift */; };
@@ -33,6 +36,9 @@
 		8B0489E21C6C497F00F9728D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		8B1AD4D31C741D45000EF367 /* Edge-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Edge-Bridging-Header.h"; sourceTree = "<group>"; };
 		8B1AD4D51C741DB6000EF367 /* PlaidLinkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaidLinkViewController.swift; sourceTree = "<group>"; };
+		8B21329D1C78C51000B8D90A /* ConnectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectViewController.swift; sourceTree = "<group>"; };
+		8B21329F1C78D24900B8D90A /* ModalNoAnimationSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalNoAnimationSegue.swift; sourceTree = "<group>"; };
+		8B2132A31C78EBD000B8D90A /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
 		8B39E9011C769CD500BD37B9 /* Auths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auths.swift; sourceTree = "<group>"; };
 		8B39E9031C76A69E00BD37B9 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		8B39E9051C76C9A400BD37B9 /* Transactions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transactions.swift; sourceTree = "<group>"; };
@@ -88,6 +94,28 @@
 			name = EdgeAPIClient;
 			sourceTree = "<group>";
 		};
+		8B2132A21C78D26D00B8D90A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8B21329D1C78C51000B8D90A /* ConnectViewController.swift */,
+				8B408D691C69814D00CA0B79 /* LaunchViewController.swift */,
+				8B408D7B1C69888000CA0B79 /* SignUpViewController.swift */,
+				8B408D791C69886300CA0B79 /* SignInViewController.swift */,
+				8B1AD4D51C741DB6000EF367 /* PlaidLinkViewController.swift */,
+				8B2132A51C78F44F00B8D90A /* Home */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		8B2132A51C78F44F00B8D90A /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				8B39E9071C76CA1500BD37B9 /* HomeViewController.swift */,
+				8B2132A31C78EBD000B8D90A /* TransactionTableViewCell.swift */,
+			);
+			name = Home;
+			sourceTree = "<group>";
+		};
 		8B408D5B1C69814D00CA0B79 = {
 			isa = PBXGroup;
 			children = (
@@ -116,11 +144,8 @@
 				8B408D6E1C69814D00CA0B79 /* Assets.xcassets */,
 				8B408D701C69814D00CA0B79 /* LaunchScreen.storyboard */,
 				8B408D731C69814D00CA0B79 /* Info.plist */,
-				8B408D691C69814D00CA0B79 /* LaunchViewController.swift */,
-				8B408D7B1C69888000CA0B79 /* SignUpViewController.swift */,
-				8B408D791C69886300CA0B79 /* SignInViewController.swift */,
-				8B1AD4D51C741DB6000EF367 /* PlaidLinkViewController.swift */,
-				8B39E9071C76CA1500BD37B9 /* HomeViewController.swift */,
+				8B21329F1C78D24900B8D90A /* ModalNoAnimationSegue.swift */,
+				8B2132A21C78D26D00B8D90A /* Views */,
 			);
 			path = Edge;
 			sourceTree = "<group>";
@@ -256,6 +281,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B21329E1C78C51000B8D90A /* ConnectViewController.swift in Sources */,
+				8B2132A41C78EBD000B8D90A /* TransactionTableViewCell.swift in Sources */,
 				8B408D6A1C69814D00CA0B79 /* LaunchViewController.swift in Sources */,
 				8B39E9061C76C9A400BD37B9 /* Transactions.swift in Sources */,
 				8B4042941C698B3000CD3584 /* EdgeAPIClient.swift in Sources */,
@@ -264,6 +291,7 @@
 				8B39E9081C76CA1500BD37B9 /* HomeViewController.swift in Sources */,
 				8B0489E31C6C497F00F9728D /* User.swift in Sources */,
 				8B408D681C69814D00CA0B79 /* AppDelegate.swift in Sources */,
+				8B2132A01C78D24900B8D90A /* ModalNoAnimationSegue.swift in Sources */,
 				8B408D7C1C69888000CA0B79 /* SignUpViewController.swift in Sources */,
 				8B40CA661C7570E000E0F746 /* Auth.swift in Sources */,
 				8B408D7A1C69886300CA0B79 /* SignInViewController.swift in Sources */,

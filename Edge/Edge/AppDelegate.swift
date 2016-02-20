@@ -18,6 +18,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         Plaid.sharedInstance().setPublicKey("db0c7fe8afdfac06b1997b0d4a1b96")
+        self.window = UIWindow(frame: UIScreen.mainScreen().bounds);
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        //UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+        
+        //UIViewController *viewController = f
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let hasLaunched = defaults.objectForKey("hasLaunched")
+        let _user = defaults.objectForKey("_user")
+        let viewController:UIViewController!
+        if ((hasLaunched == nil)) {
+            defaults.setBool(true, forKey: "hasLaunched")
+            viewController = storyboard.instantiateViewControllerWithIdentifier("onboarding")
+        } else if ((_user) != nil) {
+            viewController = storyboard.instantiateViewControllerWithIdentifier("connect")
+        } else {
+            viewController = storyboard.instantiateViewControllerWithIdentifier("auth")
+        }
+        
+        self.window!.rootViewController = viewController;
+        self.window?.makeKeyAndVisible()
+        
         return true
     }
 

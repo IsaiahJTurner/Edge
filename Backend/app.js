@@ -30,9 +30,18 @@ app.use(session({
   name: "edge-session",
   store: new MongoStore({
     mongooseConnection: mongoose.connection
-  })
+  }),
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000
+  }
 }));
 
+app.use(function(req, res, next) {
+  if (req.session._user) {
+    req.session._user = mongoose.Types.ObjectId(req.session._user.toString());
+  }
+  next();
+})
 app.use("/api/v1.0", api);
 
 var controllers = {

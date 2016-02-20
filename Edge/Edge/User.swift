@@ -22,6 +22,7 @@ class User {
     var password:String?
     var createdAt:NSDate?
     var updatedAt:NSDate?
+    var auths:Auths?
     
     var isIdentifier:Bool
     
@@ -36,7 +37,12 @@ class User {
             self.password = attributes["password"] as? String
             self.createdAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["createdAt"] as! Int))
             self.updatedAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["updatedAt"] as! Int))
-        }        
+        }
+        if let relationships = data["relationships"] {
+            if let auths = relationships["auths"] {
+                self.auths = Auths(data: auths!["data"] as! Array<AnyObject>)
+            }
+        }
     }
     
     init(id: String) {
@@ -52,21 +58,26 @@ class User {
     }
     func toJSON() -> Dictionary<String, AnyObject> {
         var attributes = [String : AnyObject]()
-        if ((self.name) != nil) {
-            attributes["name"] = self.name
+        if let name = self.name {
+            attributes["name"] = name
         }
-        if ((self.email) != nil) {
-            attributes["email"] = self.email
+        if let email = self.email {
+            attributes["email"] = email
         }
-        if ((self.password) != nil) {
-            attributes["password"] = self.password
+        if let password = self.password {
+            attributes["password"] = password
         }
-        if ((self.phone) != nil) {
-            attributes["phone"] = self.phone
+        if let phone = self.phone {
+            attributes["phone"] = phone
+        }
+        var relationships = [String : AnyObject]()
+        if let auths = self.auths {
+            relationships["auths"] = auths.toJSON()
         }
         var resource : [String : AnyObject] = [
             "type": self.type,
-            "attributes": attributes
+            "attributes": attributes,
+            "relationships": relationships
         ]
         if ((self.id) != nil) {
             resource["id"] = self.id
@@ -78,7 +89,7 @@ class User {
         return data
     }
     func get(callback: (response: Response<AnyObject, NSError>, data: AnyObject?, user: User?, error: String?) -> ()) {
-        Alamofire.request(.GET, "\(endpoint)/users/\(self.id)")
+        Alamofire.request(.GET, "\(endpoint)/users/\(self.id!)")
             .responseJSON { response in
                 switch response.result {
                 case .Success: // returned json
@@ -89,7 +100,6 @@ class User {
                         callback(response: response, data: data, user: nil, error: error)
                     } else { // and the json was without errors
                         let user = User(data: data.objectForKey("data") as! Dictionary<String, AnyObject>)
-                        
                         callback(response: response, data: data, user: user, error: nil)
                     }
                     

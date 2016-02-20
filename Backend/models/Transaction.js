@@ -12,6 +12,10 @@ var TransactionSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Account'
   },
+  _auth: {
+    type: Schema.ObjectId,
+    ref: 'Auth'
+  },
   title: {
     type: String
   },
@@ -104,6 +108,14 @@ TransactionSchema.method('toJSON', function() {
       data: {
         type: "transactions",
         id: self._account
+      }
+    }
+  }
+  if (self._auth) {
+    data.relationships.auth = {
+      data: {
+        type: "auths",
+        id: self._auth
       }
     }
   }
