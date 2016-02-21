@@ -49,6 +49,7 @@ var controllers = {
   users: require('./controllers/users'),
   auths: require('./controllers/auths'),
   accounts: require('./controllers/accounts'),
+  webhooks: require('./controllers/webhooks'),
   transactions: {
     index: require('./controllers/transactions'),
     transactionId: require('./controllers/transactions/transaction'),
@@ -78,7 +79,7 @@ api.post("/transactions", middleware.auth.requiresUser, controllers.transactions
 api.get("/transactions", middleware.auth.requiresUser, controllers.transactions.index.get);
 api.get("/transactions/:transactionId", middleware.auth.requiresUser, controllers.transactions.transactionId.get);
 
-
+api.get("/webhooks/plaid", controllers.webhooks.get);
 
 app.get("/", function(req, res) {
   res.send("Welcome to Edge!");

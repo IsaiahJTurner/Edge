@@ -7,7 +7,8 @@ var config = {
     clientId: "56b96681db2afcb6184d2b85",
     secret: "1940fb678863766d4068499b725774",
     environment: plaid.environments.tartan
-  }
+  },
+  plaid_webhook: "https://edge-development.herokuapp.com/api/v1.0/webhooks/plaid"
 };
 config.plaid.client = new plaid.Client(config.plaid.clientId, config.plaid.secret,
   config.plaid.environment);

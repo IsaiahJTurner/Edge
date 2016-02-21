@@ -64,8 +64,7 @@ exports.post = function(req, res) {
             }]
           });
         }
-        var error =
-          "An unknown error occurred while validating your token.";
+        var error = "An unknown error occurred while validating your token.";
         console.log(error, err);
         return res.json({
           errors: [{
@@ -74,11 +73,11 @@ exports.post = function(req, res) {
         });
       }
     }
-    plaidClient.getConnectUser(response.access_token, {
-      gte: '3 days ago',
-    }, function(err, response) {
+    plaidClient.patchConnectUser(response.access_token, {}, {
+      webhook: config.plaid_webhook,
+    }, function(err, mfaResponse, response) {
       if (err) {
-        var error = "Could not retrieve your user information";
+        var error = "Failed to register for new transaction notifications.";
         console.log(error, err);
         return res.json({
           errors: [{
@@ -86,16 +85,12 @@ exports.post = function(req, res) {
           }]
         });
       }
-      console.log('You have ' + response.transactions.length +
-        ' transactions from the last three days.');
-      var auth = Auth({
-        _owner: req.session._user,
-        publicToken: publicToken,
-        accessToken: response.access_token
-      });
-      auth.save(function(err, auth) {
+      console.log(err, mfaResponse, response);
+      plaidClient.getConnectUser(response.access_token, {
+        gte: '3 days ago',
+      }, function(err, response) {
         if (err) {
-          var error = "Failed to save your auth.";
+          var error = "Could not retrieve your user information";
           console.log(error, err);
           return res.json({
             errors: [{
@@ -103,17 +98,16 @@ exports.post = function(req, res) {
             }]
           });
         }
-        User.update({
-          _id: req.session._user
-        }, {
-          $push: {
-            _auths: auth._id
-          }
-        }, {
-
-        }, function(err, updated) {
+        console.log('You have ' + response.transactions.length +
+          ' transactions from the last three days.');
+        var auth = Auth({
+          _owner: req.session._user,
+          publicToken: publicToken,
+          accessToken: response.access_token
+        });
+        auth.save(function(err, auth) {
           if (err) {
-            var error = "Could not assign the authentication to your account.";
+            var error = "Failed to save your auth.";
             console.log(error, err);
             return res.json({
               errors: [{
@@ -121,12 +115,17 @@ exports.post = function(req, res) {
               }]
             });
           }
-          sync.accounts(response.accounts, {
-            _owner: req.session._user,
-            auth: auth
-          }, function(err, accounts) {
+          User.update({
+            _id: req.session._user
+          }, {
+            $push: {
+              _auths: auth._id
+            }
+          }, {
+
+          }, function(err, updated) {
             if (err) {
-              var error = err.title;
+              var error = "Could not assign the authentication to your account.";
               console.log(error, err);
               return res.json({
                 errors: [{
@@ -134,8 +133,22 @@ exports.post = function(req, res) {
                 }]
               });
             }
-            res.status(500).json({
-              data: auth
+            sync.accounts(response.accounts, {
+              _owner: req.session._user,
+              auth: auth
+            }, function(err, accounts) {
+              if (err) {
+                var error = err.title;
+                console.log(error, err);
+                return res.json({
+                  errors: [{
+                    title: error
+                  }]
+                });
+              }
+              res.status(500).json({
+                data: auth
+              });
             });
           });
         });
