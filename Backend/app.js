@@ -79,7 +79,7 @@ api.post("/transactions", middleware.auth.requiresUser, controllers.transactions
 api.get("/transactions", middleware.auth.requiresUser, controllers.transactions.index.get);
 api.get("/transactions/:transactionId", middleware.auth.requiresUser, controllers.transactions.transactionId.get);
 
-api.get("/webhooks/plaid", controllers.webhooks.get);
+api.post("/webhooks/plaid", controllers.webhooks.post);
 
 app.get("/", function(req, res) {
   res.send("Welcome to Edge!");
