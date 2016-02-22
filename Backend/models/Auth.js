@@ -17,6 +17,9 @@ var AuthSchema = new Schema({
     required: true,
     unique: true
   },
+  webhookAcknowledged: {
+    type: Boolean
+  },
   accessToken: {
     type: String,
     required: true,
@@ -52,6 +55,7 @@ AuthSchema.method('toJSON', function() {
   delete obj._accounts;
   delete obj.accessToken;
   delete obj.plaid_user;
+  delete obj.webhookAcknowledged;
   
   obj.createdAt = Number(obj.createdAt);
   obj.updatedAt = Number(obj.updatedAt);
