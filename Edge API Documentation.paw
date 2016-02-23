@@ -5,7 +5,7 @@
     <databaseInfo>
         <version>134481920</version>
         <UUID>AA2F44E8-E945-4F59-85E4-1BB436C57107</UUID>
-        <nextObjectID>139</nextObjectID>
+        <nextObjectID>140</nextObjectID>
         <metadata>
             <plist version="1.0">
                 <dict>
@@ -78,7 +78,7 @@
     <object type="LMREQUEST" id="z108">
         <attribute name="body" type="string">[{"data":{"json":"{\\"email\\":\\"stop@padding.tips\\",\\"password\\":\\"password\\"}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="uuid" type="string">2FEF118B-27F1-4B04-B72F-5F04D0AAF6A2</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"EC11EEF7-164D-4CDB-B274-2C460FB50E4E"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"environmentVariable":"F296E9F8-99FE-4AE1-AB4B-CC8E5BB24C2B"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/signin"]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"E837AD17-217F-4797-BA3C-165D83D6699D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"environmentVariable":"F296E9F8-99FE-4AE1-AB4B-CC8E5BB24C2B"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/signin"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
@@ -103,7 +103,7 @@
     </object>
     <object type="LMREQUEST" id="z110">
         <attribute name="uuid" type="string">C07B2180-2530-4D2B-A493-F0D65116361F</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"EC11EEF7-164D-4CDB-B274-2C460FB50E4E"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"environmentVariable":"F296E9F8-99FE-4AE1-AB4B-CC8E5BB24C2B"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/signout"]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"E837AD17-217F-4797-BA3C-165D83D6699D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/signout"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
@@ -174,7 +174,7 @@
     </object>
     <object type="LMREQUEST" id="z116">
         <attribute name="uuid" type="string">A34890AF-8536-4B0D-BF2A-244CF1B916B5</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"EC11EEF7-164D-4CDB-B274-2C460FB50E4E"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"environmentVariable":"F296E9F8-99FE-4AE1-AB4B-CC8E5BB24C2B"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/users"]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"E837AD17-217F-4797-BA3C-165D83D6699D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/users"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
@@ -190,7 +190,7 @@
     </object>
     <object type="LMREQUEST" id="z117">
         <attribute name="uuid" type="string">A7F64E1B-E433-439F-8DB2-8AC5022AD02E</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"EC11EEF7-164D-4CDB-B274-2C460FB50E4E"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"environmentVariable":"F296E9F8-99FE-4AE1-AB4B-CC8E5BB24C2B"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/users\\/me"]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"E837AD17-217F-4797-BA3C-165D83D6699D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/users\\/me"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
@@ -216,7 +216,7 @@
     </object>
     <object type="LMREQUEST" id="z119">
         <attribute name="uuid" type="string">F066C361-31BD-4EC3-9816-A5A89D22B06A</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"EC11EEF7-164D-4CDB-B274-2C460FB50E4E"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"environmentVariable":"F296E9F8-99FE-4AE1-AB4B-CC8E5BB24C2B"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/auths"]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"E837AD17-217F-4797-BA3C-165D83D6699D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/auths"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
@@ -261,7 +261,7 @@
     </object>
     <object type="LMREQUEST" id="z123">
         <attribute name="uuid" type="string">7D3E1BCF-9ACF-421C-B6E9-067064BCAF5B</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"EC11EEF7-164D-4CDB-B274-2C460FB50E4E"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"environmentVariable":"F296E9F8-99FE-4AE1-AB4B-CC8E5BB24C2B"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/transactions"]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"E837AD17-217F-4797-BA3C-165D83D6699D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/transactions"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
@@ -287,7 +287,7 @@
     <object type="LMREQUEST" id="z125">
         <attribute name="body" type="string">[{"data":{"json":"{\\"data\\":{\\"attributes\\":{\\"publicToken\\":\\"ddef1539d813f1696b0317622c664c6801f59fb2efafb3b76e707854830dee27137731bcaad3d46c2d6a7926d7b3208029ce12a25cae8806abcd9e9548233740\\"}}}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="uuid" type="string">AF02CE2C-5AA2-48FF-B7EF-9B023F70971C</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"EC11EEF7-164D-4CDB-B274-2C460FB50E4E"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"environmentVariable":"F296E9F8-99FE-4AE1-AB4B-CC8E5BB24C2B"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/auths"]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"E837AD17-217F-4797-BA3C-165D83D6699D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/auths"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
@@ -322,7 +322,7 @@
     </object>
     <object type="LMREQUEST" id="z128">
         <attribute name="uuid" type="string">E49FF54A-84CA-41C4-A606-F111E2F127AE</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"EC11EEF7-164D-4CDB-B274-2C460FB50E4E"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"environmentVariable":"F296E9F8-99FE-4AE1-AB4B-CC8E5BB24C2B"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/accounts"]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"E837AD17-217F-4797-BA3C-165D83D6699D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/accounts"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
@@ -407,5 +407,15 @@
         <attribute name="name" type="string">v1</attribute>
         <relationship name="domain" type="0/1" destination="LMENVIRONMENTDOMAIN" idrefs="z134"></relationship>
         <relationship name="values" type="0/0" destination="LMENVIRONMENTVARIABLEVALUE" idrefs="z138"></relationship>
+    </object>
+    <object type="LMREQUESTGROUP" id="z140">
+        <attribute name="uuid" type="string">C4F18781-B2E1-4A3A-82E2-2DA2A2529D1A</attribute>
+        <attribute name="order" type="int64">8</attribute>
+        <attribute name="name" type="string">Apple Devices</attribute>
+        <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM"></relationship>
+        <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM"></relationship>
+        <relationship name="bodyparameters" type="0/0" destination="LMKEYVALUE"></relationship>
+        <relationship name="headers" type="0/0" destination="LMKEYVALUE"></relationship>
+        <relationship name="urlparameters" type="0/0" destination="LMKEYVALUE"></relationship>
     </object>
 </database>

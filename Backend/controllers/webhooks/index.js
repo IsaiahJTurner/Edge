@@ -24,7 +24,7 @@ exports.post = function(req, res) {
   }
   Auth.findOne({
     accessToken: accessToken
-  }, function(err, auth) {
+  }).populate("_accounts").exec(function(err, auth) {
     if (err) {
       console.log("Could not find callback auth.", err, body);
       return res.status(500).send("");
@@ -42,7 +42,50 @@ exports.post = function(req, res) {
       4	Occurs when an user's webhook is updated via a PATCH request without credentials.
       Other	Triggered when an error has occurred. Includes the relevant Plaid error code with details on both the error type and steps for error resolution.
       */
-    if (body.code === 4) {
+    if (body.code === 0 || body.code === 1 || body.code === 2) {
+      plaidClient.getConnectUser(auth.accessToken, {
+        //gte: '30 days ago',
+        pending: true
+      }, function(err, response) {
+        if (err) {
+          console.log("Failed to retrieve webhook transactions.", err, body, auth);
+          return res.status(500).send("");
+        }
+        allTransactions = allTransactions.concat(response.transactions);
+        sync.transactions(allTransactions, {
+          _owner: req.session._user,
+          accounts: auth._accounts 
+        }, function(err, transactions) {
+          if (err) {
+            var error = "Failed to sync your transactions.";
+            console.log(error, err);
+            return res.json({
+              errors: [{
+                title: error
+              }]
+            });
+          }
+        });
+      });
+    } else if (body.code === 3) {
+      // 3	Occurs when transactions have been removed from our system.
+      var removedIds = body.removed_transactions;
+      Transaction.update({
+        plaid_id: {
+          $in: removedIds
+        }
+      }, {
+        removed: true
+      }, {
+        multi: true
+      }, function(err, updated) {
+        if (err) {
+          console.log("Could not update removed transactions.", err, body, auth);
+          return res.status(500).send("");
+        }
+        res.send("");
+      });
+    } else if (body.code === 4) {
       auth.webhookAcknowledged = true;
       auth.save(function(err, auth) {
         if (err) {
@@ -51,6 +94,9 @@ exports.post = function(req, res) {
         }
         res.send("");
       })
+    } else {
+      console.log("Unknown error", body)
+      res.send("");
     }
   });
 };

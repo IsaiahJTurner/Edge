@@ -13,7 +13,7 @@ import plaid_ios_link
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var client = EdgeAPIClient()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -33,12 +33,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             viewController = storyboard.instantiateViewControllerWithIdentifier("onboarding")
         } else if ((_user) != nil) {
             viewController = storyboard.instantiateViewControllerWithIdentifier("connect")
+            if let navVC = viewController as? UINavigationController {
+                if let vc = navVC.topViewController as? ConnectViewController {
+                    vc.client = self.client
+                }
+            }
         } else {
             viewController = storyboard.instantiateViewControllerWithIdentifier("auth")
         }
         
         self.window!.rootViewController = viewController;
         self.window?.makeKeyAndVisible()
+        let settings:UIUserNotificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+        if application.respondsToSelector("registerUserNotificationSettings:") {
+            application.registerUserNotificationSettings(settings)
+            application.registerForRemoteNotifications()
+        } else {
+            // Register for Push Notifications on devices <= iOS 8
+            UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+            UIApplication.sharedApplication().registerForRemoteNotifications()
+        }
         
         return true
     }
@@ -64,7 +78,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
+    
+    private func convertDeviceTokenToString(deviceToken:NSData) -> String {
+        //  Convert binary Device Token to a String (and remove the <,> and white space charaters).
+        var deviceTokenStr = deviceToken.description.stringByReplacingOccurrencesOfString(">", withString: "", options: NSStringCompareOptions(), range: nil)
+        deviceTokenStr = deviceTokenStr.stringByReplacingOccurrencesOfString("<", withString: "", options: NSStringCompareOptions(), range: nil)
+        deviceTokenStr = deviceTokenStr.stringByReplacingOccurrencesOfString(" ", withString: "", options: NSStringCompareOptions(), range: nil)
+        
+        // Our API returns token in all uppercase, regardless how it was originally sent.
+        // To make the two consistent, I am uppercasing the token string here.
+        deviceTokenStr = deviceTokenStr.uppercaseString
+        return deviceTokenStr
+    }
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        let token = convertDeviceTokenToString(deviceToken)
+        let settings = UIApplication.sharedApplication().currentUserNotificationSettings()!
+        var alert = false
+        var badge = false
+        var sound = false
+        if settings.types.contains(.Alert) {
+            alert = true
+        }
+        if settings.types.contains(.Badge) {
+            badge = true
+        }
+        if settings.types.contains(.Sound) {
+            sound = true
+        }
+        let appledevice = AppleDevice(token: token, alert: alert, badge: badge, sound: sound, deviceId: UIDevice.currentDevice().identifierForVendor!.UUIDString, owner: nil)
+        print("\(appledevice.toJSON())")
+        appledevice.save { (response, data, appledevice, error) -> () in
+            if ((error) != nil) {
+                let alertController = UIAlertController(title: "Error", message:
+                    error, preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                print("Subscribed for notifications! \(token)");
+            }
+        }
+        
+    }
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        print("Couldn't register: \(error)");
+    }
+    
+    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+        print("Updated Settings \(notificationSettings)")
+        // inspect notificationSettings to see what the user said!
+    }
 }
 

@@ -28,6 +28,9 @@ var TransactionSchema = new Schema({
   total: {
     type: Number
   },
+  removed: {
+    type: Boolean
+  },
   plaid_id: {
     type: String,
     unique: true

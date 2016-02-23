@@ -6,7 +6,8 @@ var _ = require('underscore');
 var AuthSchema = new Schema({
   _owner: {
     type: Schema.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
   _accounts: [{
     type: Schema.ObjectId,
@@ -56,7 +57,7 @@ AuthSchema.method('toJSON', function() {
   delete obj.accessToken;
   delete obj.plaid_user;
   delete obj.webhookAcknowledged;
-  
+
   obj.createdAt = Number(obj.createdAt);
   obj.updatedAt = Number(obj.updatedAt);
   var data = {

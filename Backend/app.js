@@ -10,6 +10,7 @@ var Transaction = require('./models/Transaction');
 var User = require('./models/User');
 var Auth = require('./models/Auth');
 var Account = require('./models/Account');
+var AppleDevice = require('./models/AppleDevice');
 
 
 mongoose.connect(config.mongoURL);
@@ -50,6 +51,7 @@ var controllers = {
   auths: require('./controllers/auths'),
   accounts: require('./controllers/accounts'),
   webhooks: require('./controllers/webhooks'),
+  appledevices: require('./controllers/appledevices'),
   transactions: {
     index: require('./controllers/transactions'),
     transactionId: require('./controllers/transactions/transaction'),
@@ -78,6 +80,8 @@ api.get("/accounts", middleware.auth.requiresUser, controllers.accounts.get);
 api.post("/transactions", middleware.auth.requiresUser, controllers.transactions.index.post);
 api.get("/transactions", middleware.auth.requiresUser, controllers.transactions.index.get);
 api.get("/transactions/:transactionId", middleware.auth.requiresUser, controllers.transactions.transactionId.get);
+
+api.post("/appledevices", controllers.appledevices.index.post);
 
 api.post("/webhooks/plaid", controllers.webhooks.post);
 

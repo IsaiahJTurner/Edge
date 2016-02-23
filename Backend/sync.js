@@ -18,10 +18,16 @@ exports.transactions = function(transactionsData, options, callback) {
   }
 
   var transactions = transactionsData.map(function(transaction) {
+    var account = accounts[transaction._account];
+    var auth = auths[transaction._account];
+    if (!account || !auth) {
+      console.log("Auth/account does not exist", account, auth, transaction)
+      return {};
+    }
     return {
       _owner: options._owner,
-      _account: accounts[transaction._account],
-      _auth: auths[transaction._account],
+      _account: account,
+      _auth: auth,
       total: transaction.amount,
       title: transaction.name,
       plaid_id: transaction._id,
