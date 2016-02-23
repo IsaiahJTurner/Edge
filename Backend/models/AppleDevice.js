@@ -20,6 +20,9 @@ var AppleDeviceSchema = new Schema({
   sound: {
     type: Boolean
   },
+  sessionId: {
+    type: String
+  },
   deviceId: {
     type: String
   },
@@ -47,6 +50,7 @@ AppleDeviceSchema.method('toJSON', function() {
   delete obj._id;
   delete obj.__v;
   delete obj._owner;
+  delete obj.sessionId;
   obj.createdAt = Number(obj.createdAt);
   obj.updatedAt = Number(obj.updatedAt);
   var data = {

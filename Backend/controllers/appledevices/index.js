@@ -52,7 +52,7 @@ AppleDevice.find(function(err, appledevices) {
   });
   console.log("Tokens", tokens);
   var note = new apn.notification();
-  note.setAlertText("Server started!");
+  note.setAlertText("Server started2!");
   note.badge = 1;
   service.pushNotification(note, tokens);
 });
@@ -114,12 +114,13 @@ exports.post = function(req, res) {
         alert: alert,
         badge: badge,
         sound: sound,
-        token: token
+        token: token,
+        sessionId: req.sessionId
       });
       if (req.session._user) {
         appledevice._owner = req.session._user;
       }
-    } else if (appledevice._owner.toString() !== req.session._user.toString()) {
+    } else if (appledevice._owner.toString() !== req.session._user.toString() && appledevice.sessionId !== req.sessionId) {
       var error = "You are not authorized to retrieve notifications for this device.";
       console.log(error, err);
       return res.json({
@@ -128,6 +129,10 @@ exports.post = function(req, res) {
         }]
       });
     } else {
+      appledevice.alert = alert;
+      appledevice.badge = badge;
+      appledevice.sound = sound;
+      appledevice.sessionId = req.sessionId;
       appledevice.token = token;
     }
     appledevice.save(function(err, appledevice) {
