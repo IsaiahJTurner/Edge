@@ -53,7 +53,7 @@ AppleDevice.find(function(err, appledevices) {
   console.log("Tokens", tokens);
   var note = new apn.notification();
   note.setAlertText("Server started2!");
-  //note.badge = 1;
+  note.badge = 0;
   service.pushNotification(note, tokens);
 });
 
