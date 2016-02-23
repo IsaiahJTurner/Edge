@@ -9,11 +9,11 @@ var options = {
   "production": config.apns.isProduction
 };
 if (config.apns.isProduction) {
-  options.cert = "../../apns/production/cert.pem";
-  options.key = "../../apns/production/key.pem";
+  options.cert = __dirname + "/../../apns/production/cert.pem";
+  options.key = __dirname + "/../../apns/production/key.pem";
 } else {
-  options.cert = "../../apns/sandbox/cert.pem";
-  options.key = "../../apns/sandbox/key.pem";
+  options.cert = __dirname + "/../../apns/sandbox/cert.pem";
+  options.key = __dirname + "/../../apns/sandbox/key.pem";
 }
 
 var service = new apn.Connection(options);
@@ -52,10 +52,11 @@ AppleDevice.find(function(err, appledevices) {
   });
   console.log("Tokens", tokens);
   var note = new apn.notification();
-  note.setAlertText("Hello, from node-apn!");
+  note.setAlertText("Server started!");
   note.badge = 1;
   service.pushNotification(note, tokens);
 });
+
 exports.post = function(req, res) {
   if (!_.isObject(req.body.data)) {
     var error = "Please include data with your request.";
@@ -95,7 +96,6 @@ exports.post = function(req, res) {
   var badge = Boolean(req.body.data.attributes.badge);
   var sound = Boolean(req.body.data.attributes.sound);
 
-  var deviceId = req.body.attributes.deviceId;
   AppleDevice.findOne({
     deviceId: deviceId
   }, function(err, appledevice) {
@@ -113,13 +113,13 @@ exports.post = function(req, res) {
         deviceId: deviceId,
         alert: alert,
         badge: badge,
-        sounds: sounds,
+        sound: sound,
         token: token
       });
       if (req.session._user) {
         appledevice._owner = req.session._user;
       }
-    } else if (appledevice._owner != req.session._user) {
+    } else if (appledevice._owner.toString() !== req.session._user.toString()) {
       var error = "You are not authorized to retrieve notifications for this device.";
       console.log(error, err);
       return res.json({

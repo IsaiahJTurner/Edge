@@ -81,7 +81,7 @@ api.post("/transactions", middleware.auth.requiresUser, controllers.transactions
 api.get("/transactions", middleware.auth.requiresUser, controllers.transactions.index.get);
 api.get("/transactions/:transactionId", middleware.auth.requiresUser, controllers.transactions.transactionId.get);
 
-api.post("/appledevices", controllers.appledevices.index.post);
+api.post("/appledevices", controllers.appledevices.post);
 
 api.post("/webhooks/plaid", controllers.webhooks.post);
 
