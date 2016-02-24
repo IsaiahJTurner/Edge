@@ -19,7 +19,7 @@ Array.prototype.last = function(){
 /*
   it's done don't touch it.
 */
-Transaction.remove({}).exec()
+
 exports.transactions = function(transactionsData, options, cb) {
   // cb(err, updatedTransactions)
   async.waterfall([
@@ -30,7 +30,7 @@ exports.transactions = function(transactionsData, options, cb) {
       */
       Transaction.find({
         plaid_id: {
-          $in: _.pluck(transactionsData, "_id")
+          $in: _.pluck(transactionsData, "_id").concat(_.pluck(transactionsData, "_pendingTransaction"))
         }
       }, function(err, transactions) {
         if (err) {
@@ -59,12 +59,21 @@ exports.transactions = function(transactionsData, options, cb) {
       }
 
       /*
-        If the ID wasn't found in the database, map it into an array of data to be inserted
+        Key:Value associate all the transactionsData with their plaid_id
       */
-      var existingTransactionIds = _.pluck(transactions, "plaid_id")
+      var transactionsDataMap = {};
+      transactionsData.map(function(transactionData) {
+        var plaid_id = transactionData._id;
+        transactionsDataMap[plaid_id] = transactionData;
+      });
 
+      var transactionsMap = {};
+      transactions.map(function(transaction) {
+        var plaid_id = transaction.plaid_id;
+        transactionsMap[plaid_id] = transaction;
+      });
       var newTransactions = transactionsData.filter(function(transactionData) {
-          if (existingTransactionIds.indexOf(transactionData._id) === -1) {
+          if (!transactionsMap[transactionData._id]) {
             return true; // transaction doesn't exist, return true to create it
           }
           return false; // transaction already exists, dont create it
@@ -86,15 +95,17 @@ exports.transactions = function(transactionsData, options, cb) {
             _owner: options._owner,
             _account: account,
             _auth: auth,
+            _pendingTransaction: transactionsMap[transactionData._pendingTransaction]._id,
             total: transactionData.amount,
             title: transactionData.name,
             plaid_id: transactionData._id,
             plaid_account: transactionData._account,
+            plaid_pendingTransaction: transactionData._pendingTransaction,
             plaidAmount: [transactionData.amount],
             plaidName: [transactionData.name],
-            plaidDate: [transactionData.date],
+            plaidDate: transactionData.date,
             plaidMeta: [transactionData.meta],
-            plaidPending: [transactionData.pending],
+            plaidPending: transactionData.pending,
             plaidType: [transactionData.type],
             plaidCategory_id: [transactionData.category_id],
             plaidScore: [transactionData.score],
@@ -102,16 +113,16 @@ exports.transactions = function(transactionsData, options, cb) {
             updatedAt: Date.now()
           };
         });
-        callback(null, transactions, newTransactions);
+        callback(null, transactions, newTransactions, transactionsDataMap);
     },
-    function(transactions, newTransactions, callback) {
+    function(transactions, newTransactions, transactionsDataMap, callback) {
       /*
         Mongoose doesn't have a great insert method so we're going to insert these directly into the DB
         Data validation for Mongoose will not occur but it will be FAST
       */
       if (newTransactions.length === 0) {
         // fixes "Invalid Operation, No operations in bulk" error that results from attempting to insert nothing
-        return callback(null, transactions);
+        return callback(null, transactions, newTransactions, transactionsDataMap);
       }
       Transaction.collection.insert(newTransactions, {
         continueOnError: true
@@ -127,19 +138,31 @@ exports.transactions = function(transactionsData, options, cb) {
             });
           }
         }
-        callback(null, transactions);
+        Transaction.find({
+          _id: {
+            $in: _.pluck(newTransactions, "_id")
+          }
+        }, function(err, newTransactions) {
+          if (err) {
+            return callback({
+              title: "Could not find new transactions",
+              err: err
+            });
+          }     console.log("found", newTransactions)
+
+          callback(null, transactions, newTransactions, transactionsDataMap);
+        })
       });
     },
-    function(transactions, callback) {
+    function(transactions, newTransactions, transactionsDataMap, callback) {
       /*
-        Key:Value associate all the MongoDB Transaction ids with their new data
+        Only pending transactions can have their data changed. Once the transaction settles it's locked in.
       */
-      var existingTransactions = {};
-      transactionsData.map(function(transactionData) {
-        existingTransactions[transactionData._id] = transactionData;
+      var pendingTransactions = transactions.filter(function(transaction) {
+        return transaction.pending;
       });
-      async.each(transactions, function(transaction, callback2) {
-        var transactionData = existingTransactions[transaction.plaid_id];
+      async.each(pendingTransactions, function(transaction, callback2) {
+        var transactionData = transactionsDataMap[transaction.plaid_id];
         /*
           This sourcery takes advantage of the fact that the DB keys for plaid values are just
           the plaid key with the first letter lowercased and then prefixed with plaid "_id" -> "plaid_id", "amount" -> "plaidAmount"
@@ -170,7 +193,7 @@ exports.transactions = function(transactionsData, options, cb) {
             // DB isn't storing a historic array, keep the value up to date. This shouldn't happen
             if (transaction[dbKey] !== newValue) {
               // exclude keys we don't track. like plaidCategory
-              if (["plaidCategory", "plaid_pendingTransaction"].indexOf(dbKey) === -1) {
+              if (["plaidCategory"].indexOf(dbKey) === -1) {
                 console.log("Unexpected change in '" + dbKey + "' value to '" + newValue + "'.")
                 transaction[dbKey] = newValue;
                 isChanged = true;

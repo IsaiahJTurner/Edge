@@ -16,6 +16,10 @@ var TransactionSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Auth'
   },
+  _pendingTransaction: {
+    type: Schema.ObjectId,
+    ref: 'Auth'
+  },
   title: {
     type: String
   },
@@ -39,21 +43,24 @@ var TransactionSchema = new Schema({
   plaid_account: {
     type: String
   },
+  plaid_pendingTransaction: {
+    type: String
+  },
   plaidAmount: [{
     type: Number
   }],
-  plaidDate: [{
+  plaidDate: {
     type: Date
-  }],
+  },
   plaidName: [{
     type: String
   }],
   plaidMeta: {
     type: Array
   },
-  plaidPending: [{
+  plaidPending: {
     type: Boolean
-  }],
+  },
   plaidScore: {
     type: Array
   },
@@ -88,6 +95,7 @@ TransactionSchema.method('toJSON', function() {
   delete obj.__v;
   delete obj._owner;
   delete obj._account;
+  delete obj._pendingTransaction;
   for (var key in obj) {
     if (key.indexOf("plaid") === 0) {
       // delete obj[key];
@@ -120,6 +128,14 @@ TransactionSchema.method('toJSON', function() {
       data: {
         type: "auths",
         id: self._auth
+      }
+    }
+  }
+  if (self._pendingTransaction) {
+    data.relationships.pendingTransaction = {
+      data: {
+        type: "transactions",
+        id: self._pendingTransaction
       }
     }
   }
