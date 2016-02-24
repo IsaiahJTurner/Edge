@@ -2,10 +2,14 @@ var _ = require('underscore');
 var mongoose = require('mongoose');
 var plaid = require('plaid');
 var async = require('async');
+var apn = require('apn');
 var User = mongoose.model('User');
 var Auth = mongoose.model('Auth');
 var Transaction = mongoose.model('Transaction');
 var Account = mongoose.model('Account');
+var AppleDevice = mongoose.model('AppleDevice');
+
+var service = require("./apns/service");
 
 /*
   yeah, i did that.
@@ -58,15 +62,6 @@ exports.transactions = function(transactionsData, options, cb) {
         auths[account.plaid_id] = account._auth;
       }
 
-      /*
-        Key:Value associate all the transactionsData with their plaid_id
-      */
-      var transactionsDataMap = {};
-      transactionsData.map(function(transactionData) {
-        var plaid_id = transactionData._id;
-        transactionsDataMap[plaid_id] = transactionData;
-      });
-
       var transactionsMap = {};
       transactions.map(function(transaction) {
         var plaid_id = transaction.plaid_id;
@@ -91,11 +86,15 @@ exports.transactions = function(transactionsData, options, cb) {
             });
           }
           // Transaction model
+          var pendingTransaction = transactionsMap[transactionData._pendingTransaction];
+          if (pendingTransaction) {
+            var _pendingTransaction = pendingTransaction._id;
+          }
           return {
             _owner: options._owner,
             _account: account,
             _auth: auth,
-            _pendingTransaction: transactionsMap[transactionData._pendingTransaction]._id,
+            _pendingTransaction: _pendingTransaction,
             total: transactionData.amount,
             title: transactionData.name,
             plaid_id: transactionData._id,
@@ -113,16 +112,16 @@ exports.transactions = function(transactionsData, options, cb) {
             updatedAt: Date.now()
           };
         });
-        callback(null, transactions, newTransactions, transactionsDataMap);
+        callback(null, transactions, newTransactions);
     },
-    function(transactions, newTransactions, transactionsDataMap, callback) {
+    function(transactions, newTransactions, callback) {
       /*
         Mongoose doesn't have a great insert method so we're going to insert these directly into the DB
         Data validation for Mongoose will not occur but it will be FAST
       */
       if (newTransactions.length === 0) {
         // fixes "Invalid Operation, No operations in bulk" error that results from attempting to insert nothing
-        return callback(null, transactions, newTransactions, transactionsDataMap);
+        return callback(null, transactions, newTransactions);
       }
       Transaction.collection.insert(newTransactions, {
         continueOnError: true
@@ -138,23 +137,52 @@ exports.transactions = function(transactionsData, options, cb) {
             });
           }
         }
-        Transaction.find({
-          _id: {
-            $in: _.pluck(newTransactions, "_id")
-          }
-        }, function(err, newTransactions) {
-          if (err) {
-            return callback({
-              title: "Could not find new transactions",
-              err: err
-            });
-          }     console.log("found", newTransactions)
-
-          callback(null, transactions, newTransactions, transactionsDataMap);
-        })
+        callback(null, transactions, newTransactions);
       });
     },
-    function(transactions, newTransactions, transactionsDataMap, callback) {
+    function(transactions, newTransactions, callback) {
+      Transaction.find({
+        _id: {
+          $in: _.pluck(newTransactions, "_id")
+        }
+      }, function(err, newTransactions) {
+        if (err) {
+          return callback({
+            title: "Could not find new transactions",
+            err: err
+          });
+        }
+        callback(null, transactions, newTransactions);
+      });
+    },
+    function(transactions, newTransactions, callback) {
+      AppleDevice.find({
+        _owner: options._owner
+      }, function(err, appledevices) {
+        if (err) {
+          return callback({
+            title: "Could not notify your devices.",
+            err: err
+          });
+        }
+        newTransactions.forEach(function(transaction) {
+          var note = new apn.notification();
+          note.setAlertText("Update your transaction for " + transaction.title);
+          note.badge = 0;
+          service.pushNotification(note, _.pluck(appledevices, "token"));
+        });
+        callback(null, transactions, newTransactions);
+      });
+    },
+    function(transactions, newTransactions, callback) {
+      /*
+        Key:Value associate all the transactionsData with their plaid_id
+      */
+      var transactionsDataMap = {};
+      transactionsData.map(function(transactionData) {
+        var plaid_id = transactionData._id;
+        transactionsDataMap[plaid_id] = transactionData;
+      });
       /*
         Only pending transactions can have their data changed. Once the transaction settles it's locked in.
       */
