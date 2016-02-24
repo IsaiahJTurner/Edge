@@ -33,7 +33,8 @@ var TransactionSchema = new Schema({
   },
   plaid_id: {
     type: String,
-    unique: true
+    unique: true,
+    index: true
   },
   plaid_account: {
     type: String
@@ -50,11 +51,11 @@ var TransactionSchema = new Schema({
   plaidMeta: {
     type: Array
   },
-  plaidPending: {
+  plaidPending: [{
     type: Boolean
-  },
+  }],
   plaidScore: {
-    type : Array
+    type: Array
   },
   plaidType: [{
     primary: String
