@@ -12,4 +12,7 @@ class TransactionTableViewCell: UITableViewCell {
     
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var amountLabel: UILabel!
+    @IBOutlet var tipLabel: UILabel!
+    @IBOutlet var resultLabel: UILabel!
+
 }

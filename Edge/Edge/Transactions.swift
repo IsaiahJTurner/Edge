@@ -56,7 +56,6 @@ class Transactions {
                         callback(response: response, data: data, transactions: nil, error: error)
                     } else { // and the json was without errors
                         let transactions = Transactions(data: data.objectForKey("data") as! Array)
-                        print(data)
                         callback(response: response, data: data, transactions: transactions, error: nil)
                     }
                     

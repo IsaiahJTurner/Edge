@@ -39,8 +39,8 @@ class Transaction {
             self.subtotal = attributes["subtotal"] as? Double
             self.tip = attributes["tip"] as? Double
             self.total = attributes["total"] as? Double
-            self.createdAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["createdAt"] as! Int))
-            self.updatedAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["updatedAt"] as! Int))
+            self.createdAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["createdAt"] as! Double / 1000.0))
+            self.updatedAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["updatedAt"] as! Double / 1000.0))
         }
         if let relationships = data["relationships"] {
             self.isIdentifier = false;

@@ -7,20 +7,6 @@ var AppleDevice = mongoose.model('AppleDevice');
 var config = require("../../config");
 var service = require("../../apns/service");
 
-AppleDevice.find(function(err, appledevices) {
-  if (err) {
-    return console.log("Could not find devices", err);
-  }
-  var tokens = appledevices.map(function(appledevice) {
-    return appledevice.token;
-  });
-  console.log("Tokens", tokens);
-  var note = new apn.notification();
-  note.setAlertText("Server started!");
-  note.badge = 0;
-  service.pushNotification(note, tokens);
-});
-
 exports.post = function(req, res) {
   if (!_.isObject(req.body.data)) {
     var error = "Please include data with your request.";

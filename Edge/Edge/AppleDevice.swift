@@ -37,8 +37,8 @@ class AppleDevice {
             self.sound = attributes["sound"] as? Bool
             self.token = attributes["token"] as? String
             self.deviceId = attributes["deviceId"] as? String
-            self.createdAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["createdAt"] as! Int))
-            self.updatedAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["updatedAt"] as! Int))
+            self.createdAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["createdAt"] as! Double / 1000.0))
+            self.updatedAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["updatedAt"] as! Double / 1000.0))
         }
         if let relationships = data["relationships"] {
             if let owner = relationships["owner"] {

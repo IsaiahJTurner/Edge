@@ -32,8 +32,8 @@ class Auth {
         if let attributes = data["attributes"] {
             self.isIdentifier = false;
             self.publicToken = attributes["publicToken"] as? String
-            self.createdAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["createdAt"] as! Int))
-            self.updatedAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["updatedAt"] as! Int))
+            self.createdAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["createdAt"] as! Double / 1000.0))
+            self.updatedAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["updatedAt"] as! Double / 1000.0))
         }
         if let relationships = data["relationships"] {
             self.isIdentifier = false;

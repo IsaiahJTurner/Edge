@@ -36,7 +36,6 @@ class ConnectViewController: UIViewController {
                         vc.client = self.client
                     }
                     if let vc = topVC as? PlaidLinkViewController {
-                        print("plaid")
                         vc.client = self.client
                     }
                     if let vc = topVC as? HomeViewController {

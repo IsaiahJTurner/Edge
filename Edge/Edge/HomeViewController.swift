@@ -16,7 +16,28 @@ class HomeViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        reloadData()
+        tableView.rowHeight = 73
+        self.navigationController!.navigationBar.barStyle = .Black;
+        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
+        
+        var topFrame = self.tableView.bounds;
+        topFrame.origin.y = -topFrame.size.height;
+        let topView = UIView(frame: topFrame);
+        topView.backgroundColor = UIColor(hex: "#FF5950", alpha: 1)
+        self.tableView.insertSubview(topView, atIndex: 0)
+        reloadData() {
+            
+        }
+    }
+    /*
+        override func preferredStatusBarStyle() -> UIStatusBarStyle {
+            return UIStatusBarStyle.LightContent
+        }
+    */
+    @IBAction func refresh(sender: UIRefreshControl) {
+        self.reloadData() {
+            sender.endRefreshing()
+        }
     }
     @IBAction func reset(sender: UIBarButtonItem) {
         let defaults = NSUserDefaults.standardUserDefaults()
@@ -39,7 +60,7 @@ class HomeViewController: UITableViewController {
             dispatch_get_main_queue(), closure)
     }
 
-    func reloadData() {
+    func reloadData(callback: () -> Void) {
         Transactions().get { (response, data, transactions, error) -> () in
             if ((error) != nil) {
                 let alertController = UIAlertController(title: "Error", message:
@@ -50,36 +71,42 @@ class HomeViewController: UITableViewController {
                 self.transactions = transactions
                 self.tableView.reloadData()
             }
+            callback()
         }
     }
     
-    @IBAction func reloadTransactions(sender: UIBarButtonItem) {
-        reloadData()
-    }
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("transaction") as? TransactionTableViewCell
         
         if cell == nil {
             cell = TransactionTableViewCell()
         }
-        let transaction = transactions!.array![indexPath.row]
+        let row = indexPath.row
+        let transaction = transactions!.array![row]
         let formatter = NSNumberFormatter()
         formatter.numberStyle = .CurrencyStyle
         let total = formatter.stringFromNumber(transaction.total!)
         
         cell?.amountLabel.text = total
         cell?.titleLabel.text = transaction.title!
-        
+        cell?.resultLabel.text = "successful"
+        cell?.tipLabel.text = "unknown"
+        if row % 2 == 0 {
+            cell?.backgroundColor = UIColor(hex: "#F8F8F8", alpha: 1)
+        } else {
+            cell?.backgroundColor = UIColor(hex: "#FDFDFD", alpha: 1)
+        }
         return cell!
     }
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        self.performSegueWithIdentifier("showTransaction", sender: self)
     }
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1;
     }
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(transactions?.array)
         if let transactions = transactions {
             if let array = transactions.array {
                 return array.count
@@ -87,7 +114,19 @@ class HomeViewController: UITableViewController {
         }
         return 0
     }
-
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let vc = segue.destinationViewController as? TransactionViewController {
+            vc.client = self.client
+            let indexPath = self.tableView.indexPathForSelectedRow!
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            vc.transaction = self.transactions!.array![indexPath.row]
+        }
+        if let navVC = segue.destinationViewController as? UINavigationController {
+            if let vc = navVC.topViewController as? EnableProtectionViewController {
+                vc.client = self.client
+            }
+        }
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
