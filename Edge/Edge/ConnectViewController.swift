@@ -16,6 +16,8 @@ class ConnectViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    override func viewDidAppear(animated: Bool) {
         client.currentUser() { user in
             let storyboard = self.storyboard!
             var viewController = storyboard.instantiateViewControllerWithIdentifier("link")
@@ -43,12 +45,11 @@ class ConnectViewController: UIViewController {
                     }
                 }
             }
-
+            
             
             self.presentViewController(viewController, animated: true, completion: nil)
         }
     }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

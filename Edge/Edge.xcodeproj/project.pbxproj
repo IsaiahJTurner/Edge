@@ -33,6 +33,8 @@
 		8B4553D01C7ED2CE0004ECE4 /* FlatNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4553CF1C7ED2CE0004ECE4 /* FlatNavigationBar.swift */; };
 		8B4553D21C7ED4060004ECE4 /* EnableProtectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4553D11C7ED4060004ECE4 /* EnableProtectionViewController.swift */; };
 		8B4AD8B01C7C2EAA00045828 /* AppleDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4AD8AF1C7C2EAA00045828 /* AppleDevice.swift */; };
+		8BC96EE11C86789C00427B22 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC96EE01C86789C00427B22 /* SettingsViewController.swift */; };
+		8BC96EE31C869CA000427B22 /* ReceiptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC96EE21C869CA000427B22 /* ReceiptViewController.swift */; };
 		8BE0FC4E1C803F3700A615BE /* 5C Copy 7.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE0FC4D1C803F3700A615BE /* 5C Copy 7.png */; };
 		8BE0FC511C812F1100A615BE /* StoreItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE0FC501C812F1100A615BE /* StoreItemTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -69,6 +71,8 @@
 		8B4553D11C7ED4060004ECE4 /* EnableProtectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnableProtectionViewController.swift; sourceTree = "<group>"; };
 		8B4AD8AF1C7C2EAA00045828 /* AppleDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleDevice.swift; sourceTree = "<group>"; };
 		8B6A6C7B1C7C286F0073B4EC /* Edge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Edge.entitlements; sourceTree = "<group>"; };
+		8BC96EE01C86789C00427B22 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		8BC96EE21C869CA000427B22 /* ReceiptViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReceiptViewController.swift; path = ../ReceiptViewController.swift; sourceTree = "<group>"; };
 		8BE0FC4D1C803F3700A615BE /* 5C Copy 7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "5C Copy 7.png"; path = "../../../../Desktop/iPhone 5/5S/5C Copy 7.png"; sourceTree = "<group>"; };
 		8BE0FC501C812F1100A615BE /* StoreItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreItemTableViewCell.swift; sourceTree = "<group>"; };
 		F46253A684C26C6CBFB3AF3C /* Pods-Edge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Edge.release.xcconfig"; path = "Pods/Target Support Files/Pods-Edge/Pods-Edge.release.xcconfig"; sourceTree = "<group>"; };
@@ -121,6 +125,8 @@
 				8B2132A51C78F44F00B8D90A /* Home */,
 				8BE0FC4F1C812EED00A615BE /* Enable Protection */,
 				8B4553CD1C7ED0570004ECE4 /* TransactionViewController.swift */,
+				8BC96EE21C869CA000427B22 /* ReceiptViewController.swift */,
+				8BC96EE01C86789C00427B22 /* SettingsViewController.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -340,6 +346,7 @@
 				8B0489E31C6C497F00F9728D /* User.swift in Sources */,
 				8B4553CC1C7EC7110004ECE4 /* HomeTopView.swift in Sources */,
 				8BE0FC511C812F1100A615BE /* StoreItemTableViewCell.swift in Sources */,
+				8BC96EE31C869CA000427B22 /* ReceiptViewController.swift in Sources */,
 				8B408D681C69814D00CA0B79 /* AppDelegate.swift in Sources */,
 				8B4553D21C7ED4060004ECE4 /* EnableProtectionViewController.swift in Sources */,
 				8B2132A01C78D24900B8D90A /* ModalNoAnimationSegue.swift in Sources */,
@@ -351,6 +358,7 @@
 				8B1AD4D61C741DB6000EF367 /* PlaidLinkViewController.swift in Sources */,
 				8B40CA6A1C757C0C00E0F746 /* Common.swift in Sources */,
 				8B40CA681C75710F00E0F746 /* Constants.swift in Sources */,
+				8BC96EE11C86789C00427B22 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -121,6 +121,9 @@ class HomeViewController: UITableViewController {
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
             vc.transaction = self.transactions!.array![indexPath.row]
         }
+        if let vc = segue.destinationViewController as? SettingsViewController {
+            vc.client = self.client
+        }
         if let navVC = segue.destinationViewController as? UINavigationController {
             if let vc = navVC.topViewController as? EnableProtectionViewController {
                 vc.client = self.client

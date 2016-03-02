@@ -83,8 +83,8 @@ class TransactionViewController: UIViewController, UIImagePickerControllerDelega
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         picker.dismissViewControllerAnimated(true, completion: nil)
-        self.selectImageButton.setImage(self.colorizeImage(image, withColor: UIColor(white: 0, alpha: 0.8)), forState: .Normal)
-        self.selectImageButton.setImage(self.colorizeImage(image, withColor: UIColor(white: 0, alpha: 0.8)), forState: .Highlighted)
+        self.selectImageButton.setImage(image, forState: .Normal)
+        self.selectImageButton.setImage(self.colorizeImage(image, withColor: UIColor(white: 0, alpha: 0.5)), forState: .Highlighted)
         self.selectImageButton.hidden = false
     }
     

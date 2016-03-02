@@ -118,7 +118,7 @@ class User {
         let path:String
         if ((self.id) != nil) {
             method = Alamofire.Method.PATCH
-            path = "/\(self.id)"
+            path = "/\(self.id!)"
         } else {
             method = Alamofire.Method.POST
             path = ""

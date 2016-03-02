@@ -132,4 +132,25 @@ class Auth {
                 }
         }
     }
+    
+    func remove(callback: (response: Response<AnyObject, NSError>?, data: AnyObject?, error: String?) -> ()) {
+        Alamofire.request(.DELETE, "\(endpoint)/auths/\(self.id!)")
+            .responseJSON { response in
+                switch response.result {
+                case .Success: // returned json
+                    let data = response.result.value!
+                    let errors = data.objectForKey("errors")
+                    if ((errors) != nil) { // but the json had an errors property
+                        let error = self.common.jsonAPIErrorsToString(errors!)
+                        callback(response: response, data: data, error: error)
+                    } else { // and the json was without errors
+                        callback(response: response, data: data, error: nil)
+                    }
+                    
+                case .Failure(let error):
+                    print(error)
+                    callback(response: response, data: nil, error: error.localizedDescription)
+                }
+        }
+    }
 }
