@@ -17,6 +17,7 @@ var plaidClient = config.plaid.client;
       ' transactions from the last thirty days.');
   });
 })*/
+
 exports.post = function(req, res) {
   if (!_.isObject(req.body.data)) {
     var error = "Please include data with your request.";

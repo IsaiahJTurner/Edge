@@ -34,45 +34,69 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
         self.emailNotificationsSwitch.addTarget(self, action: "toggleNotifications:", forControlEvents: .ValueChanged)
         self.textNotificationsSwitch.addTarget(self, action: "toggleNotifications:", forControlEvents: .ValueChanged)
     }
+    override func viewWillDisappear(animated: Bool) {
+        self.navigationController!.interactivePopGestureRecognizer?.removeTarget(self, action: "handlePopGesture:")
+    }
     func toggleNotifications(sender: UISwitch) {
         if sender == pushNotificationsSwitch {
             transactionNotificationsSwitch.setOn(sender.on, animated: true)
             transactionNotificationsSwitch.enabled = sender.on
         }
-        if nameTextField.isFirstResponder() {
-            nameTextField.resignFirstResponder()
-        }
-        if emailTextField.isFirstResponder() {
-            emailTextField.resignFirstResponder()
-        }
-        if phoneTextField.isFirstResponder() {
-            phoneTextField.resignFirstResponder()
+        nameTextField.resignFirstResponder()
+        emailTextField.resignFirstResponder()
+        phoneTextField.resignFirstResponder()
+        if let me = client.me {
+            if sender == textNotificationsSwitch || sender == emailNotificationsSwitch {
+                me.emailNotifications = emailNotificationsSwitch.on
+                me.textNotifications = textNotificationsSwitch.on
+                me.save({ (response, data, user, error) -> () in
+                    if (error != nil) {
+                        sender.setOn(!sender.on, animated: true)
+                        let alertController = UIAlertController(title: "Error", message:
+                            error, preferredStyle: UIAlertControllerStyle.Alert)
+                        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                        return self.presentViewController(alertController, animated: true, completion: nil)
+                    }
+                    self.client.me = user
+                })
+            }
+            if sender == transactionNotificationsSwitch || sender == pushNotificationsSwitch {
+                let defaults = NSUserDefaults.standardUserDefaults()
+                if let _appledevice = defaults.objectForKey("_appledevice") as? String {
+                    let appledevice = AppleDevice(id: _appledevice)
+                    appledevice.transactionNotifications = transactionNotificationsSwitch.on
+                    appledevice.allNotifications = pushNotificationsSwitch.on
+                    appledevice.save({ (response, data, appledevice, error) -> () in
+                        if (error != nil) {
+                            let on = !sender.on
+                            sender.setOn(on, animated: true)
+                            if sender == self.pushNotificationsSwitch {
+                                self.transactionNotificationsSwitch.setOn(on, animated: true)
+                                self.transactionNotificationsSwitch.enabled = on
+                            }
+                            let alertController = UIAlertController(title: "Error", message:
+                                error, preferredStyle: UIAlertControllerStyle.Alert)
+                            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                            return self.presentViewController(alertController, animated: true, completion: nil)
+                        }
+                    })
+                }
+            }
         }
     }
     func handlePopGesture(gesture: UIGestureRecognizer) {
         if (gesture.state == .Began)
         {
-            if nameTextField.isFirstResponder() {
-                nameTextField.resignFirstResponder()
-            }
-            if emailTextField.isFirstResponder() {
-                emailTextField.resignFirstResponder()
-            }
-            if phoneTextField.isFirstResponder() {
-                phoneTextField.resignFirstResponder()
-            }
+            nameTextField.resignFirstResponder()
+            emailTextField.resignFirstResponder()
+            phoneTextField.resignFirstResponder()
         }
     }
     override func scrollViewDidScroll(scrollView: UIScrollView) {
-        if nameTextField.isFirstResponder() {
-            nameTextField.resignFirstResponder()
-        }
-        if emailTextField.isFirstResponder() {
-            emailTextField.resignFirstResponder()
-        }
-        if phoneTextField.isFirstResponder() {
-            phoneTextField.resignFirstResponder()
-        }
+        nameTextField.resignFirstResponder()
+        emailTextField.resignFirstResponder()
+        phoneTextField.resignFirstResponder()
+
     }
     @IBAction func save(sender: AnyObject) {
 
@@ -96,6 +120,7 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
                     alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
                     return self.presentViewController(alertController, animated: true, completion: nil)
                 }
+                self.client.me = user
                 self.saveButton.enabled = false
                 self.saveButton.title = ""
             })
@@ -165,6 +190,7 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
                             alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
                             return self.presentViewController(alertController, animated: true, completion: nil)
                         }
+                        self.client.me = user
                     })
                 }
             })
@@ -185,15 +211,9 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
             }
         }
         if indexPath.section != 0 {
-            if nameTextField.isFirstResponder() {
-                nameTextField.resignFirstResponder()
-            }
-            if emailTextField.isFirstResponder() {
-                emailTextField.resignFirstResponder()
-            }
-            if phoneTextField.isFirstResponder() {
-                phoneTextField.resignFirstResponder()
-            }
+            nameTextField.resignFirstResponder()
+            emailTextField.resignFirstResponder()
+            phoneTextField.resignFirstResponder()
         }
         if indexPath.section == 1 {
             if indexPath.row == 0 {
@@ -233,6 +253,7 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
                                             alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
                                             return self.presentViewController(alertController, animated: true, completion: nil)
                                         }
+                                        self.view.window!.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
                                     })
                                 }
                             }

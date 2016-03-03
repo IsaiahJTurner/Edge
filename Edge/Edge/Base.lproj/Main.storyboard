@@ -1149,7 +1149,7 @@
         <image name="White Button" width="278" height="72"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Szh-Wo-c32"/>
         <segue reference="9yJ-Bz-0qg"/>
+        <segue reference="Szh-Wo-c32"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -47,14 +47,24 @@ app.use("/api/v1.0", api);
 
 var controllers = {
   index: require('./controllers/'),
-  users: require('./controllers/users'),
-  auths: require('./controllers/auths'),
+  users: {
+    index: require('./controllers/users'),
+    user: require('./controllers/users/user'),
+  },
+  auths: {
+    index: require('./controllers/auths'),
+    auth: require('./controllers/auths/auth')
+  },
   accounts: require('./controllers/accounts'),
+  passes: require('./controllers/passes'),
   webhooks: require('./controllers/webhooks'),
-  appledevices: require('./controllers/appledevices'),
+  appledevices: {
+    index: require('./controllers/appledevices'),
+    appledevice: require('./controllers/appledevices/appledevice'),
+  },
   transactions: {
     index: require('./controllers/transactions'),
-    transactionId: require('./controllers/transactions/transaction'),
+    transaction: require('./controllers/transactions/transaction'),
   }
 };
 var middleware = {
@@ -69,19 +79,25 @@ api.get("/", controllers.index.get);
 api.post("/signin", controllers.index.signin);
 api.post("/signout", controllers.index.signout);
 
-api.post("/users", controllers.users.post);
-api.get("/users/:userId", controllers.users.getOne);
+api.post("/users", controllers.users.index.post);
+api.get("/users/:userId", controllers.users.user.get);
+api.patch("/users/:userId", controllers.users.user.patch);
 
-api.post("/auths", middleware.auth.requiresUser, controllers.auths.post);
-api.get("/auths", middleware.auth.requiresUser, controllers.auths.get);
+api.post("/auths", middleware.auth.requiresUser, controllers.auths.index.post);
+api.get("/auths", middleware.auth.requiresUser, controllers.auths.index.get);
+api.delete("/auths/:authId", middleware.auth.requiresUser, controllers.auths.auth.delete);
 
 api.get("/accounts", middleware.auth.requiresUser, controllers.accounts.get);
 
+api.get("/passes", middleware.auth.requiresUser, controllers.passes.get);
+
 api.post("/transactions", middleware.auth.requiresUser, controllers.transactions.index.post);
 api.get("/transactions", middleware.auth.requiresUser, controllers.transactions.index.get);
-api.get("/transactions/:transactionId", middleware.auth.requiresUser, controllers.transactions.transactionId.get);
+api.get("/transactions/:transactionId", middleware.auth.requiresUser, controllers.transactions.transaction.get);
 
-api.post("/appledevices", controllers.appledevices.post);
+api.post("/appledevices", controllers.appledevices.index.post);
+api.get("/appledevices/:deviceId", middleware.auth.requiresUser, controllers.appledevices.appledevice.get);
+api.patch("/appledevices/:deviceId", middleware.auth.requiresUser, controllers.appledevices.appledevice.patch);
 
 api.post("/webhooks/plaid", controllers.webhooks.post);
 

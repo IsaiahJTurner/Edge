@@ -45,6 +45,8 @@ exports.post = function(req, res) {
   var alert = Boolean(req.body.data.attributes.alert);
   var badge = Boolean(req.body.data.attributes.badge);
   var sound = Boolean(req.body.data.attributes.sound);
+  var transactionNotifications = Boolean(req.body.data.attributes.transactionNotifications);
+  var allNotifications = Boolean(req.body.data.attributes.allNotifications);
 
   AppleDevice.findOne({
     deviceId: deviceId
@@ -65,6 +67,8 @@ exports.post = function(req, res) {
         badge: badge,
         sound: sound,
         token: token,
+        allNotifications: allNotifications,
+        transactionNotifications: transactionNotifications,
         sessionId: req.sessionId
       });
       if (req.session._user) {
@@ -82,6 +86,8 @@ exports.post = function(req, res) {
       appledevice.alert = alert;
       appledevice.badge = badge;
       appledevice.sound = sound;
+      appledevice.transactionNotifications = transactionNotifications;
+      appledevice.allNotifications = allNotifications
       appledevice.sessionId = req.sessionId;
       appledevice.token = token;
     }

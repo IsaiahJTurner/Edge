@@ -37,7 +37,7 @@ exports.signin = function(req, res) {
     });
   }
   User.findOne({
-    email: email
+    queryEmail: email.toLowerCase()
   }, function(err, user) {
     if (err) {
       var error = "Failed to lookup your account. Try again?";

@@ -18,6 +18,8 @@ class User {
     var type = "users"
     var name:String?
     var email:String?
+    var emailNotifications:Bool?
+    var textNotifications:Bool?
     var phone:String?
     var password:String?
     var createdAt:NSDate?
@@ -33,7 +35,9 @@ class User {
             self.isIdentifier = false
             self.name = attributes["name"] as? String
             self.email = attributes["email"] as? String
+            self.emailNotifications = attributes["emailNotifications"] as? Bool
             self.phone = attributes["phone"] as? String
+            self.textNotifications = attributes["textNotifications"] as? Bool
             self.password = attributes["password"] as? String
             self.createdAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["createdAt"] as! Double / 1000.0))
             self.updatedAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["updatedAt"] as! Double / 1000.0))
@@ -49,11 +53,13 @@ class User {
         self.isIdentifier = true
         self.id = id
     }
-    init(name: String, email: String, phone: String, password: String) {
+    init(name: String, email: String, emailNotifications: Bool, phone: String, textNotifications: Bool, password: String) {
         self.isIdentifier = false
         self.name = name
         self.email = email
+        self.emailNotifications = emailNotifications
         self.phone = phone
+        self.textNotifications = textNotifications
         self.password = password
     }
     func toJSON() -> Dictionary<String, AnyObject> {
@@ -64,11 +70,17 @@ class User {
         if let email = self.email {
             attributes["email"] = email
         }
+        if let emailNotifications = self.emailNotifications {
+            attributes["emailNotifications"] = emailNotifications
+        }
         if let password = self.password {
             attributes["password"] = password
         }
         if let phone = self.phone {
             attributes["phone"] = phone
+        }
+        if let textNotifications = self.textNotifications {
+            attributes["textNotifications"] = textNotifications
         }
         var relationships = [String : AnyObject]()
         if let auths = self.auths {

@@ -20,6 +20,12 @@ var AppleDeviceSchema = new Schema({
   sound: {
     type: Boolean
   },
+  transactionNotifications: {
+    type: Boolean
+  },
+  allNotifications: {
+    type: Boolean
+  },
   sessionId: {
     type: String
   },

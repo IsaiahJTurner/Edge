@@ -20,6 +20,8 @@ class AppleDevice {
     var alert:Bool?
     var badge:Bool?
     var sound:Bool?
+    var transactionNotifications:Bool?
+    var allNotifications:Bool?
     var deviceId:String?
     var createdAt:NSDate?
     var updatedAt:NSDate?
@@ -35,6 +37,8 @@ class AppleDevice {
             self.alert = attributes["alert"] as? Bool
             self.badge = attributes["badge"] as? Bool
             self.sound = attributes["sound"] as? Bool
+            self.transactionNotifications = attributes["transactionNotifications"] as? Bool
+            self.allNotifications = attributes["allNotifications"] as? Bool
             self.token = attributes["token"] as? String
             self.deviceId = attributes["deviceId"] as? String
             self.createdAt = NSDate(timeIntervalSince1970: NSTimeInterval(attributes["createdAt"] as! Double / 1000.0))
@@ -51,13 +55,15 @@ class AppleDevice {
         self.isIdentifier = true
         self.id = id
     }
-    init(token: String, alert: Bool, badge: Bool, sound: Bool, deviceId: String, owner: User?) {
+    init(token: String, alert: Bool, badge: Bool, sound: Bool, deviceId: String, transactionNotifications: Bool, allNotifications: Bool, owner: User?) {
         self.isIdentifier = false
         self.token = token
         self.alert = alert
         self.badge = badge
         self.sound = sound
         self.deviceId = deviceId
+        self.transactionNotifications = transactionNotifications
+        self.allNotifications = allNotifications
         self.owner = owner
     }
     func toJSON() -> Dictionary<String, AnyObject> {
@@ -76,6 +82,12 @@ class AppleDevice {
         }
         if let deviceId = self.deviceId {
             attributes["deviceId"] = deviceId
+        }
+        if let transactionNotifications = self.transactionNotifications {
+            attributes["transactionNotifications"] = transactionNotifications
+        }
+        if let allNotifications = self.allNotifications {
+            attributes["allNotifications"] = allNotifications
         }
         var relationships = [String : AnyObject]()
         if let owner = self.owner {
@@ -118,14 +130,11 @@ class AppleDevice {
     }
     
     func save(callback: (response: Response<AnyObject, NSError>?, data: AnyObject?, appledevice: AppleDevice?, error: String?) -> ()) {
-        if (self.isIdentifier) {
-            return callback(response: nil, data: nil, appledevice: nil, error: "Identifiers can't be saved")
-        }
         let method:Alamofire.Method
         let path:String
-        if ((self.id) != nil) {
+        if let id = self.id {
             method = Alamofire.Method.PATCH
-            path = "/\(self.id)"
+            path = "/\(id)"
         } else {
             method = Alamofire.Method.POST
             path = ""

@@ -25,7 +25,7 @@ class SignUpViewController: UIViewController {
         let email = emailTextField.text!
         let password = passwordTextField.text!
         self.setButtons(false)
-        let user = User(name: "", email: email, phone: "", password: password)
+        let user = User(name: "", email: email, emailNotifications: true, phone: "", textNotifications: true, password: password)
         user.save { (response, data, user, error) -> () in
             self.setButtons(true)
             if ((error) != nil) {

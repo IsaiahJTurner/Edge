@@ -106,8 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if settings.types.contains(.Sound) {
             sound = true
         }
-        let appledevice = AppleDevice(token: token, alert: alert, badge: badge, sound: sound, deviceId: UIDevice.currentDevice().identifierForVendor!.UUIDString, owner: nil)
-        print("\(appledevice.toJSON())")
+        let appledevice = AppleDevice(token: token, alert: alert, badge: badge, sound: sound, deviceId: UIDevice.currentDevice().identifierForVendor!.UUIDString, transactionNotifications: true, allNotifications: true, owner: nil)
         appledevice.save { (response, data, appledevice, error) -> () in
             if ((error) != nil) {
                 let alertController = UIAlertController(title: "Error", message:
@@ -115,6 +114,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
                 UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
             } else {
+                let defaults = NSUserDefaults.standardUserDefaults()
+                defaults.setValue(appledevice?.id, forKey: "_appledevice")
                 print("Subscribed for notifications! \(token)");
             }
         }

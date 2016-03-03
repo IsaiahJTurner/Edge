@@ -9,6 +9,12 @@ var UserSchema = new Schema({
   name: {
     type: String
   },
+  emailIsVerified: {
+    type: Boolean
+  },
+  verifiedEmail: {
+    type: String
+  },
   email: {
     type: String,
     required: true,
@@ -18,8 +24,20 @@ var UserSchema = new Schema({
     type: String,
     unique: true
   },
+  phoneIsVerified: {
+    type: Boolean
+  },
+  verifiedPhone: {
+    type: String
+  },
   phone: {
     type: String
+  },
+  emailNotifications: {
+    type: Boolean
+  },
+  textNotifications: {
+    type: Boolean
   },
   password: {
     type: String,
@@ -77,6 +95,9 @@ UserSchema.method('toJSON', function() {
   delete obj.__v;
   delete obj.queryEmail;
   delete obj._auths;
+  delete obj.verifiedEmail;
+  delete obj.verifiedPhone;
+
   obj.createdAt = Number(obj.createdAt);
   obj.updatedAt = Number(obj.updatedAt);
   var data = {
