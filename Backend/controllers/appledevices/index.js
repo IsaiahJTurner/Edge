@@ -71,9 +71,6 @@ exports.post = function(req, res) {
         transactionNotifications: transactionNotifications,
         sessionId: req.sessionId
       });
-      if (req.session._user) {
-        appledevice._owner = req.session._user;
-      }
     } else if (appledevice._owner.toString() !== (req.session._user || "").toString() && appledevice.sessionId !== req.sessionId) {
       var error = "You are not authorized to retrieve notifications for this device.";
       console.log(error, err);
@@ -90,6 +87,9 @@ exports.post = function(req, res) {
       appledevice.allNotifications = allNotifications
       appledevice.sessionId = req.sessionId;
       appledevice.token = token;
+    }
+    if (req.session._user) {
+      appledevice._owner = req.session._user;
     }
     appledevice.save(function(err, appledevice) {
       if (err) {
