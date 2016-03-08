@@ -46,12 +46,24 @@ exports.patch = function(req, res) {
       });
     }
     if (req.session._user != appledevice._owner) {
-      var error = "You are not authorized to access this device";
-      console.log(error, err);
-      return res.json({
-        errors: [{
-          title: error
-        }]
+      // if the Device header matches the requested device ID, update the AppleDevice to link to this user
+      // this can happen if a user signs out and then signs in to a different account.
+      if (req.headers.device !== appledevice.deviceId) {
+        var error = "You are not authorized to access this device";
+        console.log(error, appledevice, req.headers.device);
+        return res.json({
+          errors: [{
+            title: error
+          }]
+        });
+      }
+      appledevice._owner = req.session._user
+      appledevice.save(function(err, appledevice) {
+        if (err) {
+          var error = "Failed to save appledevice with new owner";
+          console.log(error);
+          return;
+        }
       });
     }
     appledevice.transactionNotifications = Boolean(req.body.data.attributes.transactionNotifications);
@@ -96,12 +108,24 @@ exports.get = function(req, res) {
       });
     }
     if (req.session._user != appledevice._owner) {
-      var error = "You are not authorized to access this device.";
-      console.log(error, err);
-      return res.json({
-        errors: [{
-          title: error
-        }]
+      // if the Device header matches the requested device ID, update the AppleDevice to link to this user
+      // this can happen if a user signs out and then signs in to a different account.
+      if (req.headers.device !== appledevice.deviceId) {
+        var error = "You are not authorized to access this device!";
+        console.log(error, appledevice, req.headers.device);
+        return res.json({
+          errors: [{
+            title: error
+          }]
+        });
+      }
+      appledevice._owner = req.session._user
+      appledevice.save(function(err, appledevice) {
+        if (err) {
+          var error = "Failed to save appledevice with new owner";
+          console.log(error);
+          return;
+        }
       });
     }
     res.json({

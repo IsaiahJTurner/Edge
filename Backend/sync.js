@@ -20,9 +20,6 @@ String.prototype.capitalizeFirstLetter = function() {
 Array.prototype.last = function(){
     return this[this.length - 1];
 };
-/*
-  it's done don't touch it.
-*/
 
 exports.transactions = function(transactionsData, options, cb) {
   // cb(err, updatedTransactions)
@@ -30,23 +27,23 @@ exports.transactions = function(transactionsData, options, cb) {
     function(callback) {
       /*
         Search the database to see if any of the transactions we're trying to sync already exist.
-        We're going to update those instead of inserting them.
+        We're not going to send notifications for those ALSO we will use them to link _pendingTransactions
       */
       Transaction.find({
         plaid_id: {
           $in: _.pluck(transactionsData, "_id").concat(_.pluck(transactionsData, "_pendingTransaction"))
         }
-      }, function(err, transactions) {
+      }, function(err, existingTransactions) {
         if (err) {
           return callback({
             title: "Could not get transaction.",
             err: err
           });
         }
-        callback(null, transactions);
+        callback(null, existingTransactions);
       });
     },
-    function(transactions, callback) {
+    function(existingTransactions, callback) {
       /*
         Key:Value associate all the accounts with their Plaid ID
         AND
@@ -63,7 +60,7 @@ exports.transactions = function(transactionsData, options, cb) {
       }
 
       var transactionsMap = {};
-      transactions.map(function(transaction) {
+      existingTransactions.map(function(transaction) {
         var plaid_id = transaction.plaid_id;
         transactionsMap[plaid_id] = transaction;
       });
@@ -171,83 +168,11 @@ exports.transactions = function(transactionsData, options, cb) {
           note.badge = 0;
           service.pushNotification(note, _.pluck(appledevices, "token"));
         });
-        callback(null, transactions, newTransactions);
-      });
-    },
-    function(transactions, newTransactions, callback) {
-      /*
-        Key:Value associate all the transactionsData with their plaid_id
-      */
-      var transactionsDataMap = {};
-      transactionsData.map(function(transactionData) {
-        var plaid_id = transactionData._id;
-        transactionsDataMap[plaid_id] = transactionData;
-      });
-      /*
-        Only pending transactions can have their data changed. Once the transaction settles it's locked in.
-      */
-      var pendingTransactions = transactions.filter(function(transaction) {
-        return transaction.pending;
-      });
-      async.each(pendingTransactions, function(transaction, callback2) {
-        var transactionData = transactionsDataMap[transaction.plaid_id];
-        /*
-          This sourcery takes advantage of the fact that the DB keys for plaid values are just
-          the plaid key with the first letter lowercased and then prefixed with plaid "_id" -> "plaid_id", "amount" -> "plaidAmount"
-          It pushes in if the last DB value in the array doesn't match the current Plaid value
-        */
-        var isChanged = false;
-        for (var key in transactionData) {
-          var newValue = transactionData[key];
-          var dbKey = "plaid" + key.capitalizeFirstLetter();
-          var dbValues = transaction[dbKey];
-          if (_.isArray(dbValues)) {
-            var currentValue = dbValues.last();
-            var currentStringValue;
-            var newStringValue;
-            // Date objects change when toString()'d. comparing against their getTime() ensures proper comparison
-            if (_.isDate(currentValue)) {
-              newStringValue = JSON.stringify(new Date(newValue).getTime());
-              currentStringValue = JSON.stringify(currentValue.getTime());
-            } else {
-              currentStringValue = JSON.stringify(currentValue);
-              newStringValue = JSON.stringify(newValue);
-            }
-            if (currentStringValue !== newStringValue) {
-              transaction[dbKey].push(newValue);
-              isChanged = true;
-            }
-          } else {
-            // DB isn't storing a historic array, keep the value up to date. This shouldn't happen
-            if (transaction[dbKey] !== newValue) {
-              // exclude keys we don't track. like plaidCategory
-              if (["plaidCategory"].indexOf(dbKey) === -1) {
-                console.log("Unexpected change in '" + dbKey + "' value to '" + newValue + "'.")
-                transaction[dbKey] = newValue;
-                isChanged = true;
-              }
-            }
-          }
-        }
-        if (!isChanged) {
-          return callback2(null, transaction);
-        }
-        transaction.save(function(err, transaction) {
-          if (err) {
-            return callback2({
-              title: "Unable to update transaction.",
-              err: err,
-              transaction: transaction
-            });
-          }
-          callback2(null, transaction);
-        });
-      }, function(err, updatedTransactions) {
-        callback(err, updatedTransactions);
+        callback(null, );
       });
     }
-  ], function(err, updatedTransactions) {
-    cb(err, updatedTransactions);
+  ], function(err, newTransactions) {
+    cb(err, newTransactions);
   });
 };
 

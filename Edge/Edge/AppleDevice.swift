@@ -108,7 +108,9 @@ class AppleDevice {
         return data
     }
     func get(callback: (response: Response<AnyObject, NSError>, data: AnyObject?, appledevice: AppleDevice?, error: String?) -> ()) {
-        Alamofire.request(.GET, "\(endpoint)/appledevices/\(self.id!)")
+        Alamofire.request(.GET, "\(endpoint)/appledevices/\(self.id!)", headers: [
+            "Device": UIDevice.currentDevice().identifierForVendor!.UUIDString
+            ])
             .responseJSON { response in
                 switch response.result {
                 case .Success: // returned json
@@ -140,7 +142,9 @@ class AppleDevice {
             path = ""
         }
         
-        Alamofire.request(method, "\(endpoint)/appledevices\(path)", parameters: self.toJSON(), encoding: .JSON)
+        Alamofire.request(method, "\(endpoint)/appledevices\(path)", parameters: self.toJSON(), encoding: .JSON, headers: [
+            "Device": UIDevice.currentDevice().identifierForVendor!.UUIDString
+            ])
             .responseJSON { response in
                 switch response.result {
                 case .Success: // returned json

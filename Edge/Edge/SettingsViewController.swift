@@ -19,6 +19,7 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet var textNotificationsSwitch: UISwitch!
     
     var isSaving = false
+    var appledevice:AppleDevice?
     var client = EdgeAPIClient()
     override func viewDidLoad() {
         self.navigationController!.interactivePopGestureRecognizer?.addTarget(self, action: "handlePopGesture:")
@@ -33,6 +34,25 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
         self.pushNotificationsSwitch.addTarget(self, action: "toggleNotifications:", forControlEvents: .ValueChanged)
         self.emailNotificationsSwitch.addTarget(self, action: "toggleNotifications:", forControlEvents: .ValueChanged)
         self.textNotificationsSwitch.addTarget(self, action: "toggleNotifications:", forControlEvents: .ValueChanged)
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let _appledevice = defaults.objectForKey("_appledevice") as? String {
+            AppleDevice(id: _appledevice).get({ (response, data, appledevice, error) -> () in
+                if ((error) != nil) {
+                    self.transactionNotificationsSwitch.enabled = false
+                    self.pushNotificationsSwitch.enabled = false
+                    let alertController = UIAlertController(title: "Error", message:
+                        error, preferredStyle: UIAlertControllerStyle.Alert)
+                    alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                    return self.presentViewController(alertController, animated: true, completion: nil)
+                }
+                self.appledevice = appledevice!
+            })
+        } else {
+            self.transactionNotificationsSwitch.setOn(false, animated: true)
+            self.transactionNotificationsSwitch.enabled = false
+            self.pushNotificationsSwitch.enabled = false
+            self.pushNotificationsSwitch.setOn(false, animated: true)
+        }
     }
     override func viewWillDisappear(animated: Bool) {
         self.navigationController!.interactivePopGestureRecognizer?.removeTarget(self, action: "handlePopGesture:")
@@ -52,8 +72,7 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
                 me.save({ (response, data, user, error) -> () in
                     if (error != nil) {
                         sender.setOn(!sender.on, animated: true)
-                        let alertController = UIAlertController(title: "Error", message:
-                            error, preferredStyle: UIAlertControllerStyle.Alert)
+                        let alertController = UIAlertController(title: "Error", message: error, preferredStyle: UIAlertControllerStyle.Alert)
                         alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
                         return self.presentViewController(alertController, animated: true, completion: nil)
                     }
@@ -61,26 +80,21 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
                 })
             }
             if sender == transactionNotificationsSwitch || sender == pushNotificationsSwitch {
-                let defaults = NSUserDefaults.standardUserDefaults()
-                if let _appledevice = defaults.objectForKey("_appledevice") as? String {
-                    let appledevice = AppleDevice(id: _appledevice)
-                    appledevice.transactionNotifications = transactionNotificationsSwitch.on
-                    appledevice.allNotifications = pushNotificationsSwitch.on
-                    appledevice.save({ (response, data, appledevice, error) -> () in
-                        if (error != nil) {
-                            let on = !sender.on
-                            sender.setOn(on, animated: true)
-                            if sender == self.pushNotificationsSwitch {
-                                self.transactionNotificationsSwitch.setOn(on, animated: true)
-                                self.transactionNotificationsSwitch.enabled = on
-                            }
-                            let alertController = UIAlertController(title: "Error", message:
-                                error, preferredStyle: UIAlertControllerStyle.Alert)
-                            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
-                            return self.presentViewController(alertController, animated: true, completion: nil)
+                self.appledevice!.transactionNotifications = transactionNotificationsSwitch.on
+                self.appledevice!.allNotifications = pushNotificationsSwitch.on
+                self.appledevice!.save({ (response, data, appledevice, error) -> () in
+                    if (error != nil) {
+                        let on = !sender.on
+                        sender.setOn(on, animated: true)
+                        if sender == self.pushNotificationsSwitch {
+                            self.transactionNotificationsSwitch.setOn(on, animated: true)
+                            self.transactionNotificationsSwitch.enabled = on
                         }
-                    })
-                }
+                        let alertController = UIAlertController(title: "Error", message: error, preferredStyle: UIAlertControllerStyle.Alert)
+                        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
+                        return self.presentViewController(alertController, animated: true, completion: nil)
+                    }
+                })
             }
         }
     }
@@ -115,8 +129,7 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
             }
             me.save({ (response, data, user, error) -> () in
                 if (error != nil) {
-                    let alertController = UIAlertController(title: "Error", message:
-                        error, preferredStyle: UIAlertControllerStyle.Alert)
+                    let alertController = UIAlertController(title: "Error", message: error, preferredStyle: UIAlertControllerStyle.Alert)
                     alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
                     return self.presentViewController(alertController, animated: true, completion: nil)
                 }
@@ -222,8 +235,19 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
                 }
             }
             if indexPath.row == 1 {
-                pushNotificationsSwitch.setOn(!pushNotificationsSwitch.on, animated: true)
-                self.toggleNotifications(pushNotificationsSwitch)
+                if pushNotificationsSwitch.enabled {
+                    pushNotificationsSwitch.setOn(!pushNotificationsSwitch.on, animated: true)
+                    self.toggleNotifications(pushNotificationsSwitch)
+                }
+            }
+            if (indexPath.row == 0 || indexPath.row == 1) && pushNotificationsSwitch.enabled == false {
+                let alertController = UIAlertController(title: "Notifications Disabled", message:
+                    "Enable push notifications in settings", preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel,handler: nil))
+                alertController.addAction(UIAlertAction(title: "Open Settings", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                    UIApplication.sharedApplication().openURL(NSURL(string:UIApplicationOpenSettingsURLString)!);
+                }))
+                return self.presentViewController(alertController, animated: true, completion: nil)
             }
             if indexPath.row == 2 {
                 emailNotificationsSwitch.setOn(!emailNotificationsSwitch.on, animated: true)
@@ -259,7 +283,7 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
                             }
                         }
                     }
-                    })
+                })
                 self.presentViewController(alertController, animated: true, completion: nil)
             }
             

@@ -2,6 +2,7 @@ var bcrypt = require('bcrypt');
 var _ = require('underscore');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var AppleDevice = mongoose.model('AppleDevice');
 
 exports.get = function(req, res) {
   res.json({
@@ -12,6 +13,22 @@ exports.get = function(req, res) {
 };
 
 exports.signout = function(req, res) {
+  if (req.headers.device) {
+    AppleDevice.update({
+      _owner: req.session._user,
+      deviceId: req.headers.device
+    }, {
+      $unset: {
+        _owner: 1
+      }
+    }, function(err, updated) {
+      if (err) {
+        var error = "Failed to remove user from device";
+        console.log(error, err, updated, req.headers.device, req.session._user);
+        return;
+      }
+    });
+  }
   delete req.session._user;
   res.json({
     success: true

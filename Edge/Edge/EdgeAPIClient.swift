@@ -33,7 +33,9 @@ class EdgeAPIClient {
     }
     
     func signOut(callback: (Response<AnyObject, NSError>, AnyObject?, String?) -> ()) {
-        Alamofire.request(.POST, "\(endpoint)/signout")
+        Alamofire.request(.POST, "\(endpoint)/signout", headers: [
+            "Device": UIDevice.currentDevice().identifierForVendor!.UUIDString
+            ])
             .responseJSON { response in
                 switch response.result {
                 case .Success: // returned json
