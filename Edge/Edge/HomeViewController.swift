@@ -18,7 +18,7 @@ class HomeViewController: UITableViewController {
         // Do any additional setup after loading the view, typically from a nib.
         tableView.rowHeight = 73
         self.navigationController!.navigationBar.barStyle = .Black;
-        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
+      //  self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         
         var topFrame = self.tableView.bounds;
         topFrame.origin.y = -topFrame.size.height;
