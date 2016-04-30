@@ -10,7 +10,7 @@ var sync = require("../../sync");
 
 var plaidClient = config.plaid.client;
 
-exports.phone = function() {
+exports.phone = function(req, res) {
   var userId = req.query.u;
   var code = req.query.c;
   User.findOne({
