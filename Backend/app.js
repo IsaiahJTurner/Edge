@@ -102,7 +102,7 @@ api.patch("/appledevices/:deviceId", middleware.auth.requiresUser, controllers.a
 
 api.post("/webhooks/plaid", controllers.webhooks.plaid);
 
-app.post("/p", controllers.webhooks.phone);
+app.get("/p", controllers.webhooks.phone);
 
 app.get("/", function(req, res) {
   res.send("Welcome to Edge!");
