@@ -54,11 +54,11 @@ class EnableProtectionViewController: UIViewController, UITableViewDataSource, U
             } else {
                 self.passes = passes
                 self.optionsTable.reloadData()
+                self.optionsTable.selectRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), animated: true, scrollPosition: .Top)
             }
         }
         // Do any additional setup after loading the view, typically from a nib.
     }
-    
     @IBAction func pay(sender: UIButton) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }

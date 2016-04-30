@@ -11,6 +11,11 @@ var config = {
   plaid_webhook: "https://edge-development.herokuapp.com/api/v1.0/webhooks/plaid",
   apns: {
     isProduction: false
+  },
+  twilio: {
+    ACCOUNT_SID: "AC98f199067b6295de876b4b1e1d9ea0e3",
+    AUTH_TOKEN: "66c102003d36cc34366ed6a34ee9cc60",
+    hasherSecret: "Follow @IsaiahJTurner on Twitter!"
   }
 };
 config.plaid.client = new plaid.Client(config.plaid.clientId, config.plaid.secret,

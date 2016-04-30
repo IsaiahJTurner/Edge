@@ -10,6 +10,7 @@
 		6A8ED879327FBA04D9944FE5 /* Pods_Edge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D33C01CCEDBFA2EC4705D5C /* Pods_Edge.framework */; };
 		8B0489E31C6C497F00F9728D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0489E21C6C497F00F9728D /* User.swift */; };
 		8B1AD4D61C741DB6000EF367 /* PlaidLinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AD4D51C741DB6000EF367 /* PlaidLinkViewController.swift */; };
+		8B1BC4971CD46DB200216622 /* InfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1BC4961CD46DB200216622 /* InfoTableViewCell.swift */; };
 		8B21329E1C78C51000B8D90A /* ConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B21329D1C78C51000B8D90A /* ConnectViewController.swift */; };
 		8B2132A01C78D24900B8D90A /* ModalNoAnimationSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B21329F1C78D24900B8D90A /* ModalNoAnimationSegue.swift */; };
 		8B2132A41C78EBD000B8D90A /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2132A31C78EBD000B8D90A /* TransactionTableViewCell.swift */; };
@@ -47,6 +48,7 @@
 		8B0489E21C6C497F00F9728D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		8B1AD4D31C741D45000EF367 /* Edge-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Edge-Bridging-Header.h"; sourceTree = "<group>"; };
 		8B1AD4D51C741DB6000EF367 /* PlaidLinkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaidLinkViewController.swift; sourceTree = "<group>"; };
+		8B1BC4961CD46DB200216622 /* InfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoTableViewCell.swift; sourceTree = "<group>"; };
 		8B21329D1C78C51000B8D90A /* ConnectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectViewController.swift; sourceTree = "<group>"; };
 		8B21329F1C78D24900B8D90A /* ModalNoAnimationSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalNoAnimationSegue.swift; sourceTree = "<group>"; };
 		8B2132A31C78EBD000B8D90A /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 				8B39E9071C76CA1500BD37B9 /* HomeViewController.swift */,
 				8B2132A31C78EBD000B8D90A /* TransactionTableViewCell.swift */,
 				8B4553CB1C7EC7110004ECE4 /* HomeTopView.swift */,
+				8B1BC4961CD46DB200216622 /* InfoTableViewCell.swift */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 				8B39E9081C76CA1500BD37B9 /* HomeViewController.swift in Sources */,
 				8B0489E31C6C497F00F9728D /* User.swift in Sources */,
 				8B4553CC1C7EC7110004ECE4 /* HomeTopView.swift in Sources */,
+				8B1BC4971CD46DB200216622 /* InfoTableViewCell.swift in Sources */,
 				8BE0FC511C812F1100A615BE /* StoreItemTableViewCell.swift in Sources */,
 				8BC96EE31C869CA000427B22 /* ReceiptViewController.swift in Sources */,
 				8B408D681C69814D00CA0B79 /* AppDelegate.swift in Sources */,
@@ -488,6 +492,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Edge/Edge-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
@@ -506,6 +511,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.isaiahjturner.edge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Edge/Edge-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;

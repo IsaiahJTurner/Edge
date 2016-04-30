@@ -13,11 +13,13 @@ import Alamofire
 class HomeViewController: UITableViewController {
     var client = EdgeAPIClient()
     var transactions:Transactions?
+    var loaded = false;
+    @IBOutlet var mainRefreshControl: UIRefreshControl!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         tableView.rowHeight = 73
-        self.navigationController!.navigationBar.barStyle = .Black;
+       // self.navigationController!.navigationBar.barStyle = .Black;
       //  self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         
         var topFrame = self.tableView.bounds;
@@ -25,9 +27,13 @@ class HomeViewController: UITableViewController {
         let topView = UIView(frame: topFrame);
         topView.backgroundColor = UIColor(hex: "#FF5950", alpha: 1)
         self.tableView.insertSubview(topView, atIndex: 0)
+        self.tableView.contentOffset = CGPointMake(0, -self.mainRefreshControl.frame.size.height)
+        
+        self.mainRefreshControl.beginRefreshing()
         reloadData() {
-            
+            self.mainRefreshControl.endRefreshing()
         }
+        
     }
     /*
         override func preferredStatusBarStyle() -> UIStatusBarStyle {

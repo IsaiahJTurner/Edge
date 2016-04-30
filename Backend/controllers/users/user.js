@@ -1,6 +1,9 @@
 var _ = require('underscore');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var config = require('../../config');
+var phoneHasher = require("../../helpers/phone-hasher");
+var twilio = require('twilio')(config.twilio.ACCOUNT_SID, config.twilio.AUTH_TOKEN);
 
 exports.get = function(req, res) {
   var _user = req.params.userId;
@@ -121,6 +124,26 @@ exports.patch = function(req, res) {
           errors: [{
             title: error
           }]
+        });
+      }
+      if (!user.phoneIsVerified) {
+        return twilio.sendMessage({
+            to: user.phone,
+            from: '+17738253343',
+            body: "To enable text message notifications for Edge visit http://padding.tips/p?u=" + user._id + "&c=" + phoneHasher(phone, user._id)
+        }, function(err, responseData) {
+            if (err) {
+                var error = "You account was updated but the phone verification text failed to send.";
+                console.log(error, responseData, user);
+                return res.json({
+                  errors: [{
+                    title: error
+                  }]
+                });
+            }
+            res.json({
+              data: user
+            })
         });
       }
       res.json({

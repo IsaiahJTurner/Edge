@@ -15,10 +15,12 @@
     "bcrypt": "^0.8.5",
     "body-parser": "^1.14.2",
     "connect-mongo": "^1.1.0",
+    "crypto": "0.0.3",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "mongoose": "^4.4.2",
     "plaid": "^1.0.9",
+    "twilio": "^2.9.1",
     "underscore": "^1.8.3"
   }
 }

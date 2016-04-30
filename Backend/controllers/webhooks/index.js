@@ -4,11 +4,39 @@ var plaid = require('plaid');
 var User = mongoose.model('User');
 var Auth = mongoose.model('Auth');
 var config = require("../../config");
+var phoneHasher = require("../../helpers/phone-hasher");
+
 var sync = require("../../sync");
 
 var plaidClient = config.plaid.client;
 
-exports.post = function(req, res) {
+exports.phone = function() {
+  var userId = req.query.u;
+  var code = req.query.c;
+  User.findOne({
+    _id: userId
+  }, function(err, user) {
+    if (err) {
+      var error = "Could not find user for phone verification.";
+      console.log(error, err, user, userId, code);
+      return res.send(error);
+    }
+    if (phoneHasher(user.phone, user._id) !== code) {
+      return res.send("Invalid code!");
+    }
+    user.phoneIsVerified = true;
+    user.save(function(err, user) {
+      if (err) {
+        var error = "Could not update user with verified phone.";
+        console.log(error, err, user, userId, code);
+        return res.send(error);
+      }
+      res.send("Your phone has been verified.")
+    });
+  });
+}
+
+exports.plaid = function(req, res) {
   var body = req.body;
   console.log(body)
   if (!_.isObject(body)) {
@@ -54,7 +82,7 @@ exports.post = function(req, res) {
         allTransactions = allTransactions.concat(response.transactions);
         sync.transactions(allTransactions, {
           _owner: req.session._user,
-          accounts: auth._accounts 
+          accounts: auth._accounts
         }, function(err, transactions) {
           if (err) {
             var error = "Failed to sync your transactions.";
