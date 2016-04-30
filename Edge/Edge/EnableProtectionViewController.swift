@@ -20,6 +20,7 @@ class EnableProtectionViewController: UIViewController, UITableViewDataSource, U
     
     @IBOutlet var payButton: UIButton!
     var selectedCell:StoreItemTableViewCell?
+    var passes:Passes?
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController!.navigationBar.barStyle = .Black;
@@ -44,6 +45,17 @@ class EnableProtectionViewController: UIViewController, UITableViewDataSource, U
         self.headerContainer.layer.borderColor = UIColor(hex: "#FFFFFF", alpha: 0.82).CGColor
         self.headerContainer.layer.borderWidth = 1
         self.headerContainer.layer.cornerRadius = 5
+        Passes().get { (response, data, passes, error) in
+            if ((error) != nil) {
+                let alertController = UIAlertController(title: "Error", message:
+                    error, preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                self.presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                self.passes = passes
+                self.optionsTable.reloadData()
+            }
+        }
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -67,14 +79,27 @@ class EnableProtectionViewController: UIViewController, UITableViewDataSource, U
         if cell == nil {
             cell = StoreItemTableViewCell()
         }
-        cell!.selectionStyle = UITableViewCellSelectionStyle.None
+        let pass = passes!.array![indexPath.row] as Pass;
+        if let cell = cell {
+            cell.selectionStyle = UITableViewCellSelectionStyle.None
+            cell.passDescriptionTextView.textContainer.lineFragmentPadding = 0;
+            cell.passDescriptionTextView.textContainerInset = UIEdgeInsetsZero;
+            cell.passDescriptionTextView.text = pass.description
+            let formatter = NSNumberFormatter()
+            formatter.numberStyle = .CurrencyStyle
+            cell.passCostLabel.text = formatter.stringFromNumber(pass.cost!)
+            cell.passTitleLabel.text = pass.title
+        }
         return cell!
     }
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        if let array = passes?.array {
+            return array.count
+        }
+        return 0
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)

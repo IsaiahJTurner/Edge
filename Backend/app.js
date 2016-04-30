@@ -90,6 +90,7 @@ api.delete("/auths/:authId", middleware.auth.requiresUser, controllers.auths.aut
 api.get("/accounts", middleware.auth.requiresUser, controllers.accounts.get);
 
 api.get("/passes", middleware.auth.requiresUser, controllers.passes.get);
+api.get("/passes/:passId", middleware.auth.requiresUser, controllers.passes.getOne);
 
 api.post("/transactions", middleware.auth.requiresUser, controllers.transactions.index.post);
 api.get("/transactions", middleware.auth.requiresUser, controllers.transactions.index.get);

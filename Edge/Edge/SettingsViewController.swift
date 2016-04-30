@@ -22,7 +22,7 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
     var appledevice:AppleDevice?
     var client = EdgeAPIClient()
     override func viewDidLoad() {
-        self.navigationController!.interactivePopGestureRecognizer?.addTarget(self, action: "handlePopGesture:")
+        self.navigationController!.interactivePopGestureRecognizer?.addTarget(self, action: #selector(SettingsViewController.handlePopGesture(_:)))
         if let me = client.me {
             self.nameTextField.text = me.name
             self.emailTextField.text = me.email
@@ -30,10 +30,10 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
         }
         saveButton.enabled = false
         saveButton.title = ""
-        self.transactionNotificationsSwitch.addTarget(self, action: "toggleNotifications:", forControlEvents: .ValueChanged)
-        self.pushNotificationsSwitch.addTarget(self, action: "toggleNotifications:", forControlEvents: .ValueChanged)
-        self.emailNotificationsSwitch.addTarget(self, action: "toggleNotifications:", forControlEvents: .ValueChanged)
-        self.textNotificationsSwitch.addTarget(self, action: "toggleNotifications:", forControlEvents: .ValueChanged)
+        self.transactionNotificationsSwitch.addTarget(self, action: #selector(SettingsViewController.toggleNotifications(_:)), forControlEvents: .ValueChanged)
+        self.pushNotificationsSwitch.addTarget(self, action: #selector(SettingsViewController.toggleNotifications(_:)), forControlEvents: .ValueChanged)
+        self.emailNotificationsSwitch.addTarget(self, action: #selector(SettingsViewController.toggleNotifications(_:)), forControlEvents: .ValueChanged)
+        self.textNotificationsSwitch.addTarget(self, action: #selector(SettingsViewController.toggleNotifications(_:)), forControlEvents: .ValueChanged)
         let defaults = NSUserDefaults.standardUserDefaults()
         if let _appledevice = defaults.objectForKey("_appledevice") as? String {
             AppleDevice(id: _appledevice).get({ (response, data, appledevice, error) -> () in
@@ -55,7 +55,7 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
         }
     }
     override func viewWillDisappear(animated: Bool) {
-        self.navigationController!.interactivePopGestureRecognizer?.removeTarget(self, action: "handlePopGesture:")
+        self.navigationController!.interactivePopGestureRecognizer?.removeTarget(self, action: #selector(SettingsViewController.handlePopGesture(_:)))
     }
     func toggleNotifications(sender: UISwitch) {
         if sender == pushNotificationsSwitch {

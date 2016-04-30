@@ -84,8 +84,9 @@ exports.transactions = function(transactionsData, options, cb) {
           }
           // Transaction model
           var pendingTransaction = transactionsMap[transactionData._pendingTransaction];
+          var _pendingTransaction = null;
           if (pendingTransaction) {
-            var _pendingTransaction = pendingTransaction._id;
+            _pendingTransaction = pendingTransaction._id;
           }
           return {
             _owner: options._owner,
@@ -109,7 +110,7 @@ exports.transactions = function(transactionsData, options, cb) {
             updatedAt: Date.now()
           };
         });
-        callback(null, transactions, newTransactions);
+        callback(null, existingTransactions, newTransactions);
     },
     function(transactions, newTransactions, callback) {
       /*
@@ -168,7 +169,7 @@ exports.transactions = function(transactionsData, options, cb) {
           note.badge = 0;
           service.pushNotification(note, _.pluck(appledevices, "token"));
         });
-        callback(null, );
+        callback(null, newTransactions);
       });
     }
   ], function(err, newTransactions) {

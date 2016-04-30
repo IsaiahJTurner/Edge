@@ -16,5 +16,4 @@ class StoreItemTableViewCell: UITableViewCell {
     @IBOutlet var passTitleLabel: UILabel!
     @IBOutlet var passDescriptionTextView: UITextView!
     @IBOutlet var passCostLabel: UILabel!
-    
 }
