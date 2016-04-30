@@ -39,6 +39,9 @@ var UserSchema = new Schema({
   textNotifications: {
     type: Boolean
   },
+  lastSMSVerificationSentAt: {
+    type: Date
+  },
   password: {
     type: String,
     required: true

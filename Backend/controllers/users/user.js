@@ -53,6 +53,40 @@ exports.get = function(req, res) {
   });
 };
 
+function sendSMSVerificationText(req, res, user, callback) {
+  var now = Date.now();
+  if (user.lastSMSVerificationSentAt && user.lastSMSVerificationSentAt.getTime() + (1000 * 30) > now) {
+    return callback(); // dont send text, they are reate limited
+  }
+  user.lastSMSVerificationSentAt = now;
+  user.save(function(err, user) {
+    if (err) {
+      var error = "Failed to update rate limiting data.";
+      console.log(error, responseData, user);
+      return res.json({
+        errors: [{
+          title: error
+        }]
+      });
+    }
+    twilio.sendMessage({
+        to: user.phone,
+        from: '+17738253343',
+        body: "To enable text message notifications for Edge visit http://padding.tips/p?u=" + user._id + "&c=" + phoneHasher(user.phone, user._id)
+    }, function(err, responseData) {
+        if (err) {
+          var error = "Phone verification text failed to send.";
+          console.log(error, responseData, user);
+          return res.json({
+            errors: [{
+              title: error
+            }]
+          });
+        }
+        callback();
+    });
+  });
+}
 exports.patch = function(req, res) {
   console.log(req.body)
   var _user = req.params.userId;
@@ -114,7 +148,18 @@ exports.patch = function(req, res) {
       user.phoneIsVerified = false;
     }
     user.name = req.body.data.attributes.name;
-    user.textNotifications = req.body.data.attributes.textNotifications;
+    var textNotifications = Boolean(req.body.data.attributes.textNotifications);
+    if (user.phoneIsVerified) {
+      user.textNotifications = textNotifications;
+    } else if (textNotifications) {
+      return sendSMSVerificationText(req, res, user, function() {
+        res.json({
+          errors: [{
+            title: "Please confirm your phone number before enabling text message notifications."
+          }]
+        });
+      });
+    }
     user.emailNotifications = req.body.data.attributes.emailNotifications;
     user.save(function(err, user) {
       if (err || !user) {
@@ -127,24 +172,11 @@ exports.patch = function(req, res) {
         });
       }
       if (!user.phoneIsVerified) {
-        return twilio.sendMessage({
-            to: user.phone,
-            from: '+17738253343',
-            body: "To enable text message notifications for Edge visit http://padding.tips/p?u=" + user._id + "&c=" + phoneHasher(phone, user._id)
-        }, function(err, responseData) {
-            if (err) {
-                var error = "You account was updated but the phone verification text failed to send.";
-                console.log(error, responseData, user);
-                return res.json({
-                  errors: [{
-                    title: error
-                  }]
-                });
-            }
-            res.json({
-              data: user
-            })
-        });
+        return sendSMSVerificationText(req, res, user, function() {
+          res.json({
+            data: user
+          });
+        })
       }
       res.json({
         data: user

@@ -190,6 +190,7 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
         sender.text = formatted
         
         if numbers.characters.count == 10 {
+            self.phoneTextField.resignFirstResponder()
             let alertController = UIAlertController(title: "Verify Accuracy", message:
                 "A confirmation text message will be sent to \(formatted).", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
@@ -198,6 +199,8 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
                     me.phone = formatted
                     me.save({ (response, data, user, error) -> () in
                         if (error != nil) {
+                            self.saveButton.enabled = true
+                            self.saveButton.title = "Save"
                             let alertController = UIAlertController(title: "Error", message:
                                 error, preferredStyle: UIAlertControllerStyle.Alert)
                             alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
