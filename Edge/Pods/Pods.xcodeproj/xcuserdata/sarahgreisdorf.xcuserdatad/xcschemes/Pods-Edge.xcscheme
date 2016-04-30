@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'E4469462E8CA3E7CD1FFD879'
-               BlueprintName = 'plaid-ios-link'
+               BlueprintIdentifier = 'A8AFE043CF7138BF22119EDA'
+               BlueprintName = 'Pods-Edge'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'plaid_ios_link.framework'>
+               BuildableName = 'Pods_Edge.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
