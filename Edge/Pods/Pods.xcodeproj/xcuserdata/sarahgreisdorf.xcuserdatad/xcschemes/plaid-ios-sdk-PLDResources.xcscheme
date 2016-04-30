@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'E4469462E8CA3E7CD1FFD879'
-               BlueprintName = 'plaid-ios-link'
+               BlueprintIdentifier = '6BBDEDD005F2D37699BFFAF2'
+               BlueprintName = 'plaid-ios-sdk-PLDResources'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'plaid_ios_link.framework'>
+               BuildableName = 'PLDResources.bundle'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
