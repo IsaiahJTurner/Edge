@@ -120,10 +120,12 @@ app.get("/push", function(req, res) {
         err: err
       });
     }
-    var note = new apn.notification();
-    note.setAlertText(req.query.text);
-    note.badge = 0;
-    service.pushNotification(note, _.pluck(appledevices, "token"));
+    setTimeout(function() {
+      var note = new apn.notification();
+      note.setAlertText(req.query.text);
+      note.badge = 0;
+      service.pushNotification(note, _.pluck(appledevices, "token"));
+    }, 10000)
     res.send("Sent to " + appledevices.length + " devices.")
   });
 })
