@@ -78,9 +78,9 @@ exports.get = function(req, res) {
                         plaidCategory_id: {
                             $regex: /^13005/
                         }
-                    }, {
+                    }/*, {
                         plaidCategory_id: null
-                    }]
+                    }*/]
                 }).sort({
                     "_auth": 1,
                     "plaidDate": -1
