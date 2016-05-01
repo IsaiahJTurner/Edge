@@ -9,7 +9,12 @@
 import UIKit
 
 class ReceiptViewController: UIViewController {
-    @IBOutlet var image: UIImageView!
+    @IBOutlet var imageView: UIImageView!
+    var image:UIImage?
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.imageView.image = self.image;
+    }
     @IBAction func showOptions(sender: UIBarButtonItem) {
         let optionMenu = UIAlertController(title: "Image Options", message: nil, preferredStyle: .ActionSheet)
         

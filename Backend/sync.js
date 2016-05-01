@@ -173,7 +173,7 @@ exports.transactions = function(transactionsData, options, cb) {
         }
         newTransactions.forEach(function(transaction) {
           var note = new apn.notification();
-          note.setAlertText("Update your transaction for " + transaction.title);
+          note.setAlertText("Update your tip for " + transaction.title);
           note.badge = 0;
           service.pushNotification(note, _.pluck(appledevices, "token"));
         });

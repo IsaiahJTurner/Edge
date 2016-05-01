@@ -33,8 +33,13 @@ class HomeViewController: UITableViewController {
         reloadData() {
             self.mainRefreshControl.endRefreshing()
         }
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.pushNotificationReceived(_:)), name: "pushNotification", object: nil)
     }
+    
+    func pushNotificationReceived(notification: NSNotification) {
+        self.navigationController?.presentViewController((self.storyboard?.instantiateViewControllerWithIdentifier("addTipVC"))!, animated: true, completion: nil)
+    }
+    
     /*
         override func preferredStatusBarStyle() -> UIStatusBarStyle {
             return UIStatusBarStyle.LightContent

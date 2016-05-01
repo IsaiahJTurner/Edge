@@ -1311,6 +1311,22 @@
             </objects>
             <point key="canvasLocation" x="2885" y="1031"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="qC4-QX-IIU">
+            <objects>
+                <navigationController storyboardIdentifier="addTipVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hLf-cZ-yKV" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Yvn-eL-dj7">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="mVy-rs-wcT" kind="relationship" relationship="rootViewController" id="1XB-By-E9L"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hnF-6n-0V5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3490" y="1039"/>
+        </scene>
         <!--Vapianos-->
         <scene sceneID="a00-Wq-B5R">
             <objects>
@@ -1573,7 +1589,7 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K3a-R5-zaF">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Good Check" translatesAutoresizingMaskIntoConstraints="NO" id="K3a-R5-zaF">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                             </imageView>
                         </subviews>
@@ -1588,12 +1604,44 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
-                        <outlet property="image" destination="K3a-R5-zaF" id="WCB-c0-K5M"/>
+                        <outlet property="imageView" destination="K3a-R5-zaF" id="vkz-Fb-GTO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tre-b8-srb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3829" y="337"/>
+        </scene>
+        <!--Enter Tip-->
+        <scene sceneID="Cv8-ta-H3o">
+            <objects>
+                <viewController id="mVy-rs-wcT" customClass="AddTipViewController" customModule="Edge" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="NK1-XS-oqv"/>
+                        <viewControllerLayoutGuide type="bottom" id="2Xi-RA-jwK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Czi-4g-UBx">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="2.20" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NOw-lz-ZgA">
+                                <rect key="frame" x="20" y="72" width="560" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Enter Tip" id="NNw-cX-Vx7">
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="Blt-Pr-WC1">
+                            <connections>
+                                <action selector="save:" destination="mVy-rs-wcT" id="Ghn-KG-eLs"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cov-qU-npK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4137" y="1050"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dYX-Km-2Hz">

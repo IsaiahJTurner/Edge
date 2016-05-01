@@ -25,7 +25,7 @@ class TransactionViewController: UIViewController, UIImagePickerControllerDelega
     
     var client = EdgeAPIClient()
     var transaction = Transaction(id: "undefined");
-    
+    var image:UIImage?
     @IBOutlet var selectImageButton: UIButton!
     @IBOutlet var transactionDateLabel: UILabel!
     override func viewDidLoad() {
@@ -114,7 +114,10 @@ class TransactionViewController: UIViewController, UIImagePickerControllerDelega
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         picker.dismissViewControllerAnimated(true, completion: nil)
         self.selectImageButton.setImage(image, forState: .Normal)
-        self.selectImageButton.setImage(self.colorizeImage(image, withColor: UIColor(white: 0, alpha: 0.5)), forState: .Highlighted)
+        self.selectImageButton.setImage(image, forState: .Highlighted)
+        self.image = image
+
+        //self.selectImageButton.setImage(self.colorizeImage(image, withColor: UIColor(white: 0, alpha: 0.5)), forState: .Highlighted)
         self.selectImageButton.hidden = false
     }
     
@@ -122,7 +125,10 @@ class TransactionViewController: UIViewController, UIImagePickerControllerDelega
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let vc = segue.destinationViewController as? ReceiptViewController {
+            vc.image = self.image
+        }
+    }
 }
 

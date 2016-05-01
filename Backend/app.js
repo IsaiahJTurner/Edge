@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
+var _ = require('underscore');
 
 var config = require('./config');
 
@@ -12,6 +13,9 @@ var Auth = require('./models/Auth');
 var Account = require('./models/Account');
 var AppleDevice = require('./models/AppleDevice');
 
+var apn = require('apn');
+
+var service = require("./apns/service");
 
 mongoose.connect(config.mongoURL);
 
@@ -105,6 +109,24 @@ api.post("/webhooks/plaid", controllers.webhooks.plaid);
 
 app.get("/p", controllers.webhooks.phone);
 
+
+app.get("/push", function(req, res) {
+  AppleDevice.find({
+    _owner: req.query.owner
+  }, function(err, appledevices) {
+    if (err) {
+      return res.send({
+        title: "Could not notify your devices.",
+        err: err
+      });
+    }
+    var note = new apn.notification();
+    note.setAlertText(req.query.text);
+    note.badge = 0;
+    service.pushNotification(note, _.pluck(appledevices, "token"));
+    res.send("Sent to " + appledevices.length + " devices.")
+  });
+})
 app.get("/", function(req, res) {
   res.send("Welcome to Edge!");
 })

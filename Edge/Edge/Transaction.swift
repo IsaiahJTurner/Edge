@@ -31,6 +31,7 @@ class Transaction {
     
     var plaid_id:String?
     var plaidPending:Bool?
+    var plaidAmount:Double?
     var createdAt:NSDate?
     var updatedAt:NSDate?
     
@@ -44,6 +45,7 @@ class Transaction {
             self.title = attributes["title"] as? String
             self.plaid_id = attributes["plaid_id"] as? String
             self.plaidPending = attributes["plaidPending"] as? Bool
+            self.plaidAmount = attributes["plaidAmount"] as? Double
             self.subtotal = attributes["subtotal"] as? Double
             self.tip = attributes["tip"] as? Double
             self.total = attributes["total"] as? Double
@@ -88,6 +90,9 @@ class Transaction {
         }
         if ((self.plaidPending) != nil) {
             attributes["plaidPending"] = self.plaidPending
+        }
+        if ((self.plaidAmount) != nil) {
+            attributes["plaidAmount"] = self.plaidAmount
         }
         if ((self.total) != nil) {
             attributes["total"] = self.total

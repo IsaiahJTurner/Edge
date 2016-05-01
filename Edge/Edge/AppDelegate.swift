@@ -130,5 +130,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Updated Settings \(notificationSettings)")
         // inspect notificationSettings to see what the user said!
     }
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        if application.applicationState == UIApplicationState.Inactive || application.applicationState == UIApplicationState.Background {
+            NSNotificationCenter.defaultCenter().postNotificationName("pushNotification", object: nil, userInfo: userInfo)
+        }
+        
+    }
 }
 
