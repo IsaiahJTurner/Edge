@@ -73,7 +73,8 @@ exports.get = function(req, res) {
                 }
 
                 Transaction.find({
-                    _owner: req.session._user
+                    _owner: req.session._user,
+                    plaidCategory_id : { $regex : /^13005/ }
                 }).sort({
                     "_auth": 1,
                     "plaidDate": -1

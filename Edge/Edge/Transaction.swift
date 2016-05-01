@@ -21,13 +21,16 @@ class Transaction {
     var type = "transactions"
     var owner:User?
     var auth:Auth?
+    var pendingTransaction:Transaction?
+    
+    
     var title:String?
     var subtotal:Double?
     var tip:Double?
     var total:Double?
     
     var plaid_id:String?
-    
+    var plaidPending:Bool?
     var createdAt:NSDate?
     var updatedAt:NSDate?
     
@@ -40,6 +43,7 @@ class Transaction {
             self.isIdentifier = false;
             self.title = attributes["title"] as? String
             self.plaid_id = attributes["plaid_id"] as? String
+            self.plaidPending = attributes["plaidPending"] as? Bool
             self.subtotal = attributes["subtotal"] as? Double
             self.tip = attributes["tip"] as? Double
             self.total = attributes["total"] as? Double
@@ -51,6 +55,9 @@ class Transaction {
             self.owner = User(data: relationships["owner"] as! Dictionary<String, AnyObject>)
             if let auth = relationships["auth"] as? Dictionary<String, AnyObject> {
                 self.auth = Auth(data: auth);
+            }
+            if let pendingTransaction = relationships["pendingTransaction"] as? Dictionary<String, AnyObject> {
+                self.pendingTransaction = Transaction(data: pendingTransaction);
             }
         }
     }
@@ -79,6 +86,9 @@ class Transaction {
         if ((self.plaid_id) != nil) {
             attributes["plaid_id"] = self.plaid_id
         }
+        if ((self.plaidPending) != nil) {
+            attributes["plaidPending"] = self.plaidPending
+        }
         if ((self.total) != nil) {
             attributes["total"] = self.total
         }
@@ -88,6 +98,9 @@ class Transaction {
         }
         if ((self.auth) != nil) {
             relationships["auth"] = auth?.toJSON()
+        }
+        if ((self.pendingTransaction) != nil) {
+            relationships["pendingTransaction"] = pendingTransaction?.toJSON()
         }
         var resource : [String : AnyObject] = [
             "type": self.type,

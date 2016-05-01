@@ -51,15 +51,15 @@ var TransactionSchema = new Schema({
   plaid_pendingTransaction: {
     type: String
   },
-  plaidAmount: [{
+  plaidAmount: {
     type: Number
-  }],
+  },
   plaidDate: {
     type: Date
   },
-  plaidName: [{
+  plaidName: {
     type: String
-  }],
+  },
   plaidMeta: {
     type: Object
   },
@@ -69,12 +69,12 @@ var TransactionSchema = new Schema({
   plaidScore: {
     type: Object
   },
-  plaidType: [{
+  plaidType: {
     primary: String
-  }],
-  plaidCategory_id: [{
+  },
+  plaidCategory_id: {
     type: String
-  }],
+  },
   createdAt: {
     type: Date
   },

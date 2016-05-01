@@ -96,9 +96,11 @@ class HomeViewController: UITableViewController {
         cell?.amountLabel.text = total
         cell?.titleLabel.text = transaction.title!
         if (transaction.plaid_id) == nil {
-            cell?.resultLabel.text = "Temporary Transaction"
+            cell?.resultLabel.text = "Temporary"
+        } else if transaction.plaidPending == true {
+            cell?.resultLabel.text = "Pending"
         } else {
-            cell?.resultLabel.text = "Processing Transaction"
+            cell?.resultLabel.text = "Final Charge"
         }
         if let tip = transaction.tip {
             cell?.tipLabel.text = formatter.stringFromNumber(tip)
