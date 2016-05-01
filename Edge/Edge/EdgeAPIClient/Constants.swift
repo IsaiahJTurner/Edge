@@ -12,7 +12,7 @@ struct Constants {
         static let DEVICE_IS_SIMULATOR = true
         static let endpoint = "http://localhost:3002/api/v1.0"
     #else
-        static let endpoint = "https://edge-development.herokuapp.com/api/v1.0"
+        static let endpoint = "http://padding.tips/api/v1.0"
         static let DEVICE_IS_SIMULATOR = false
     #endif
 }

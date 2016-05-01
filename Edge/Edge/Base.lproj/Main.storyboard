@@ -41,7 +41,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Je-vG-SOn">
                                         <rect key="frame" x="2" y="165" width="236" height="30"/>
-                                        <state key="normal" title="Onboarding"/>
+                                        <state key="normal" title="OK"/>
                                         <connections>
                                             <segue destination="zQU-8F-jWQ" kind="show" id="BrY-xJ-Iyr"/>
                                         </connections>
@@ -49,7 +49,9 @@
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="0Py-bb-DQS">
                                         <rect key="frame" x="0.0" y="0.0" width="240" height="151"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <string key="text">This is a view that will only show the first time you launch the app. A little intro of sorts. Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+                                        <string key="text">This is a view that will only show the first time you launch the app. A little intro of sorts. It's on the TODO list.
+
+Please check the comments section of the WWDC application for more information about the app. </string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
