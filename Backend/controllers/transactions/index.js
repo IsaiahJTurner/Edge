@@ -78,6 +78,8 @@ exports.get = function(req, res) {
                         plaidCategory_id: {
                             $regex: /^13005/
                         }
+                    }, {
+                      plaid_id: null
                     }/*, {
                         plaidCategory_id: null
                     }*/]
