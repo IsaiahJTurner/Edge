@@ -25,6 +25,9 @@ class Transaction {
     var subtotal:Double?
     var tip:Double?
     var total:Double?
+    
+    var plaid_id:String?
+    
     var createdAt:NSDate?
     var updatedAt:NSDate?
     
@@ -36,6 +39,7 @@ class Transaction {
         if let attributes = data["attributes"] {
             self.isIdentifier = false;
             self.title = attributes["title"] as? String
+            self.plaid_id = attributes["plaid_id"] as? String
             self.subtotal = attributes["subtotal"] as? Double
             self.tip = attributes["tip"] as? Double
             self.total = attributes["total"] as? Double
@@ -45,7 +49,9 @@ class Transaction {
         if let relationships = data["relationships"] {
             self.isIdentifier = false;
             self.owner = User(data: relationships["owner"] as! Dictionary<String, AnyObject>)
-            self.auth = Auth(data: relationships["auth"] as! Dictionary<String, AnyObject>)
+            if let auth = relationships["auth"] as? Dictionary<String, AnyObject> {
+                self.auth = Auth(data: auth);
+            }
         }
     }
     
@@ -53,14 +59,11 @@ class Transaction {
         self.isIdentifier = true
         self.id = id
     }
-    init(owner: User?, auth: Auth?, title: String?, subtotal: Double?, tip: Double?, total: Double) {
+    init(title: String?, subtotal: Double?, tip: Double?) {
         self.isIdentifier = false
-        self.owner = owner
-        self.auth = auth
         self.title = title
         self.subtotal = subtotal
         self.tip = tip
-        self.total = total
     }
     func toJSON() -> Dictionary<String, AnyObject> {
         var attributes = [String : AnyObject]()
@@ -72,6 +75,9 @@ class Transaction {
         }
         if ((self.tip) != nil) {
             attributes["tip"] = self.tip
+        }
+        if ((self.plaid_id) != nil) {
+            attributes["plaid_id"] = self.plaid_id
         }
         if ((self.total) != nil) {
             attributes["total"] = self.total
@@ -98,7 +104,7 @@ class Transaction {
         return data
     }
     func get(callback: (response: Response<AnyObject, NSError>, data: AnyObject?, transaction: Transaction?, error: String?) -> ()) {
-        Alamofire.request(.GET, "\(endpoint)/transactions/\(self.id)")
+        Alamofire.request(.GET, "\(endpoint)/\(self.type)/\(self.id)")
             .responseJSON { response in
                 switch response.result {
                 case .Success: // returned json
@@ -133,7 +139,7 @@ class Transaction {
             path = ""
         }
         
-        Alamofire.request(method, "\(endpoint)/transactions\(path)", parameters: self.toJSON(), encoding: .JSON)
+        Alamofire.request(method, "\(endpoint)/\(self.type)\(path)", parameters: self.toJSON(), encoding: .JSON)
             .responseJSON { response in
                 switch response.result {
                 case .Success: // returned json
@@ -150,6 +156,27 @@ class Transaction {
                 case .Failure(let error):
                     print(error)
                     callback(response: response, data: nil, transaction: nil, error: error.localizedDescription)
+                }
+        }
+    }
+    
+    func remove(callback: (response: Response<AnyObject, NSError>?, data: AnyObject?, error: String?) -> ()) {
+        Alamofire.request(.DELETE, "\(endpoint)/\(self.type)/\(self.id!)")
+            .responseJSON { response in
+                switch response.result {
+                case .Success: // returned json
+                    let data = response.result.value!
+                    let errors = data.objectForKey("errors")
+                    if ((errors) != nil) { // but the json had an errors property
+                        let error = self.common.jsonAPIErrorsToString(errors!)
+                        callback(response: response, data: data, error: error)
+                    } else { // and the json was without errors
+                        callback(response: response, data: data, error: nil)
+                    }
+                    
+                case .Failure(let error):
+                    print(error)
+                    callback(response: response, data: nil, error: error.localizedDescription)
                 }
         }
     }

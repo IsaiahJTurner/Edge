@@ -11,6 +11,18 @@ import UIKit
 
 class TransactionViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    @IBOutlet var subtotalExpected: UILabel!
+    
+    @IBOutlet var tipExpected: UILabel!
+    
+    @IBOutlet var totalExpected: UILabel!
+    
+    @IBOutlet var subtotalActual: UILabel!
+    
+    @IBOutlet var tipActual: UILabel!
+    
+    @IBOutlet var totalActual: UILabel!
+    
     var client = EdgeAPIClient()
     var transaction = Transaction(id: "undefined");
     
@@ -26,6 +38,24 @@ class TransactionViewController: UIViewController, UIImagePickerControllerDelega
         self.transactionDateLabel.text = dateFormatter.stringFromDate(transaction.createdAt!)
         self.selectImageButton.imageView?.contentMode = .ScaleAspectFit
         self.selectImageButton.adjustsImageWhenHighlighted = false
+        let formatter = NSNumberFormatter()
+        formatter.numberStyle = .CurrencyStyle
+        if let tip = transaction.tip {
+            self.tipExpected.text = formatter.stringFromNumber(tip);
+        } else {
+            self.tipExpected.text = "???";
+        }
+        if let subtotal = transaction.subtotal {
+            self.subtotalExpected.text = formatter.stringFromNumber(subtotal);
+        } else {
+            self.subtotalExpected.text = "???";
+        }
+        if let total = transaction.total {
+            self.totalExpected.text = formatter.stringFromNumber(total);
+        } else {
+            self.totalExpected.text = "???";
+        }
+        
     }
     
     func colorizeImage(image: UIImage, withColor color: UIColor) -> UIImage {

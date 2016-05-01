@@ -95,14 +95,43 @@ class HomeViewController: UITableViewController {
         
         cell?.amountLabel.text = total
         cell?.titleLabel.text = transaction.title!
-        cell?.resultLabel.text = "successful"
-        cell?.tipLabel.text = "unknown"
+        if (transaction.plaid_id) == nil {
+            cell?.resultLabel.text = "Temporary Transaction"
+        } else {
+            cell?.resultLabel.text = "Processing Transaction"
+        }
+        if let tip = transaction.tip {
+            cell?.tipLabel.text = formatter.stringFromNumber(tip)
+        } else {
+            cell?.tipLabel.text = "Tip Unknown"
+        }
         if row % 2 == 0 {
             cell?.backgroundColor = UIColor(hex: "#F8F8F8", alpha: 1)
         } else {
             cell?.backgroundColor = UIColor(hex: "#FDFDFD", alpha: 1)
         }
         return cell!
+    }
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        let transaction = transactions!.array![indexPath.row]
+        return transaction.plaid_id == nil
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if (editingStyle == UITableViewCellEditingStyle.Delete) {
+            let transaction = transactions!.array![indexPath.row]
+            transaction.remove({ (response, data, error) in
+                if ((error) != nil) {
+                    let alertController = UIAlertController(title: "Error", message:
+                        error, preferredStyle: UIAlertControllerStyle.Alert)
+                    alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                    return self.presentViewController(alertController, animated: true, completion: nil)
+                }
+                self.transactions?.array?.removeAtIndex(indexPath.row)
+                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+
+            })
+        }
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

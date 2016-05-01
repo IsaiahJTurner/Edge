@@ -59,7 +59,7 @@ exports.transactions = function(transactionsData, options, cb) {
         auths[account.plaid_id] = account._auth;
       }
 
-      var transactionsMap = {};
+      var transactionsMap = {}; // map transaction by {plaid_id: transaction}
       existingTransactions.map(function(transaction) {
         var plaid_id = transaction.plaid_id;
         transactionsMap[plaid_id] = transaction;
@@ -69,7 +69,8 @@ exports.transactions = function(transactionsData, options, cb) {
             return true; // transaction doesn't exist, return true to create it
           }
           return false; // transaction already exists, dont create it
-        }).map(function(transactionData) {
+        });
+        var transactionsToCreate = newTransactions.map(function(transactionData) {
           // check to make sure the account and auth exist. the auth should always exist. the account may not exist if it wasn't sync'd
           // TODO: sync accounts if they aren't found
           var account = accounts[transactionData._account];
@@ -87,8 +88,15 @@ exports.transactions = function(transactionsData, options, cb) {
           var _pendingTransaction = null;
           if (pendingTransaction) {
             _pendingTransaction = pendingTransaction._id;
+            pendingTransaction.settled = true;
+            pendingTransaction.save(function(err, pendingTransaction) {
+              if (err) {
+
+              }
+            })
           }
           return {
+            _id: mongoose.Types.ObjectId(),
             _owner: options._owner,
             _account: account,
             _auth: auth,
@@ -98,30 +106,30 @@ exports.transactions = function(transactionsData, options, cb) {
             plaid_id: transactionData._id,
             plaid_account: transactionData._account,
             plaid_pendingTransaction: transactionData._pendingTransaction,
-            plaidAmount: [transactionData.amount],
-            plaidName: [transactionData.name],
+            plaidAmount: transactionData.amount,
+            plaidName: transactionData.name,
             plaidDate: transactionData.date,
-            plaidMeta: [transactionData.meta],
+            plaidMeta: transactionData.meta,
             plaidPending: transactionData.pending,
-            plaidType: [transactionData.type],
-            plaidCategory_id: [transactionData.category_id],
-            plaidScore: [transactionData.score],
+            plaidType: transactionData.type,
+            plaidCategory_id: transactionData.category_id,
+            plaidScore: transactionData.score,
             createdAt: Date.now(),
             updatedAt: Date.now()
           };
         });
-        callback(null, existingTransactions, newTransactions);
+        callback(null, existingTransactions, transactionsToCreate);
     },
-    function(transactions, newTransactions, callback) {
+    function(transactions, transactionsToCreate, callback) {
       /*
         Mongoose doesn't have a great insert method so we're going to insert these directly into the DB
         Data validation for Mongoose will not occur but it will be FAST
       */
-      if (newTransactions.length === 0) {
+      if (transactionsToCreate.length === 0) {
         // fixes "Invalid Operation, No operations in bulk" error that results from attempting to insert nothing
-        return callback(null, transactions, newTransactions);
+        return callback(null, transactions, transactionsToCreate);
       }
-      Transaction.collection.insert(newTransactions, {
+      Transaction.collection.insert(transactionsToCreate, {
         continueOnError: true
       }, function(err, result) {
         if (err) {
@@ -135,13 +143,13 @@ exports.transactions = function(transactionsData, options, cb) {
             });
           }
         }
-        callback(null, transactions, newTransactions);
+        callback(null, transactions, transactionsToCreate);
       });
     },
-    function(transactions, newTransactions, callback) {
+    function(transactions, transactionsToCreate, callback) {
       Transaction.find({
         _id: {
-          $in: _.pluck(newTransactions, "_id")
+          $in: _.pluck(transactionsToCreate, "_id")
         }
       }, function(err, newTransactions) {
         if (err) {

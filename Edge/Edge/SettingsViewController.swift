@@ -266,7 +266,7 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
             }
             if indexPath.row == 1 {
                 let alertController = UIAlertController(title: "Are you sure?", message:
-                    "Your bank account will be un-linked and you will be able to link a new account. No other data will be deleted.", preferredStyle: UIAlertControllerStyle.Alert)
+                    "Your bank account will be un-linked, all transaction data will be permenantly deleted, and you will be able to link a new account. You will need to sign in again.", preferredStyle: UIAlertControllerStyle.Alert)
                 alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
                 alertController.addAction(UIAlertAction(title: "Confirm", style: UIAlertActionStyle.Default) { (action) in
                     if let me = self.client.me {
@@ -280,7 +280,15 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
                                             alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
                                             return self.presentViewController(alertController, animated: true, completion: nil)
                                         }
-                                        self.view.window!.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
+                                        self.client.signOut({ (response, data, error) -> () in
+                                            if (error != nil) {
+                                                let alertController = UIAlertController(title: "Error", message:
+                                                    error, preferredStyle: UIAlertControllerStyle.Alert)
+                                                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                                                return self.presentViewController(alertController, animated: true, completion: nil)
+                                            }
+                                            self.view.window!.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
+                                        });
                                     })
                                 }
                             }

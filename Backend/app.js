@@ -95,6 +95,7 @@ api.get("/passes/:passId", middleware.auth.requiresUser, controllers.passes.getO
 api.post("/transactions", middleware.auth.requiresUser, controllers.transactions.index.post);
 api.get("/transactions", middleware.auth.requiresUser, controllers.transactions.index.get);
 api.get("/transactions/:transactionId", middleware.auth.requiresUser, controllers.transactions.transaction.get);
+api.delete("/transactions/:transactionId", middleware.auth.requiresUser, controllers.transactions.transaction.delete);
 
 api.post("/appledevices", controllers.appledevices.index.post);
 api.get("/appledevices/:deviceId", middleware.auth.requiresUser, controllers.appledevices.appledevice.get);

@@ -62,7 +62,7 @@ function sendSMSVerificationText(req, res, user, callback) {
   user.save(function(err, user) {
     if (err) {
       var error = "Failed to update rate limiting data.";
-      console.log(error, responseData, user);
+      console.log(error, err, user);
       return res.json({
         errors: [{
           title: error
@@ -76,7 +76,7 @@ function sendSMSVerificationText(req, res, user, callback) {
     }, function(err, responseData) {
         if (err) {
           var error = "Phone verification text failed to send.";
-          console.log(error, responseData, user);
+          console.log(error, err, responseData, user);
           return res.json({
             errors: [{
               title: error
@@ -87,6 +87,7 @@ function sendSMSVerificationText(req, res, user, callback) {
     });
   });
 }
+
 exports.patch = function(req, res) {
   console.log(req.body)
   var _user = req.params.userId;

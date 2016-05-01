@@ -43,6 +43,20 @@ class AddTransactionTableViewController: UITableViewController, UITextFieldDeleg
             }
         return true;
     }
+    
+    @IBAction func save(sender: UIBarButtonItem) {
+        let transaction = Transaction(title: locationTextField.text, subtotal: Double(subtotal) / 100, tip: Double(tip) / 100)
+        transaction.save { (response, data, transaction, error) in
+            if (error != nil) {
+                let alertController = UIAlertController(title: "Error", message:
+                    error, preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                return self.presentViewController(alertController, animated: true, completion: nil)
+            }
+            self.navigationController?.popViewControllerAnimated(true)
+        }
+    }
+    
     @IBAction func costTextChanged(sender: UITextField) {
         if let intValue = Int(sender.text!.stringByReplacingOccurrencesOfString(".", withString: "").componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet).joinWithSeparator("")) {
             if (sender == tipTextField) {

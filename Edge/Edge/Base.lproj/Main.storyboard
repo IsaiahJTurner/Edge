@@ -1025,9 +1025,9 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$4.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8rj-yQ-XsS">
-                                            <rect key="frame" x="228" y="17" width="59" height="21"/>
+                                            <rect key="frame" x="215" y="17" width="72" height="21"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="59" id="guG-a3-Ng0"/>
+                                                <constraint firstAttribute="width" constant="72" id="guG-a3-Ng0"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -1047,7 +1047,7 @@
                                         <constraint firstItem="QXE-Dj-cnK" firstAttribute="leading" secondItem="N3U-df-tO3" secondAttribute="leadingMargin" constant="9" id="0eY-Qj-nPI"/>
                                         <constraint firstItem="8rj-yQ-XsS" firstAttribute="baseline" secondItem="QXE-Dj-cnK" secondAttribute="baseline" id="3wV-db-Ah8"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="8rj-yQ-XsS" secondAttribute="trailing" constant="-8" id="5VN-eo-MB9"/>
-                                        <constraint firstItem="8rj-yQ-XsS" firstAttribute="leading" secondItem="QXE-Dj-cnK" secondAttribute="trailing" constant="21" id="8GK-et-33I"/>
+                                        <constraint firstItem="8rj-yQ-XsS" firstAttribute="leading" secondItem="QXE-Dj-cnK" secondAttribute="trailing" constant="8" id="8GK-et-33I"/>
                                         <constraint firstItem="VaP-nb-ofl" firstAttribute="top" secondItem="N3U-df-tO3" secondAttribute="topMargin" constant="27" id="Ih4-Ff-HTU"/>
                                         <constraint firstItem="VaP-nb-ofl" firstAttribute="leading" secondItem="MfD-yr-iUL" secondAttribute="trailing" constant="18" id="Qhq-Vj-gNn"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="VaP-nb-ofl" secondAttribute="bottom" constant="7" id="UFr-Fa-2Bd"/>
@@ -1057,7 +1057,7 @@
                                         <constraint firstItem="VaP-nb-ofl" firstAttribute="firstBaseline" secondItem="MfD-yr-iUL" secondAttribute="firstBaseline" id="m6e-ct-jR6"/>
                                         <constraint firstItem="QXE-Dj-cnK" firstAttribute="top" secondItem="N3U-df-tO3" secondAttribute="topMargin" constant="7" id="mNR-EM-B8S"/>
                                         <constraint firstItem="VaP-nb-ofl" firstAttribute="baseline" secondItem="MfD-yr-iUL" secondAttribute="baseline" id="oHy-i8-EMI"/>
-                                        <constraint firstItem="8rj-yQ-XsS" firstAttribute="leading" secondItem="QXE-Dj-cnK" secondAttribute="trailing" constant="21" id="qTn-tw-Hav"/>
+                                        <constraint firstItem="8rj-yQ-XsS" firstAttribute="leading" secondItem="QXE-Dj-cnK" secondAttribute="trailing" constant="8" id="qTn-tw-Hav"/>
                                         <constraint firstItem="8rj-yQ-XsS" firstAttribute="top" secondItem="N3U-df-tO3" secondAttribute="topMargin" constant="9" id="vlJ-uY-jia"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="QXE-Dj-cnK" secondAttribute="bottom" constant="27" id="ws0-8d-6pW"/>
                                     </constraints>
@@ -1293,7 +1293,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Add" id="EsA-q8-SXk">
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="kr0-CJ-Rt9"/>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="kr0-CJ-Rt9">
+                            <connections>
+                                <action selector="save:" destination="Yc4-w6-8wA" id="ggm-t1-mPs"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
@@ -1544,6 +1548,12 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="selectImageButton" destination="z34-kO-vwK" id="n63-y2-dk9"/>
+                        <outlet property="subtotalActual" destination="wHO-YQ-JkR" id="Y2l-Os-U5a"/>
+                        <outlet property="subtotalExpected" destination="nTB-Ap-eLm" id="Zqc-mH-lsJ"/>
+                        <outlet property="tipActual" destination="y1c-FJ-a3R" id="vtc-Cw-G3J"/>
+                        <outlet property="tipExpected" destination="gWA-iw-0ze" id="luY-PU-2bi"/>
+                        <outlet property="totalActual" destination="SeR-Su-NbG" id="8Vz-Cf-sNt"/>
+                        <outlet property="totalExpected" destination="scd-CR-ZxC" id="sxN-to-y8Z"/>
                         <outlet property="transactionDateLabel" destination="OLH-JN-1Fc" id="dyr-dN-dfU"/>
                     </connections>
                 </viewController>

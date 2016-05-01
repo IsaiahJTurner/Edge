@@ -2,6 +2,8 @@ var _ = require('underscore');
 var mongoose = require('mongoose');
 var plaid = require('plaid');
 var User = mongoose.model('User');
+var Transaction = mongoose.model('Transaction');
+var Account = mongoose.model('Account');
 var Auth = mongoose.model('Auth');
 var config = require("../../config");
 
@@ -62,17 +64,34 @@ exports.delete = function(req, res) {
               }]
             })
           }
-          auth.remove().exec(function(err) {
+          auth.remove(function(err) {
             if (err) {
               var error = "Failed to remove auth.";
-              console.log(error, err, err, auth);
+              console.log(error, err, auth);
               return res.json({
                 errors: [{
                   title: error
                 }]
               })
             }
-            res.json({})
+            User.update({
+              _id: auth._owner
+            }, {
+              '$pull': {
+                  _auths: auth._id
+              }
+            }).exec(function(err, updated) {
+              if (err) {
+                var error = "Failed to remove auth from user.";
+                console.log(error, err, updated, auth);
+                return res.json({
+                  errors: [{
+                    title: error
+                  }]
+                });
+              }
+              res.json({})
+            });
           });
         });
       });

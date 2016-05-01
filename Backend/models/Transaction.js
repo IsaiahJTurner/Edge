@@ -18,7 +18,11 @@ var TransactionSchema = new Schema({
   },
   _pendingTransaction: {
     type: Schema.ObjectId,
-    ref: 'Auth'
+    ref: 'Transaction'
+  },
+  _settledTransaction: {
+    type: Schema.ObjectId,
+    ref: 'Transaction'
   },
   title: {
     type: String
@@ -38,7 +42,8 @@ var TransactionSchema = new Schema({
   plaid_id: {
     type: String,
     unique: true,
-    index: true
+    index: true,
+    sparse: true
   },
   plaid_account: {
     type: String
@@ -56,13 +61,13 @@ var TransactionSchema = new Schema({
     type: String
   }],
   plaidMeta: {
-    type: Array
+    type: Object
   },
   plaidPending: {
     type: Boolean
   },
   plaidScore: {
-    type: Array
+    type: Object
   },
   plaidType: [{
     primary: String
