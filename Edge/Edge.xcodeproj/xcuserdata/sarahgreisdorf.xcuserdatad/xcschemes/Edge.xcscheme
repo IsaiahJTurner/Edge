@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9A7495A47CA87DE2E45A6D7981737AAB"
-               BuildableName = "Resources.bundle"
-               BlueprintName = "plaid-ios-link-Resources"
-               ReferencedContainer = "container:Pods.xcodeproj">
+               BlueprintIdentifier = "8B408D631C69814D00CA0B79"
+               BuildableName = "Edge.app"
+               BlueprintName = "Edge"
+               ReferencedContainer = "container:Edge.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,6 +29,15 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8B408D631C69814D00CA0B79"
+            BuildableName = "Edge.app"
+            BlueprintName = "Edge"
+            ReferencedContainer = "container:Edge.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -42,15 +51,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9A7495A47CA87DE2E45A6D7981737AAB"
-            BuildableName = "Resources.bundle"
-            BlueprintName = "plaid-ios-link-Resources"
-            ReferencedContainer = "container:Pods.xcodeproj">
+            BlueprintIdentifier = "8B408D631C69814D00CA0B79"
+            BuildableName = "Edge.app"
+            BlueprintName = "Edge"
+            ReferencedContainer = "container:Edge.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -60,6 +70,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8B408D631C69814D00CA0B79"
+            BuildableName = "Edge.app"
+            BlueprintName = "Edge"
+            ReferencedContainer = "container:Edge.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
